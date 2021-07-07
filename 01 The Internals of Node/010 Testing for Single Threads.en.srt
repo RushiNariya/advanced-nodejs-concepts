@@ -1,0 +1,391 @@
+1
+00:00:00,590 --> 00:00:06,290
+In the last section we created a new file that we're going to use to benchmark that PBK do have to function.
+
+2
+00:00:06,390 --> 00:00:11,290
+And we're going to eventually use this to detect whether or not Knode truly is single threaded.
+
+3
+00:00:11,700 --> 00:00:13,470
+Now we've got our function call inside of your.
+
+4
+00:00:13,500 --> 00:00:16,710
+The next thing we need to do is add a little bit of code to benchmark.
+
+5
+00:00:16,710 --> 00:00:20,610
+How long this things to this thing takes to run to benchmark it.
+
+6
+00:00:20,670 --> 00:00:24,700
+I'm going to first declare a new variable outside of the function call.
+
+7
+00:00:24,840 --> 00:00:30,550
+I'm going to declare a new variable called Start and this is going to record the time at which we start
+
+8
+00:00:30,550 --> 00:00:33,640
+our call to the PBK DFT function.
+
+9
+00:00:33,880 --> 00:00:37,030
+It's going to say start equals date dot.
+
+10
+00:00:37,050 --> 00:00:43,900
+Now like so then inside the Colback I'm going to add a console log and this thing is going to log out
+
+11
+00:00:43,950 --> 00:00:50,010
+exactly how long it took from recording the start time to getting inside the console log.
+
+12
+00:00:50,010 --> 00:00:52,380
+So it's a console log.
+
+13
+00:00:52,790 --> 00:00:58,080
+I'm going to pass in a string with one like so because we're going to eventually have multiple console
+
+14
+00:00:58,080 --> 00:01:03,450
+logs inside this program and by adding and then adding in the little one right here all know which console
+
+15
+00:01:03,450 --> 00:01:05,490
+log we are seeing inside of our terminal.
+
+16
+00:01:05,910 --> 00:01:12,900
+And then as the second argument I'll take the new times like the current time with data now and then
+
+17
+00:01:12,900 --> 00:01:15,780
+I'll subtract start from it like so.
+
+18
+00:01:16,560 --> 00:01:22,110
+So we take the start time we called the function and then when the callback is triggered we take the
+
+19
+00:01:22,170 --> 00:01:28,320
+new current time we subtract the old time and we should get out how long it took in milliseconds to
+
+20
+00:01:28,320 --> 00:01:31,620
+print out or to calculate this hash value.
+
+21
+00:01:31,620 --> 00:01:36,260
+So let's say this file will go run this out the terminal and we'll see how long it takes to calculate
+
+22
+00:01:36,260 --> 00:01:37,600
+hatch.
+
+23
+00:01:37,620 --> 00:01:44,410
+So back to my terminal I'm going to make sure I'm inside of my directory with the threads file and then
+
+24
+00:01:44,410 --> 00:01:51,990
+I'll run node threads start yes like so and when I do so you'll see that I print out one colon and then
+
+25
+00:01:51,990 --> 00:01:53,760
+1073.
+
+26
+00:01:53,790 --> 00:01:59,530
+So that means it took 1000 milliseconds or just about 1 second to run that PBK.
+
+27
+00:01:59,540 --> 00:02:00,870
+Do you have to function.
+
+28
+00:02:01,230 --> 00:02:01,670
+OK.
+
+29
+00:02:01,740 --> 00:02:02,790
+That's a good benchmark.
+
+30
+00:02:02,790 --> 00:02:06,160
+We now know how long it takes to calculate exactly.
+
+31
+00:02:06,780 --> 00:02:11,160
+I'm not going to go back to my code editor and I'm going to take this entire function call right here
+
+32
+00:02:11,430 --> 00:02:14,090
+and I'm going to duplicate it down underneath.
+
+33
+00:02:14,370 --> 00:02:19,500
+So going to copy it and then on the next line down I'll paste it.
+
+34
+00:02:19,580 --> 00:02:21,140
+Now make sure they update the consulate.
+
+35
+00:02:21,150 --> 00:02:23,590
+Great Year to you too as well.
+
+36
+00:02:24,590 --> 00:02:31,250
+Now before we run this back at the terminal I want to make two things extremely extraordinarily clear
+
+37
+00:02:31,250 --> 00:02:31,920
+here.
+
+38
+00:02:32,090 --> 00:02:37,730
+Two things that are absolutely critical to understand about the code we've written inside this file.
+
+39
+00:02:37,730 --> 00:02:45,440
+First off when we run this file both functions both this call and this call are going to be invoked
+
+40
+00:02:45,560 --> 00:02:49,350
+at more or less the exact same time.
+
+41
+00:02:49,400 --> 00:02:55,070
+So this code is not going to wait for the first call to finish up and get to this console log before
+
+42
+00:02:55,070 --> 00:02:56,240
+starting the second one.
+
+43
+00:02:56,240 --> 00:02:57,750
+That's not what's happening.
+
+44
+00:02:57,950 --> 00:03:03,460
+The instant we execute this file they are both executed at the same exact time.
+
+45
+00:03:03,470 --> 00:03:08,760
+Now the second thing to be aware of here is that we are not modifying the start variable at all.
+
+46
+00:03:09,080 --> 00:03:14,540
+So each count the log that we're going to eventually see like console I want to right here are going
+
+47
+00:03:14,540 --> 00:03:20,210
+to be the exact amount of time that it took from starting her program to the time that it took for each
+
+48
+00:03:20,210 --> 00:03:21,720
+function call to end.
+
+49
+00:03:22,100 --> 00:03:27,310
+So then might Let's go back to the terminal and we're going to run this file again and see what happens.
+
+50
+00:03:28,040 --> 00:03:28,480
+OK.
+
+51
+00:03:28,520 --> 00:03:35,910
+So back to the terminal or run node thread start G-S now when I run this you're going to notice that
+
+52
+00:03:35,910 --> 00:03:39,630
+my time is slightly above what it was before.
+
+53
+00:03:39,780 --> 00:03:44,680
+So originally I got about 10 73 and now I'm getting 11:15 11:59.
+
+54
+00:03:44,970 --> 00:03:50,750
+But chances are you are seeing two times that are very very close to your original time.
+
+55
+00:03:50,790 --> 00:03:55,860
+Chances are it might not be the case but chances are you're going to see two times that are very close
+
+56
+00:03:55,860 --> 00:03:57,330
+to the original ones.
+
+57
+00:03:57,360 --> 00:04:02,010
+The reason that my two times right here are a little bit above or a little bit elevated is just because
+
+58
+00:04:02,010 --> 00:04:07,280
+I'm running some screen recording software right now that uses up a lot of spew on my computer.
+
+59
+00:04:07,290 --> 00:04:12,600
+But anyways the point is that chances are we're going to see two times or two benchmarks that are extremely
+
+60
+00:04:12,600 --> 00:04:16,120
+close in time to the original one.
+
+61
+00:04:16,140 --> 00:04:20,160
+Now just to make sure that you really understand what's going on here I want to show you a couple of
+
+62
+00:04:20,160 --> 00:04:24,860
+diagrams that are going to help you understand the significance of this results right here.
+
+63
+00:04:24,960 --> 00:04:25,830
+OK.
+
+64
+00:04:26,400 --> 00:04:26,640
+All right.
+
+65
+00:04:26,640 --> 00:04:27,820
+So a couple of diagrams.
+
+66
+00:04:27,840 --> 00:04:29,680
+Here we go.
+
+67
+00:04:29,700 --> 00:04:30,260
+All right.
+
+68
+00:04:30,420 --> 00:04:32,070
+So first off we got this diagram.
+
+69
+00:04:32,070 --> 00:04:39,540
+So this is a diagram of what I would have expected to see if node was truly single threaded it remembered
+
+70
+00:04:39,540 --> 00:04:43,930
+that a thread presents a linear series of instructions to our CPQ.
+
+71
+00:04:44,160 --> 00:04:49,950
+So the CPQ has to follow follow them all in order of the order that we present them in.
+
+72
+00:04:49,950 --> 00:04:55,530
+Now we know that one call to BTK PBK of two takes exactly one second.
+
+73
+00:04:55,650 --> 00:04:57,970
+So like one second right here.
+
+74
+00:04:58,020 --> 00:05:04,230
+So with two function calls if this really was a single threaded system I would have expected this entire
+
+75
+00:05:04,230 --> 00:05:06,660
+process to take two seconds total.
+
+76
+00:05:06,920 --> 00:05:11,790
+We get one second for the first call that completes we should see a console log.
+
+77
+00:05:12,090 --> 00:05:18,240
+And then after one additional second we should see a second console log appear.
+
+78
+00:05:18,240 --> 00:05:22,280
+Let's take a look at a diagram that's going to make this expectation right here much more clear.
+
+79
+00:05:22,290 --> 00:05:27,750
+And again this is talking as though we are assuming that note is single threaded and it's not quite
+
+80
+00:05:28,360 --> 00:05:33,510
+because the second diagram just to clarify what we would expect if node really was single threaded.
+
+81
+00:05:33,510 --> 00:05:38,790
+So I would have expected that we would have started our program at time of zero seconds right here.
+
+82
+00:05:39,240 --> 00:05:43,920
+The first call to PBK do you have to would have taken one second and then as soon as that was complete
+
+83
+00:05:44,160 --> 00:05:48,690
+we would then store up the second call and then at two seconds the second call would be complete as
+
+84
+00:05:48,690 --> 00:05:49,940
+well.
+
+85
+00:05:49,950 --> 00:05:56,350
+However both these diagrams I just showed you clearly was not what occurred.
+
+86
+00:05:56,640 --> 00:06:00,440
+This is not what actually happened when we ran our code.
+
+87
+00:06:00,660 --> 00:06:06,900
+We very clearly saw that both these logs occurred at basically the same time and it took just about
+
+88
+00:06:06,960 --> 00:06:13,760
+equal to the original run of our threads function where we were only doing one single hash.
+
+89
+00:06:13,770 --> 00:06:17,740
+So let's take a look at a diagram of what really happened.
+
+90
+00:06:17,740 --> 00:06:19,230
+So here's the reality.
+
+91
+00:06:19,230 --> 00:06:24,960
+The reality was that we started up our program at zero seconds up here and then it took exactly one
+
+92
+00:06:24,960 --> 00:06:29,190
+second for both of those function calls to get to the callback.
+
+93
+00:06:29,190 --> 00:06:34,710
+So clearly this is indicating that something is happening to indicate that breaking out we are breaking
+
+94
+00:06:34,710 --> 00:06:37,110
+out of a single thread set up with node.
+
+95
+00:06:37,350 --> 00:06:41,910
+Because if we only had one single thread we would have seen the first function call it complete and
+
+96
+00:06:41,910 --> 00:06:43,670
+then the second one startup.
+
+97
+00:06:43,950 --> 00:06:48,030
+So let's pause right here and we're going to start to investigate why this is happening in the next
+
+98
+00:06:48,030 --> 00:06:48,440
+section.

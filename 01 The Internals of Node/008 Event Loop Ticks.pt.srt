@@ -1,0 +1,343 @@
+1
+00:00:00,750 --> 00:00:05,490
+Na última seção, concluímos nossa função deve continuar, a qual decide se o loop de
+
+2
+00:00:05,490 --> 00:00:08,310
+eventos será ou não executado por um tick adicional.
+
+3
+00:00:08,850 --> 00:00:12,050
+Agora vamos nos mover para o corpo do nosso loop de eventos.
+
+4
+00:00:12,180 --> 00:00:17,160
+Vamos escrever uma série de comentários que expliquem o que ocorre durante cada tick.
+
+5
+00:00:17,220 --> 00:00:21,630
+Então, essas etapas estão ocorrendo muito rapidamente e de novo e de novo e de novo.
+
+6
+00:00:22,080 --> 00:00:25,070
+Vamos escrever o primeiro passo que ocorre dentro do loop de eventos.
+
+7
+00:00:25,170 --> 00:00:31,540
+Então, a primeira coisa que acontece aqui é o nó olha para o temporizador pendente.
+
+8
+00:00:31,610 --> 00:00:32,880
+É assim que chamamos isso.
+
+9
+00:00:32,890 --> 00:00:42,870
+Conversei sobre esta matriz até aqui com o cronômetro e veja se alguma função está pronta para ser chamada.
+
+10
+00:00:42,880 --> 00:00:48,810
+Portanto, a primeira coisa que ocorre é que o nó examina essa matriz de temporizadores pendentes e examina todas as diferentes
+
+11
+00:00:48,810 --> 00:00:52,630
+funções que foram passadas para definir o tempo limite e definir o intervalo.
+
+12
+00:00:52,950 --> 00:00:58,980
+Se algum desses temporizadores tiver expirado, o nó chamará os retornos de chamada relevantes associados a cada um deles.
+
+13
+00:00:58,980 --> 00:01:00,390
+Então esse é o passo número um.
+
+14
+00:01:00,390 --> 00:01:05,040
+Vamos também adicionar um pouco aqui apenas para acompanhar.
+
+15
+00:01:05,040 --> 00:01:07,980
+A próxima coisa que acontece é muito semelhante ao primeiro passo.
+
+16
+00:01:07,980 --> 00:01:19,080
+Portanto, para a segunda etapa, não há nenhuma tarefa pendente do SO e operações pendentes e chamadas de retorno
+
+17
+00:01:19,680 --> 00:01:21,420
+de chamada relevantes.
+
+18
+00:01:21,440 --> 00:01:27,530
+Assim, na segunda nota, veremos a coleção de todas as tarefas e operações diferentes e, se alguma
+
+19
+00:01:27,530 --> 00:01:32,540
+dessas coisas tiver sido concluída ou algum novo evento tiver sido disparado, o nó
+
+20
+00:01:32,540 --> 00:01:34,420
+executará os retornos de chamada relevantes.
+
+21
+00:01:34,460 --> 00:01:38,100
+Exemplos disso seriam os mesmos exemplos que descrevemos antes.
+
+22
+00:01:38,150 --> 00:01:44,630
+Assim, por exemplo, se algum pedido entrar em alguma porta em que um servidor estiver escutando ou se algum
+
+23
+00:01:44,630 --> 00:01:50,810
+arquivo for recuperado com sucesso do disco rígido de nossos computadores, durante esse estágio, será possível detectar que
+
+24
+00:01:50,810 --> 00:01:56,000
+essas coisas foram concluídas e chamaremos os retornos relevantes como retorno de chamada para receber
+
+25
+00:01:56,000 --> 00:02:01,420
+um arquivo que foi buscado ou um retorno de chamada para manipular uma solicitação recebida.
+
+26
+00:02:01,710 --> 00:02:04,400
+Então você pode realmente considerar estes dois primeiros passos aqui.
+
+27
+00:02:04,470 --> 00:02:10,240
+Como sabemos, faz a maior parte do seu trabalho e lida com todos os callbacks relevantes.
+
+28
+00:02:10,410 --> 00:02:15,660
+Agora, passar para o terceiro passo é onde as coisas começam a ficar um pouco
+
+29
+00:02:15,660 --> 00:02:20,020
+mais interessantes durante o passo 3, o nó realmente pausa a execução temporariamente.
+
+30
+00:02:20,290 --> 00:02:28,100
+Então, dizemos pausa na execução e durante essa pausa. Não apenas fica sentado e espera que novos eventos ocorram.
+
+31
+00:02:28,140 --> 00:02:35,380
+Então, não apenas fica aqui, faz uma pausa e diz que eu continuarei sempre que algum número de eventos ocorrer.
+
+32
+00:02:35,490 --> 00:02:47,670
+E isso é sempre que uma nova tarefa pendente do sistema operacional é feita sempre que uma nova operação pendente é feita ou sempre
+
+33
+00:02:47,910 --> 00:02:51,910
+que um cronômetro está prestes a ser concluído.
+
+34
+00:02:51,930 --> 00:02:57,090
+Portanto, durante essa fase de pausa, não se decide que não passará apenas pelo loop de
+
+35
+00:02:57,120 --> 00:02:58,610
+eventos o mais rápido possível.
+
+36
+00:02:58,620 --> 00:03:04,410
+Lembre-se que se você e eu escrevemos um loop while dentro do código javascript e escrevemos em like say,
+
+37
+00:03:04,500 --> 00:03:05,550
+enquanto true right.
+
+38
+00:03:05,610 --> 00:03:10,580
+Você sabe algo assim que o loop seria executado o mais rápido possível.
+
+39
+00:03:10,800 --> 00:03:15,060
+E isso não é realmente o que ocorre dentro do loop de eventos dentro do loop de eventos.
+
+40
+00:03:15,060 --> 00:03:20,310
+Esta pausa durante o passo 3 apenas fica em volta e diz que você sabe o que eu não tenho outro trabalho para fazer.
+
+41
+00:03:20,490 --> 00:03:24,160
+Só vou esperar até ver que uma nova tarefa pendente foi concluída.
+
+42
+00:03:24,390 --> 00:03:29,760
+Como uma nova requisição chegou em alguma porta, estamos ouvindo que uma nova operação pendente foi concluída,
+
+43
+00:03:29,880 --> 00:03:36,420
+como se extraíssemos algum arquivo do disco rígido ou um temporizador para um dos intervalos de tempo definidos em intervalos definidos
+
+44
+00:03:36,420 --> 00:03:39,870
+esteja prestes a expirar e o relevante função precisa ser chamada.
+
+45
+00:03:40,290 --> 00:03:43,890
+Então nós apenas sentamos e esperamos que essas coisas aconteçam.
+
+46
+00:03:44,070 --> 00:03:48,810
+Então, uma vez que a pausa esteja completa, porque presumivelmente veremos que algo está prestes a ocorrer,
+
+47
+00:03:48,810 --> 00:03:52,360
+então continuamos com as duas últimas etapas dentro do loop de eventos.
+
+48
+00:03:52,890 --> 00:03:58,320
+O passo número quatro é muito semelhante ao do passo número um, é o passo número um.
+
+49
+00:03:58,320 --> 00:04:04,360
+Você notará que eu tinha dito que estamos verificando se alguma função relacionada a temporizadores pendentes é chamada e eu uso
+
+50
+00:04:04,920 --> 00:04:10,230
+as palavras que eu realmente não escrevi isso, mas eu disse que definir o tempo limite e definir intervalo.
+
+51
+00:04:10,560 --> 00:04:17,890
+Portanto, esta primeira etapa aqui é sobre o intervalo de tempo limite definido durante a etapa número quatro até que
+
+52
+00:04:17,970 --> 00:04:20,330
+o nó novamente analise os cronômetros pendentes.
+
+53
+00:04:20,520 --> 00:04:24,280
+Então, olhe novamente para o temporizador pendente.
+
+54
+00:04:25,200 --> 00:04:30,030
+Mas neste caso, não se preocupa com o tempo limite definido em chamadas de função de intervalo definido.
+
+55
+00:04:30,120 --> 00:04:35,790
+Ele procura apenas funções que foram registradas com o conjunto imediato e o conjunto de recordações imediato é muito semelhante
+
+56
+00:04:35,790 --> 00:04:38,490
+ao definido no tempo limite e no intervalo definido.
+
+57
+00:04:38,520 --> 00:04:41,160
+Apenas no caso de você nunca ter usado antes.
+
+58
+00:04:41,160 --> 00:04:46,110
+Então olhe para Temporizadores pendentes, chame qualquer conjunto de imediato.
+
+59
+00:04:46,470 --> 00:04:50,370
+E, finalmente, para o Passo 5 e este pode ser um pouco surpreendente.
+
+60
+00:04:50,370 --> 00:05:00,690
+O Quinto Passo é lidar com todos os eventos próximos, agora este é um pouco mais difícil de explicar.
+
+61
+00:05:00,820 --> 00:05:02,810
+Então deixe-me mostrar-lhe um exemplo muito rápido.
+
+62
+00:05:02,820 --> 00:05:08,840
+Você sabe abrir um arquivo separado aqui e eu vou escrever um exemplo muito rápido para você ver.
+
+63
+00:05:08,870 --> 00:05:15,260
+Então, um exemplo disso seria se usarmos algo como um objeto padrão na biblioteca de notas que
+
+64
+00:05:15,320 --> 00:05:17,270
+eventos um evento de fechamento.
+
+65
+00:05:17,270 --> 00:05:21,990
+Agora, um evento específico ou um objeto específico que faz isso é um fluxo de leitura.
+
+66
+00:05:22,040 --> 00:05:24,670
+Se você nunca trabalhou com uma string de leitura antes, está tudo bem.
+
+67
+00:05:24,710 --> 00:05:29,110
+Deixe-me escrever o exemplo e acho que você entenderá muito rapidamente do que estamos falando.
+
+68
+00:05:29,180 --> 00:05:37,120
+Então, se tivermos um fluxo de leitura, podemos registrar um evento para ser executado sempre que isso estiver prestes a ser fechado.
+
+69
+00:05:37,370 --> 00:05:40,430
+E durante o disparo desse evento, poderíamos fazer algum trabalho de limpeza.
+
+70
+00:05:40,430 --> 00:05:43,520
+Então, podemos fazer um log de console como código de limpeza
+
+71
+00:05:46,320 --> 00:05:48,410
+para que possamos ouvir este evento Close.
+
+72
+00:05:48,450 --> 00:05:54,210
+E sempre que o loop de eventos estiver prestes a terminar, podemos executar uma certa quantidade de código de limpeza
+
+73
+00:05:54,210 --> 00:05:59,660
+que talvez termine qualquer servidor em execução ou encerre qualquer arquivo aberto que tenhamos aberto ou algo parecido.
+
+74
+00:05:59,730 --> 00:06:05,250
+Essencialmente, este último passo dentro do ciclo de eventos é apenas lidar com código de limpeza e limpar
+
+75
+00:06:05,280 --> 00:06:10,370
+depois de nós mesmos e certificando-se de que não temos quaisquer pontas soltas no nosso programa.
+
+76
+00:06:10,950 --> 00:06:11,290
+ESTÁ BEM.
+
+77
+00:06:11,310 --> 00:06:11,900
+Então é isso.
+
+78
+00:06:11,910 --> 00:06:18,570
+As cinco etapas que são executadas durante cada execução do loop de eventos ocorrem durante cada
+
+79
+00:06:18,570 --> 00:06:19,870
+tique que ocorre.
+
+80
+00:06:19,920 --> 00:06:23,770
+E provavelmente a coisa mais importante para entender aqui é o passo número três.
+
+81
+00:06:23,790 --> 00:06:29,970
+O fato de esperarmos e esperarmos que alguma quantidade ou algum evento ocorra, em vez de
+
+82
+00:06:29,970 --> 00:06:33,240
+percorrer o loop de eventos o mais rápido possível.
+
+83
+00:06:33,250 --> 00:06:37,860
+Então, agora que vimos esses cinco eventos que ocorreram durante o loop de eventos, vamos continuar na próxima
+
+84
+00:06:37,860 --> 00:06:42,780
+seção e vamos começar a discutir algumas vantagens e finalidades em torno do loop de eventos e também brincar
+
+85
+00:06:42,780 --> 00:06:43,980
+com algum código real.
+
+86
+00:06:44,130 --> 00:06:46,490
+Então, uma pausa rápida e eu vou te ver em apenas um minuto.

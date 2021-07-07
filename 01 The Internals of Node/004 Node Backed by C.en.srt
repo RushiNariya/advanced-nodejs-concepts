@@ -1,0 +1,335 @@
+1
+00:00:00,740 --> 00:00:05,520
+In the last section we started looking into the implementation of a function that is included in one
+
+2
+00:00:05,520 --> 00:00:08,640
+of the nodes standard library modules.
+
+3
+00:00:08,760 --> 00:00:14,310
+We were able to find the function declaration inside the node source code and specifically was inside
+
+4
+00:00:14,360 --> 00:00:15,750
+the lib folder.
+
+5
+00:00:15,930 --> 00:00:20,640
+We saw that inside the javascript implementation that function there was eventually a call to a function
+
+6
+00:00:20,640 --> 00:00:23,580
+that came from something called process binding.
+
+7
+00:00:24,090 --> 00:00:29,360
+This process not binding thing right here is what serves as an actual bridge between the javascript's
+
+8
+00:00:29,360 --> 00:00:35,700
+side of Node and the C plus plus side which is where a lot of the internal work of everything that node
+
+9
+00:00:35,700 --> 00:00:38,100
+does for you is actually implemented.
+
+10
+00:00:38,100 --> 00:00:43,610
+So a lot of your code relies upon ultimately C++ code.
+
+11
+00:00:43,740 --> 00:00:46,600
+We left off at the process not binding statement.
+
+12
+00:00:46,830 --> 00:00:51,920
+So from process binding is a little bit of joining up to the C++ side.
+
+13
+00:00:52,050 --> 00:00:56,010
+So we're going to just for a second we're going to skip over this the eight part right here and we're
+
+14
+00:00:56,010 --> 00:01:03,840
+going to go look up and find on the C++ side of the no project where the PBK DFI to function is actually
+
+15
+00:01:04,050 --> 00:01:06,670
+really truly implemented.
+
+16
+00:01:07,340 --> 00:01:12,360
+So back over an get hub I'm going to go back to the root project directory.
+
+17
+00:01:12,780 --> 00:01:18,690
+So all the way back up here at the node project and then this time rather than going inside the lib
+
+18
+00:01:18,690 --> 00:01:24,450
+directory which is where all the javascript side of Node is pre-placed we're going to go into the SIRC
+
+19
+00:01:24,450 --> 00:01:25,470
+directory.
+
+20
+00:01:25,950 --> 00:01:34,140
+So inside of your I'll then find inside this file or folder you can find a file called Let's scroll
+
+21
+00:01:34,140 --> 00:01:35,720
+down scroll down.
+
+22
+00:01:35,790 --> 00:01:41,170
+Here we go node underscore crypto dot CC right here.
+
+23
+00:01:41,340 --> 00:01:45,600
+Make sure you find the dot CC file and not the dot H-1.
+
+24
+00:01:45,660 --> 00:01:54,040
+So inside the dot CC file you're going to find about five thousand lines of C++ code five thousand seven
+
+25
+00:01:54,040 --> 00:01:56,510
+hundred forty eight lines.
+
+26
+00:01:56,580 --> 00:01:58,960
+So this is the entire crypto module right here.
+
+27
+00:01:58,980 --> 00:02:05,890
+This is all the C++ code that the crypto module actually depends upon inside the C++ world.
+
+28
+00:02:06,540 --> 00:02:12,330
+Inside this file I'm going to scroll down immediately to the very bottom so very down all the way down
+
+29
+00:02:12,330 --> 00:02:18,250
+to the very bottom or then scroll back up just a little bit and around a line.
+
+30
+00:02:18,480 --> 00:02:18,990
+And here we go.
+
+31
+00:02:18,990 --> 00:02:26,520
+Fifty seven oh four or so you're going to find what is essentially a C++ export statement.
+
+32
+00:02:26,520 --> 00:02:30,060
+Now I know that you might not know C++ at all and that's totally fine.
+
+33
+00:02:30,120 --> 00:02:33,580
+But I think you can kind of get an idea of what's happening right here.
+
+34
+00:02:33,750 --> 00:02:40,340
+This line of code is what takes the PBK do you have to function that is implemented inside the C++ file
+
+35
+00:02:40,800 --> 00:02:46,070
+and then somehow exports it as a function called PBK do you have to.
+
+36
+00:02:46,230 --> 00:02:51,720
+So this line of code right here is what was eventually getting invoked by that process not binding in
+
+37
+00:02:51,720 --> 00:02:52,340
+line.
+
+38
+00:02:52,500 --> 00:02:56,860
+This is what somehow joined up the javascript world in the C++ world.
+
+39
+00:02:56,880 --> 00:03:03,840
+And eventually it made this C++ function right here available to you on the node side let's go find
+
+40
+00:03:03,840 --> 00:03:07,710
+the actual declaration of PBK KDAF to inside this file.
+
+41
+00:03:08,190 --> 00:03:13,170
+So there are like 5000 lines of code inside of your song going to just search for it.
+
+42
+00:03:13,170 --> 00:03:16,440
+I'm going to look for voyde PBK D-Nev. too.
+
+43
+00:03:16,820 --> 00:03:19,830
+And eventually right about year.
+
+44
+00:03:19,850 --> 00:03:21,390
+Here we go.
+
+45
+00:03:22,410 --> 00:03:29,310
+So this right here is where the actual real true 100 percent no goofing around implementation of that
+
+46
+00:03:29,310 --> 00:03:31,580
+PBK DFT function is.
+
+47
+00:03:31,590 --> 00:03:37,050
+This is the actual function that calculates the hash for some value that you provide to the function
+
+48
+00:03:37,050 --> 00:03:38,280
+itself.
+
+49
+00:03:38,280 --> 00:03:42,420
+Now there's no need for us to go through all the C++ code inside of here but I think that you can very
+
+50
+00:03:42,420 --> 00:03:43,600
+quickly get the idea that.
+
+51
+00:03:43,620 --> 00:03:50,400
+Yup it looks like whenever we run that javascript code it ultimately relies upon some C++ code.
+
+52
+00:03:50,400 --> 00:03:55,770
+Now the other thing you might be kind of curious about inside of here is where V8 and lib come into
+
+53
+00:03:55,770 --> 00:03:56,600
+play.
+
+54
+00:03:57,030 --> 00:03:59,430
+If I go all the way back up to the top of this file.
+
+55
+00:03:59,700 --> 00:04:06,720
+And then again scroll down just a couple of lines around line eighty five or so you're going to start
+
+56
+00:04:06,720 --> 00:04:14,580
+to see a lot of kind of using statements right here and they're all using V8 colon colon and then some
+
+57
+00:04:14,580 --> 00:04:16,350
+name.
+
+58
+00:04:16,440 --> 00:04:22,230
+So the purpose of the V8 project inside of all this node source code is to essentially act as the intermediary
+
+59
+00:04:22,350 --> 00:04:29,270
+and allow values that are defined inside of javascript to be translated into C++ equivalence.
+
+60
+00:04:29,340 --> 00:04:37,330
+So all these using statements right here are importing the C++ definition of javascript concepts like
+
+61
+00:04:37,480 --> 00:04:45,420
+C++ understanding of what javascript falses where the C++ understanding of what an integer is or know
+
+62
+00:04:45,450 --> 00:04:49,420
+or object or string or any of these other things.
+
+63
+00:04:49,740 --> 00:04:53,420
+So this is where the project actually comes and comes into play.
+
+64
+00:04:53,710 --> 00:05:00,060
+The project is used to translate the no genius values that you and I place inside of our different programs
+
+65
+00:05:00,060 --> 00:05:07,250
+like a Boolean or a function or an object and translate it into their C++ equivalents.
+
+66
+00:05:07,260 --> 00:05:13,560
+Now Livi lib U.V. is also used inside this file as well although its presence is a little bit tougher
+
+67
+00:05:13,560 --> 00:05:14,910
+to actually detect.
+
+68
+00:05:15,240 --> 00:05:22,350
+So inside this file I'm going to do a search and I'm going to search for simply U-V now when I search
+
+69
+00:05:22,350 --> 00:05:28,100
+for U.V. you really start to see things like U-V thread start to appear.
+
+70
+00:05:28,240 --> 00:05:33,720
+You know if I keep on searching I'll see other things like U-V work as well.
+
+71
+00:05:33,730 --> 00:05:40,660
+So inside this file lady U.V. is used for a lot of concurrency and processing constructs on the C++
+
+72
+00:05:40,680 --> 00:05:45,460
+side and that's actually the topic of great discussion that we're going to go into in just a little
+
+73
+00:05:45,460 --> 00:05:46,580
+bit as well.
+
+74
+00:05:47,140 --> 00:05:47,500
+OK.
+
+75
+00:05:47,530 --> 00:05:54,140
+So I know this has been a very deep dive and you might not know any C++ at all but hopefully you now
+
+76
+00:05:54,140 --> 00:06:00,730
+have a better sense of how whenever you and I write javascript code and require in node modules or node
+
+77
+00:06:01,150 --> 00:06:08,380
+libraries they are depending upon some javascript definition which eventually kind of maps up to actual
+
+78
+00:06:08,410 --> 00:06:10,150
+C++ implementation.
+
+79
+00:06:10,150 --> 00:06:12,240
+On the other side no project as well.
+
+80
+00:06:12,670 --> 00:06:19,760
+And then on the C++ side there's a lot of interoperability between the V-8 project in live U-V as well.
+
+81
+00:06:20,260 --> 00:06:25,300
+So now that we have a better idea of how node modules are actually implemented Let's take a quick break.
+
+82
+00:06:25,320 --> 00:06:28,900
+We're going to come back in the next section and we're going to start to dive a little bit deeper into
+
+83
+00:06:28,900 --> 00:06:30,930
+this live U-V stuff.
+
+84
+00:06:30,940 --> 00:06:33,290
+So quick break and I'll see you in just a minute.

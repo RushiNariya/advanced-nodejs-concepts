@@ -1,0 +1,171 @@
+1
+00:00:00,610 --> 00:00:05,830
+Nos últimos 12 vídeos ou mais, abordamos alguns tópicos bastante complicados neste vídeo, faremos uma
+
+2
+00:00:05,830 --> 00:00:09,560
+pausa rápida e revisaremos tudo o que cobrimos até agora.
+
+3
+00:00:09,580 --> 00:00:14,950
+Eu tenho um diagrama de resumo que vai resumir exatamente o que acontece quando você inicia um programa de
+
+4
+00:00:15,010 --> 00:00:16,290
+nó no seu computador local.
+
+5
+00:00:16,600 --> 00:00:18,430
+Então tudo começa a aparecer no topo.
+
+6
+00:00:18,430 --> 00:00:23,980
+Quando você executa o ponto de índice do nó de comando J. S. ou qualquer outro arquivo que você
+
+7
+00:00:23,980 --> 00:00:29,740
+esteja executando quando executar esse nó de comando, executa imediatamente e processa todo o código dentro desse arquivo.
+
+8
+00:00:29,740 --> 00:00:34,090
+Agora, uma coisa sobre a qual você pode estar curioso durante esta fase também é exigir declarações que
+
+9
+00:00:34,090 --> 00:00:35,190
+você tenha dentro desse arquivo.
+
+10
+00:00:35,410 --> 00:00:42,990
+O instante em que você inicializa Node todo o código dentro daquele arquivo e todos os arquivos necessários também são executados.
+
+11
+00:00:43,120 --> 00:00:48,910
+Portanto, se o seu arquivo JSE de início de índice exigir que eles sejam instantaneamente
+
+12
+00:00:48,940 --> 00:00:50,280
+requeridos e executados também.
+
+13
+00:00:50,630 --> 00:00:56,030
+Nota, em seguida, entra em nosso loop de eventos o loop de eventos tem uma grande pergunta abrangente.
+
+14
+00:00:56,080 --> 00:00:58,390
+Diz: Ainda temos algum trabalho a fazer?
+
+15
+00:00:58,390 --> 00:01:00,100
+Nós temos algum temporizador?
+
+16
+00:01:00,100 --> 00:01:04,070
+Temos alguma tarefa do sistema operacional para fazer rede ou tarefas semelhantes?
+
+17
+00:01:04,240 --> 00:01:07,440
+Ou ainda temos algo funcionando dentro do nosso pool de threads.
+
+18
+00:01:07,780 --> 00:01:12,490
+Se não o fizermos, o nosso programa sai instantaneamente e não há mais nada para fazermos.
+
+19
+00:01:12,700 --> 00:01:17,140
+Mas se ainda tivermos algum trabalho a fazer, passamos por uma série
+
+20
+00:01:17,140 --> 00:01:18,260
+de passos diferentes.
+
+21
+00:01:18,400 --> 00:01:24,080
+Primeiro, verificamos se há algum tempo limite definido ou definimos intervalos que precisam ser executados.
+
+22
+00:01:24,960 --> 00:01:31,110
+Em seguida, verificamos se algum callback está pronto para ser chamado de algo relacionado a tarefas do sistema operacional,
+
+23
+00:01:31,110 --> 00:01:34,690
+como rede ou qualquer coisa relacionada ao nosso pool de threads.
+
+24
+00:01:35,010 --> 00:01:39,710
+E esta é provavelmente a grande maioria do código que você e eu escrevemos dentro dos aplicativos do nó.
+
+25
+00:01:41,250 --> 00:01:45,780
+Em seguida, o loop de eventos apenas faz uma pausa e fica esperando que as coisas aconteçam.
+
+26
+00:01:46,110 --> 00:01:51,450
+Por isso, espera que alguma tarefa seja concluída onde ela espera por algum tempo ou para subir ou qualquer outra
+
+27
+00:01:51,450 --> 00:01:52,500
+coisa que esteja esperando.
+
+28
+00:01:53,980 --> 00:01:59,770
+Depois disso, executamos qualquer função imediata definida que tenha sido definida dentro do nosso código.
+
+29
+00:02:00,010 --> 00:02:05,200
+E então, finalmente, lidamos com todos os eventos próximos que nos permitem fazer uma certa quantidade de
+
+30
+00:02:05,200 --> 00:02:06,550
+limpeza dentro de nossa aplicação.
+
+31
+00:02:06,700 --> 00:02:12,070
+E então, claro, a última coisa é voltar ao topo e repetir todo
+
+32
+00:02:12,070 --> 00:02:13,140
+o processo novamente.
+
+33
+00:02:13,330 --> 00:02:18,010
+Lembre-se que nos referimos a uma execução do loop de eventos como um tick.
+
+34
+00:02:18,010 --> 00:02:22,780
+Então você verá essa terminologia com bastante frequência e muita documentação.
+
+35
+00:02:22,780 --> 00:02:23,070
+Tudo bem.
+
+36
+00:02:23,080 --> 00:02:24,160
+Então, essa é uma revisão rápida.
+
+37
+00:02:24,340 --> 00:02:29,320
+Mas ainda temos muitos tópicos que eu quero agora relacionar com você, principalmente falando sobre o desempenho de nosso
+
+38
+00:02:29,320 --> 00:02:32,920
+aplicativo, para que agora tenhamos uma boa ideia dos aspectos internos de não.
+
+39
+00:02:32,980 --> 00:02:33,500
+Sim.
+
+40
+00:02:33,640 --> 00:02:37,180
+E o que está realmente acontecendo quando fazemos uso da biblioteca padrão.
+
+41
+00:02:37,240 --> 00:02:42,040
+Agora, aproveitamos todo esse conhecimento e descobrimos como podemos começar a escrever um código
+
+42
+00:02:42,040 --> 00:02:44,300
+realmente eficaz dentro de nossos aplicativos.
+
+43
+00:02:44,320 --> 00:02:47,440
+Então, uma pausa rápida e vamos mergulhar nisso no próximo vídeo.

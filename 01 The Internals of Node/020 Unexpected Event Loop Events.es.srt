@@ -1,0 +1,659 @@
+1
+00:00:00,720 --> 00:00:05,250
+En la última sección, armamos un gran mega ejemplo con un par de códigos diferentes de
+
+2
+00:00:05,250 --> 00:00:08,780
+varios archivos diferentes en los que hemos trabajado antes cuando ejecutamos este archivo.
+
+3
+00:00:08,790 --> 00:00:10,760
+Vimos un comportamiento realmente interesante.
+
+4
+00:00:10,770 --> 00:00:12,920
+Así que voy a ejecutarlo una vez más aquí.
+
+5
+00:00:13,500 --> 00:00:17,360
+Entonces, en el resultado, vemos que la solicitud de HDTV vuelve primero.
+
+6
+00:00:17,490 --> 00:00:23,740
+Luego vemos exactamente un hash luego la devolución de llamada del sistema de archivos y luego los tres hash restantes también.
+
+7
+00:00:24,060 --> 00:00:28,020
+Entonces, hay un par de elementos aquí que me parecen muy interesantes.
+
+8
+00:00:28,020 --> 00:00:34,590
+En primer lugar, ¿por qué siempre vemos exactamente un registro de la consola hash antes del resultado del sistema de archivos?
+
+9
+00:00:34,740 --> 00:00:39,740
+Y luego, en segundo lugar, ¿por qué siempre vemos que la solicitud de HTP se completa primero?
+
+10
+00:00:39,770 --> 00:00:46,710
+Sabes que las dos solicitudes hc h TTP aquí en el sistema de archivos son llamadas asíncronas,
+
+11
+00:00:46,710 --> 00:00:49,250
+que les lleva un tiempo completarlas.
+
+12
+00:00:49,260 --> 00:00:53,300
+Entonces, ¿por qué vemos siempre la edad GTP uno terminado casi de inmediato.
+
+13
+00:00:53,310 --> 00:00:54,770
+Estamos relativamente de inmediato.
+
+14
+00:00:54,960 --> 00:01:01,030
+Pero entonces la llamada al módulo FS justo aquí parece estar terminada después del primer hash.
+
+15
+00:01:01,410 --> 00:01:04,470
+Bien, en esta sección vamos a ver un par de diagramas diferentes
+
+16
+00:01:04,470 --> 00:01:09,790
+y trataremos de averiguar exactamente por qué ocurre esto en base al conocimiento que hemos recogido en el ciclo de eventos.
+
+17
+00:01:09,960 --> 00:01:12,150
+Vamos a por ello.
+
+18
+00:01:12,360 --> 00:01:14,670
+Ahora este es el verdadero quid de la cuestión aquí.
+
+19
+00:01:14,670 --> 00:01:18,790
+Esto es como toda la base para entender por qué estamos viendo este comportamiento.
+
+20
+00:01:19,110 --> 00:01:24,510
+Recuerde que en el último par de videos cuando hablábamos del ciclo de eventos, dijimos que
+
+21
+00:01:24,570 --> 00:01:31,030
+el nodo interno hace uso de un grupo de subprocesos para algunas llamadas a funciones muy específicas en particular.
+
+22
+00:01:31,080 --> 00:01:37,350
+Casi todo dentro del primer módulo o el módulo del sistema de archivos hace uso de este grupo de subprocesos.
+
+23
+00:01:37,710 --> 00:01:43,920
+Y como usted y yo sabemos muy bien que la función de módulo criptográfico PBK DFI también hace uso
+
+24
+00:01:43,920 --> 00:01:45,300
+del grupo de subprocesos.
+
+25
+00:01:46,050 --> 00:01:52,280
+Sin embargo, el sistema operativo o parte del módulo de aplicaciones que estamos utilizando no hace uso de ese grupo
+
+26
+00:01:52,280 --> 00:01:57,930
+de subprocesos y, en su lugar, llega directamente al sistema operativo y aprovecha el sistema operativo para hacer
+
+27
+00:01:57,930 --> 00:02:00,060
+todo el trabajo de red para nosotros.
+
+28
+00:02:00,060 --> 00:02:05,790
+Entonces, mientras el módulo FS usa un grupo de subprocesos, el H. DO. el módulo barato no.
+
+29
+00:02:05,790 --> 00:02:10,650
+Entonces, ahora, veamos el tipo de línea de tiempo que acabamos de ver.
+
+30
+00:02:10,650 --> 00:02:13,340
+Así que creo que esto aquí mismo mirará este diagrama por un segundo.
+
+31
+00:02:13,350 --> 00:02:17,680
+Esto es solo una especie de aclaración del tiempo que vimos en todos los registros de la consola.
+
+32
+00:02:17,880 --> 00:02:24,180
+Así que el HDD HTP llamado resolvió de inmediato, pero tuvimos que esperar mucho tiempo para todas las otras llamadas
+
+33
+00:02:24,180 --> 00:02:24,710
+de función.
+
+34
+00:02:24,720 --> 00:02:26,240
+Por alguna razón.
+
+35
+00:02:26,730 --> 00:02:30,510
+Echemos un vistazo a lo que hace esta llamada a la función de archivo de lectura aquí.
+
+36
+00:02:30,510 --> 00:02:34,470
+Y luego, tal vez, algunas de las piezas se unan y usted comenzará
+
+37
+00:02:34,740 --> 00:02:40,540
+a entender por qué siempre estamos esperando que la llamada de archivo reed tome tanto tiempo para completarse.
+
+38
+00:02:40,560 --> 00:02:45,090
+Así que esto es más o menos lo que está haciendo internamente la llamada al archivo Reed.
+
+39
+00:02:45,270 --> 00:02:48,840
+No tiene que entender realmente exactamente cada paso que está pasando aquí.
+
+40
+00:02:48,840 --> 00:02:53,860
+Hay una sola cosa que quiero señalar claramente sobre lo que sucede cuando llamamos archivo de lectura.
+
+41
+00:02:54,110 --> 00:02:59,730
+Así que cuando llamamos por primera vez al archivo de lectura No, no solo va directamente al disco duro e inmediatamente comienza
+
+42
+00:02:59,730 --> 00:03:00,810
+a leer el archivo.
+
+43
+00:03:01,110 --> 00:03:06,780
+En su lugar, mira el archivo en el disco duro e intenta reunir algunas
+
+44
+00:03:06,780 --> 00:03:08,960
+estadísticas sobre el tamaño del archivo.
+
+45
+00:03:09,000 --> 00:03:13,250
+Toda la revuelta del proceso incluye un viaje de ida y vuelta al disco duro.
+
+46
+00:03:13,470 --> 00:03:14,960
+Entonces vamos al disco duro.
+
+47
+00:03:15,060 --> 00:03:21,120
+Obtenemos algunas estadísticas sobre el archivo y luego el resultado vuelve a nuestro programa después de que el nodo
+
+48
+00:03:21,120 --> 00:03:25,200
+tenga esas estadísticas y ahora sabe qué tamaño puede esperar ese archivo.
+
+49
+00:03:25,290 --> 00:03:28,570
+Y luego ahora está listo para ir y leer el archivo.
+
+50
+00:03:28,590 --> 00:03:34,380
+Entonces, el nodo que realmente regresa al disco duro obtiene los contenidos del archivo y los devuelve a nuestra aplicación y luego llama
+
+51
+00:03:34,950 --> 00:03:38,570
+a nuestra devolución de llamada y fue entonces cuando vimos nuestro bloqueo de consola.
+
+52
+00:03:39,060 --> 00:03:45,740
+Entonces, lo realmente importante a tener en cuenta aquí es que hubo dos pausas distintas que ocurrieron.
+
+53
+00:03:45,840 --> 00:03:51,800
+Tuvimos una pausa en toda esta llamada de archivo de lectura donde estábamos esperando que el disco
+
+54
+00:03:51,810 --> 00:03:58,170
+duro nos devolviera algunas estadísticas sobre este archivo y luego tuvimos una segunda gran pausa cuando el nodo
+
+55
+00:03:58,230 --> 00:04:01,400
+regresó al disco duro y comenzó a leer los contenidos.
+
+56
+00:04:01,410 --> 00:04:07,650
+Entonces, en este momento, veamos el diagrama final que realmente explica lo que estaba sucediendo.
+
+57
+00:04:08,090 --> 00:04:08,390
+DE ACUERDO.
+
+58
+00:04:08,400 --> 00:04:12,600
+Así que pueden ver que tenemos un par de elementos diferentes aquí en este diagrama,
+
+59
+00:04:12,600 --> 00:04:17,880
+en la parte inferior tenemos el mismo grupo de subprocesos del que hablábamos anteriormente con los subprocesos predeterminados.
+
+60
+00:04:17,880 --> 00:04:19,620
+Ahora lo primero que hay que darse cuenta aquí.
+
+61
+00:04:19,620 --> 00:04:23,970
+Así que esta es la razón por la cual esta es una pregunta de entrevista tan buena porque realmente
+
+62
+00:04:23,970 --> 00:04:25,270
+te hace entender muchas notas diferentes.
+
+63
+00:04:25,350 --> 00:04:32,430
+Lo primero que debe darse cuenta es que la llamada modular H T H S es realmente Keep Is que no involucra en absoluto
+
+64
+00:04:32,430 --> 00:04:33,780
+el grupo de subprocesos.
+
+65
+00:04:33,780 --> 00:04:38,880
+Saltea completamente el grupo de subprocesos y hace uso del sistema operativo subyacente.
+
+66
+00:04:38,880 --> 00:04:43,590
+Entonces, cuando hacemos esa solicitud, no nos importa qué más está sucediendo dentro de nuestro programa.
+
+67
+00:04:43,590 --> 00:04:44,720
+No importa.
+
+68
+00:04:44,760 --> 00:04:50,400
+Realiza la solicitud y tan pronto como recibamos una respuesta, la respuesta se devuelve a nuestro código dentro del
+
+69
+00:04:50,490 --> 00:04:54,810
+ciclo de evento y luego vemos que el registro de la consola aparece de inmediato.
+
+70
+00:04:54,840 --> 00:05:00,980
+Entonces, el HTP HTP Reclast lo lancé allí para que otro recordatorio ocurra fuera del
+
+71
+00:05:00,980 --> 00:05:02,390
+grupo de subprocesos.
+
+72
+00:05:02,390 --> 00:05:07,890
+Ahora, el motivo por el que la llamada al módulo FS se demoró tanto es específicamente debido a la forma en
+
+73
+00:05:07,900 --> 00:05:09,600
+que funciona el grupo de subprocesos.
+
+74
+00:05:09,620 --> 00:05:15,830
+Entonces, en el instante en que hicimos todas esas llamadas a funciones como estas llamadas aquí mismo, podemos imaginarnos
+
+75
+00:05:16,040 --> 00:05:21,170
+que está configurando cinco tareas diferentes para ser ejecutadas dentro de nuestro grupo de subprocesos.
+
+76
+00:05:21,170 --> 00:05:26,540
+Primero, dijo OK, tenemos que ir a leer el archivo y luego también decir OK, también en este grupo
+
+77
+00:05:26,540 --> 00:05:28,490
+de subprocesos tenemos que hacer cuatro hashes.
+
+78
+00:05:28,910 --> 00:05:35,480
+Entonces, una vez que esas cinco tareas se cargaron, las primeras cuatro se asignaron a algún hilo.
+
+79
+00:05:35,840 --> 00:05:42,840
+Entonces el colega del sistema de archivos fue asignado a la secuencia 1, luego PBK debido a la primera llamada fue a 3 2 2 2
+
+80
+00:05:42,860 --> 00:05:45,460
+3 y 3 1 a 4, y así sucesivamente.
+
+81
+00:05:45,620 --> 00:05:51,890
+Ahora los hilos 2 3 y 4 aquí comenzarán a alejarse inmediatamente de estas llamadas hash y
+
+82
+00:05:51,890 --> 00:05:55,580
+tratarán de calcular esos hashes tan rápido como sea posible.
+
+83
+00:05:55,970 --> 00:06:00,290
+Y mientras tanto, el hilo uno aquí comenzará a funcionar en la llamada al sistema de archivos.
+
+84
+00:06:00,410 --> 00:06:02,350
+Y aquí está el punto realmente crítico.
+
+85
+00:06:02,600 --> 00:06:10,140
+En el instante en que el módulo FS se cargó en el hilo 1, el hilo comenzó a pasar por este proceso
+
+86
+00:06:10,140 --> 00:06:11,010
+aquí mismo.
+
+87
+00:06:11,070 --> 00:06:15,630
+Entonces, dijo OK, veamos que tengo que hacer todo lo que gire para leer algún archivo.
+
+88
+00:06:15,750 --> 00:06:21,480
+Bueno, supongo que puedo obtener algunas estadísticas sobre ese archivo y luego ir a buscar disco duro o
+
+89
+00:06:21,480 --> 00:06:24,770
+acceder al disco duro y obtener información sobre ese archivo.
+
+90
+00:06:24,780 --> 00:06:31,230
+Ahora, durante esa fase, el hilo uno comienza a llegar al disco duro y tan pronto como uno ingresa esa
+
+91
+00:06:31,230 --> 00:06:32,870
+solicitud en el disco duro.
+
+92
+00:06:33,210 --> 00:06:38,940
+Este hilo justo aquí se da cuenta de que oye, sabes lo que voy a esperar bastante
+
+93
+00:06:38,940 --> 00:06:43,640
+tiempo. No esperaré como siempre en este disco duro para obtener algo de información.
+
+94
+00:06:43,800 --> 00:06:50,170
+Entonces, creo que mientras espero esa información ya no me importa esta tarea.
+
+95
+00:06:50,190 --> 00:06:51,590
+Ya sabes lo que tiene la tarea.
+
+96
+00:06:51,600 --> 00:06:57,450
+Simplemente puede sentarse y puede esperar porque tengo que esperar literalmente para siempre para obtener
+
+97
+00:06:57,450 --> 00:06:59,690
+algo de información del disco duro.
+
+98
+00:06:59,700 --> 00:07:05,190
+Entonces, tan pronto como llega al número de la cadena de disco uno dice: "Hola a todos, estoy disponible
+
+99
+00:07:05,190 --> 00:07:06,390
+para hacer otra cosa".
+
+100
+00:07:06,540 --> 00:07:08,760
+Oh, necesito calcular algo de hash.
+
+101
+00:07:08,780 --> 00:07:11,720
+Para PBK, tienes que llamar al número cuatro aquí.
+
+102
+00:07:11,730 --> 00:07:12,230
+Estupendo.
+
+103
+00:07:12,240 --> 00:07:13,940
+Voy a empezar a trabajar en eso.
+
+104
+00:07:14,340 --> 00:07:20,610
+Entonces, el hilo número 1 se olvida temporalmente de esa llamada al sistema de archivos y comienza
+
+105
+00:07:20,610 --> 00:07:22,980
+a calcular el hash número cuatro aquí.
+
+106
+00:07:22,980 --> 00:07:26,120
+Luego, finalmente fuera del hilo dos tres y cuatro.
+
+107
+00:07:26,160 --> 00:07:27,780
+Uno de estos va a terminar.
+
+108
+00:07:27,780 --> 00:07:28,950
+Entonces uno de estos va a terminar.
+
+109
+00:07:28,950 --> 00:07:32,790
+Tal vez es el hilo para trabajar en la Llamada 1 aquí mismo.
+
+110
+00:07:32,790 --> 00:07:39,930
+Así que esta llamada se completa y ahora el hilo 2 ahora se ha abierto. El hilo 2 termina esa primera
+
+111
+00:07:40,220 --> 00:07:41,210
+función hash hash.
+
+112
+00:07:41,280 --> 00:07:49,860
+Hace el registro de la consola que es lo que vimos aquí y luego el hilo 2 dice OK. Ahora estoy listo para recoger algo de
+
+113
+00:07:49,860 --> 00:07:55,860
+trabajo, así que el segundo hilo ve que todavía hay una llamada al sistema de archivos pendiente que
+
+114
+00:07:55,860 --> 00:07:57,530
+necesita ser procesada aquí. .
+
+115
+00:07:57,540 --> 00:08:02,700
+El segundo subproceso mira para ver si ha recuperado alguna información del disco duro, como las
+
+116
+00:08:02,700 --> 00:08:04,460
+estadísticas de las que estamos hablando.
+
+117
+00:08:04,470 --> 00:08:06,530
+Y en este caso sí lo ha hecho.
+
+118
+00:08:06,540 --> 00:08:11,940
+Entonces esas estadísticas, sé que este diagrama es ciertamente una locura, pero se puede imaginar que estas estadísticas
+
+119
+00:08:11,940 --> 00:08:17,510
+vuelven en un hilo y luego enhebran dos inicios continúan trabajando en la llamada al sistema de archivos.
+
+120
+00:08:17,760 --> 00:08:21,800
+A continuación, realiza otras solicitudes de seguimiento al disco duro para obtener el contenido real del archivo.
+
+121
+00:08:21,930 --> 00:08:27,420
+Pero esta vez, cuando hace que la solicitud de seguimiento obtenga realmente el contenido del archivo como este paso
+
+122
+00:08:27,420 --> 00:08:30,190
+aquí, no hay otra palabra para que lo haga.
+
+123
+00:08:30,330 --> 00:08:33,360
+Entonces simplemente se queda y espera que vuelva.
+
+124
+00:08:33,420 --> 00:08:38,520
+Y luego, tan pronto como los contenidos de los archivos vuelven, el proceso número dos lo procesa y
+
+125
+00:08:38,520 --> 00:08:40,770
+vemos que aparece el registro de la consola.
+
+126
+00:08:40,770 --> 00:08:49,470
+Así que es por eso que vimos aquí que siempre vimos completar un hash antes del módulo del sistema de archivos porque hacemos cola en
+
+127
+00:08:49,470 --> 00:08:55,460
+esa llamada al sistema de archivos que hace un trabajo inicial y hace una solicitud sobre el
+
+128
+00:08:55,460 --> 00:08:57,990
+disco duro que luego dice "oye, sabes qué".
+
+129
+00:08:57,990 --> 00:08:59,310
+Los discos duros pueden llevar una eternidad.
+
+130
+00:08:59,340 --> 00:09:00,590
+Voy a hacer otra cosa.
+
+131
+00:09:00,660 --> 00:09:06,240
+Y entonces toma una de las otras llamadas hash, comienza a trabajar en eso y
+
+132
+00:09:06,450 --> 00:09:13,850
+luego, al caber otro subproceso, terminará una llamada hash y volverá y continuará trabajando en el sistema de archivos.
+
+133
+00:09:14,100 --> 00:09:14,480
+Todo bien.
+
+134
+00:09:14,490 --> 00:09:15,190
+Eso es todo.
+
+135
+00:09:15,240 --> 00:09:17,540
+Eso es lo que sucede detrás de escena aquí.
+
+136
+00:09:17,550 --> 00:09:23,280
+Como dije, creo que esta sería la pregunta más loca de una entrevista porque realmente requiere
+
+137
+00:09:23,280 --> 00:09:26,630
+que comprendas exactamente lo que knode está haciendo internamente.
+
+138
+00:09:26,700 --> 00:09:32,650
+Primero debe comprender que el módulo TTP no funciona con el grupo de subprocesos.
+
+139
+00:09:32,850 --> 00:09:38,450
+Debe comprender que el módulo FS hace junto con el módulo criptográfico PBK que debe funcionar
+
+140
+00:09:38,850 --> 00:09:44,430
+y también debe comprender que el grupo de subprocesos tiene por defecto cuatro subprocesos disponibles.
+
+141
+00:09:44,430 --> 00:09:49,680
+Ahora solo una cosa rápida que quiero presentar aquí como una especie de pregunta complicada de seguimiento.
+
+142
+00:09:49,680 --> 00:09:56,260
+Tal vez no sea tan complicado si entramos aumentó el tamaño del grupo de subprocesos dentro de nosotros multitarea.
+
+143
+00:09:56,310 --> 00:10:00,030
+Recuerde que podemos hacer eso en la parte superior estableciendo esta variable de entorno.
+
+144
+00:10:00,090 --> 00:10:05,190
+Entonces, si aumentamos nuestro tamaño de grupo de subprocesos hasta 5 y luego ejecutamos este archivo nuevamente.
+
+145
+00:10:05,310 --> 00:10:06,920
+¿Qué crees que pasaría?
+
+146
+00:10:06,930 --> 00:10:09,800
+Bueno, apuesto a que podrías adivinar bastante bien aquí.
+
+147
+00:10:09,810 --> 00:10:16,040
+Entonces cuando ejecuto esto ahora tenemos un hilo adicional que puede ser 100% responsable de todo.
+
+148
+00:10:16,050 --> 00:10:21,690
+El sistema de archivos llama a las necesidades y, por lo tanto, el quinto subproceso ahora está completamente dedicado a trabajar con
+
+149
+00:10:21,690 --> 00:10:24,030
+el disco duro y hacer lo que sea necesario.
+
+150
+00:10:24,210 --> 00:10:29,700
+Y es por eso que ahora vemos que el resultado aquí mismo aparece inmediatamente y luego también si
+
+151
+00:10:29,700 --> 00:10:30,750
+bajamos hasta 1.
+
+152
+00:10:30,840 --> 00:10:31,770
+Entonces solo un hilo.
+
+153
+00:10:31,770 --> 00:10:36,570
+Ahora este hilo va a hacer un trabajo inicial en la llamada al sistema de archivos.
+
+154
+00:10:36,690 --> 00:10:39,940
+Entonces, vamos a decir que el sistema de archivos está bien en el disco duro.
+
+155
+00:10:39,960 --> 00:10:41,210
+Te alcanzaré más tarde.
+
+156
+00:10:41,250 --> 00:10:46,680
+Luego procesará los cuatro hashes y luego, una vez terminados, resolverá o hará el resto del
+
+157
+00:10:46,770 --> 00:10:49,500
+trabajo para la llamada al sistema de archivos.
+
+158
+00:10:49,560 --> 00:10:56,760
+Entonces, si hacemos esto veremos Housh 1 2 3 4 y luego el resultado de la llamada al
+
+159
+00:10:56,760 --> 00:11:04,860
+sistema de archivos y todo mientras la solicitud HTP real no cambia porque no está tocando el grupo de subprocesos.
+
+160
+00:11:04,860 --> 00:11:05,700
+Todo bien.
+
+161
+00:11:05,700 --> 00:11:09,850
+Como dije, estaba convencido de esto porque finalmente logramos atravesarlos a todos ustedes y luego
+
+162
+00:11:09,870 --> 00:11:14,570
+relacionarlo todo, ahora pueden comenzar a entender realmente este comportamiento loco que comienzan a ver en el código.
+
+163
+00:11:14,580 --> 00:11:17,170
+Entonces, ha habido mucha diversión, continuemos en la siguiente sección.
+
+164
+00:11:17,220 --> 00:11:20,190
+Y vamos a comenzar estamos viendo alguna actuación de nota.
+
+165
+00:11:20,250 --> 00:11:22,240
+Así que toma un descanso rápido y te veré en solo un minuto.

@@ -1,0 +1,391 @@
+1
+00:00:00,590 --> 00:00:06,290
+Na última seção, criamos um novo arquivo que vamos usar para comparar o PBK.
+
+2
+00:00:06,390 --> 00:00:11,290
+E, eventualmente, usaremos isso para detectar se o Knode é realmente único ou não.
+
+3
+00:00:11,700 --> 00:00:13,470
+Agora temos nossa chamada de função dentro do seu.
+
+4
+00:00:13,500 --> 00:00:16,710
+A próxima coisa que precisamos fazer é adicionar um pouco de código para o benchmark.
+
+5
+00:00:16,710 --> 00:00:20,610
+Quanto tempo isso leva a esta coisa correr para compará-lo.
+
+6
+00:00:20,670 --> 00:00:24,700
+Primeiro vou declarar uma nova variável fora da chamada de função.
+
+7
+00:00:24,840 --> 00:00:30,550
+Vou declarar uma nova variável chamada Start e isso vai registrar a hora em que
+
+8
+00:00:30,550 --> 00:00:33,640
+começamos nossa chamada para a função PBK DFT.
+
+9
+00:00:33,880 --> 00:00:37,030
+Vai dizer começar igual a data.
+
+10
+00:00:37,050 --> 00:00:43,900
+Agora, assim, então dentro do Colback eu vou adicionar um log de console e essa coisa vai sair
+
+11
+00:00:43,950 --> 00:00:50,010
+exatamente quanto tempo demorou de gravar a hora de início para entrar no log do console.
+
+12
+00:00:50,010 --> 00:00:52,380
+Então é um log de console.
+
+13
+00:00:52,790 --> 00:00:58,080
+Eu vou passar uma string com um assim porque nós vamos eventualmente ter vários logs de console
+
+14
+00:00:58,080 --> 00:01:03,450
+dentro deste programa e adicionando e adicionando o pequeno aqui todos sabem qual log de console nós
+
+15
+00:01:03,450 --> 00:01:05,490
+estamos vendo dentro do nosso terminal.
+
+16
+00:01:05,910 --> 00:01:12,900
+E então, como o segundo argumento, vou tomar os novos tempos como a hora atual com os dados agora
+
+17
+00:01:12,900 --> 00:01:15,780
+e depois vou subtrair a partir dele assim.
+
+18
+00:01:16,560 --> 00:01:22,110
+Então, tomamos o horário de início que chamamos de função e, quando o retorno de chamada
+
+19
+00:01:22,170 --> 00:01:28,320
+é acionado, tomamos o novo horário atual subtraímos o tempo antigo e devemos saber quanto tempo demorou em
+
+20
+00:01:28,320 --> 00:01:31,620
+milissegundos para imprimir ou calcular esse valor de hash.
+
+21
+00:01:31,620 --> 00:01:36,260
+Então, digamos que este arquivo irá executar o terminal e veremos quanto tempo leva
+
+22
+00:01:36,260 --> 00:01:37,600
+para calcular a eclosão.
+
+23
+00:01:37,620 --> 00:01:44,410
+Então, de volta ao meu terminal eu vou ter certeza de que estou dentro do meu diretório com o arquivo
+
+24
+00:01:44,410 --> 00:01:51,990
+de threads e então eu vou executar threads de nó começar sim assim e quando eu fizer isso você verá que eu imprimo
+
+25
+00:01:51,990 --> 00:01:53,760
+um cólon e depois 1073.
+
+26
+00:01:53,790 --> 00:01:59,530
+Isso significa que foram necessários milissegundos ou apenas cerca de 1 segundo para executar esse PBK.
+
+27
+00:01:59,540 --> 00:02:00,870
+Você tem que funcionar.
+
+28
+00:02:01,230 --> 00:02:01,670
+ESTÁ BEM.
+
+29
+00:02:01,740 --> 00:02:02,790
+Esse é um bom benchmark.
+
+30
+00:02:02,790 --> 00:02:06,160
+Agora sabemos quanto tempo leva para calcular exatamente.
+
+31
+00:02:06,780 --> 00:02:11,160
+Eu não vou voltar para o meu editor de código e eu vou pegar toda
+
+32
+00:02:11,430 --> 00:02:14,090
+essa chamada de função aqui e vou duplicá-la embaixo.
+
+33
+00:02:14,370 --> 00:02:19,500
+Então, vou copiá-lo e, na próxima linha, vou colá-lo.
+
+34
+00:02:19,580 --> 00:02:21,140
+Agora, verifique se eles atualizam o consulado.
+
+35
+00:02:21,150 --> 00:02:23,590
+Grande Ano para você também.
+
+36
+00:02:24,590 --> 00:02:31,250
+Agora, antes de executarmos isso no terminal, quero deixar duas coisas extraordinariamente claras
+
+37
+00:02:31,250 --> 00:02:31,920
+aqui.
+
+38
+00:02:32,090 --> 00:02:37,730
+Duas coisas que são absolutamente essenciais para entender o código que escrevemos nesse arquivo.
+
+39
+00:02:37,730 --> 00:02:45,440
+Primeiro, quando executamos este arquivo, ambas as funções, tanto esta chamada como esta chamada, serão
+
+40
+00:02:45,560 --> 00:02:49,350
+chamadas mais ou menos ao mesmo tempo.
+
+41
+00:02:49,400 --> 00:02:55,070
+Portanto, esse código não vai aguardar a primeira chamada terminar e chegar a esse log do console antes
+
+42
+00:02:55,070 --> 00:02:56,240
+de iniciar o segundo.
+
+43
+00:02:56,240 --> 00:02:57,750
+Não é isso que está acontecendo.
+
+44
+00:02:57,950 --> 00:03:03,460
+No instante em que executamos este arquivo, ambos são executados no mesmo horário exato.
+
+45
+00:03:03,470 --> 00:03:08,760
+Agora, a segunda coisa a ter em conta é que não estamos modificando a variável start.
+
+46
+00:03:09,080 --> 00:03:14,540
+Assim, cada contagem do log que vamos ver como console que eu quero colocar aqui será
+
+47
+00:03:14,540 --> 00:03:20,210
+a quantidade exata de tempo que levou para iniciar o programa até o tempo que levava para
+
+48
+00:03:20,210 --> 00:03:21,720
+cada chamada de função terminar.
+
+49
+00:03:22,100 --> 00:03:27,310
+Então vamos voltar ao terminal e vamos rodar esse arquivo novamente e ver o que acontece.
+
+50
+00:03:28,040 --> 00:03:28,480
+ESTÁ BEM.
+
+51
+00:03:28,520 --> 00:03:35,910
+Então, de volta ao terminal ou execute o thread de nó, inicie o G-S agora, quando eu executar isso, você notará que
+
+52
+00:03:35,910 --> 00:03:39,630
+o meu tempo está um pouco acima do que era antes.
+
+53
+00:03:39,780 --> 00:03:44,680
+Então, originalmente eu tenho cerca de 10 73 e agora estou recebendo 11:15 11:59.
+
+54
+00:03:44,970 --> 00:03:50,750
+Mas é provável que você esteja vendo duas vezes que estão muito próximas do seu tempo original.
+
+55
+00:03:50,790 --> 00:03:55,860
+As chances são de que pode não ser o caso, mas as chances são que você vai ver duas vezes
+
+56
+00:03:55,860 --> 00:03:57,330
+que são muito próximos aos originais.
+
+57
+00:03:57,360 --> 00:04:02,010
+A razão pela qual as minhas duas vezes aqui estão um pouco acima ou um pouco elevadas
+
+58
+00:04:02,010 --> 00:04:07,280
+é apenas porque eu estou executando algum software de gravação de tela agora que consome muitos spew no meu computador.
+
+59
+00:04:07,290 --> 00:04:12,600
+Mas, de qualquer maneira, o ponto é que as chances são de que vejamos duas vezes
+
+60
+00:04:12,600 --> 00:04:16,120
+ou duas referências que são extremamente próximas ao tempo original.
+
+61
+00:04:16,140 --> 00:04:20,160
+Agora, apenas para ter certeza de que você realmente entende o que está
+
+62
+00:04:20,160 --> 00:04:24,860
+acontecendo aqui, quero mostrar alguns diagramas que ajudarão você a entender o significado desses resultados aqui.
+
+63
+00:04:24,960 --> 00:04:25,830
+ESTÁ BEM.
+
+64
+00:04:26,400 --> 00:04:26,640
+Tudo bem.
+
+65
+00:04:26,640 --> 00:04:27,820
+Então, um par de diagramas.
+
+66
+00:04:27,840 --> 00:04:29,680
+Aqui vamos nós.
+
+67
+00:04:29,700 --> 00:04:30,260
+Tudo bem.
+
+68
+00:04:30,420 --> 00:04:32,070
+Então, primeiro temos esse diagrama.
+
+69
+00:04:32,070 --> 00:04:39,540
+Então este é um diagrama do que eu esperaria ver se o nó fosse realmente único, ele lembrou que um
+
+70
+00:04:39,540 --> 00:04:43,930
+thread apresenta uma série linear de instruções para o nosso CPQ.
+
+71
+00:04:44,160 --> 00:04:49,950
+Portanto, o CPQ deve seguir todos eles na ordem em que os apresentamos.
+
+72
+00:04:49,950 --> 00:04:55,530
+Agora sabemos que uma chamada para BTK PBK de dois leva exatamente um segundo.
+
+73
+00:04:55,650 --> 00:04:57,970
+Então, como um segundo bem aqui.
+
+74
+00:04:58,020 --> 00:05:04,230
+Portanto, com duas chamadas de função, se esse fosse realmente um único sistema encadeado, eu esperaria que todo
+
+75
+00:05:04,230 --> 00:05:06,660
+esse processo levasse dois segundos no total.
+
+76
+00:05:06,920 --> 00:05:11,790
+Recebemos um segundo para a primeira chamada que conclui que devemos ver um log do console.
+
+77
+00:05:12,090 --> 00:05:18,240
+E depois de um segundo adicional, devemos ver um segundo log de console aparecer.
+
+78
+00:05:18,240 --> 00:05:22,280
+Vamos dar uma olhada em um diagrama que tornará essa expectativa aqui muito mais clara.
+
+79
+00:05:22,290 --> 00:05:27,750
+E mais uma vez, isso está falando como se estivéssemos assumindo que a nota é de encadeamento único e não
+
+80
+00:05:28,360 --> 00:05:33,510
+é bem porque o segundo diagrama apenas para esclarecer o que esperaríamos se o nó fosse realmente encadeado único.
+
+81
+00:05:33,510 --> 00:05:38,790
+Então, eu teria esperado que tivéssemos começado nosso programa no tempo de zero segundos aqui.
+
+82
+00:05:39,240 --> 00:05:43,920
+A primeira chamada para o PBK que você deve ter levado um segundo e, em seguida,
+
+83
+00:05:44,160 --> 00:05:48,690
+assim que fosse concluída, armazenaríamos a segunda chamada e, em seguida, em dois segundos, a segunda
+
+84
+00:05:48,690 --> 00:05:49,940
+chamada também seria concluída.
+
+85
+00:05:49,950 --> 00:05:56,350
+No entanto, ambos os diagramas que acabei de mostrar claramente não foram o que ocorreu.
+
+86
+00:05:56,640 --> 00:06:00,440
+Isso não é o que realmente aconteceu quando executamos nosso código.
+
+87
+00:06:00,660 --> 00:06:06,900
+Nós vimos claramente que ambos os logs ocorreram basicamente ao mesmo tempo e foram quase
+
+88
+00:06:06,960 --> 00:06:13,760
+iguais à execução original de nossa função de threads, onde estávamos fazendo apenas um único hash.
+
+89
+00:06:13,770 --> 00:06:17,740
+Então, vamos dar uma olhada no diagrama do que realmente aconteceu.
+
+90
+00:06:17,740 --> 00:06:19,230
+Então aqui está a realidade.
+
+91
+00:06:19,230 --> 00:06:24,960
+A realidade é que iniciamos nosso programa em zero segundos até aqui e, em seguida, levou exatamente um
+
+92
+00:06:24,960 --> 00:06:29,190
+segundo para ambas as chamadas de função para chegar ao retorno de chamada.
+
+93
+00:06:29,190 --> 00:06:34,710
+Então, claramente, isso indica que algo está acontecendo para indicar que estamos saindo de um
+
+94
+00:06:34,710 --> 00:06:37,110
+único encadeamento configurado com o nó.
+
+95
+00:06:37,350 --> 00:06:41,910
+Porque se tivéssemos apenas um único encadeamento, teríamos visto a primeira função chamá-la completa
+
+96
+00:06:41,910 --> 00:06:43,670
+e, em seguida, a segunda inicialização.
+
+97
+00:06:43,950 --> 00:06:48,030
+Então, vamos fazer uma pausa aqui e vamos começar a investigar por que isso está acontecendo na
+
+98
+00:06:48,030 --> 00:06:48,440
+próxima seção.

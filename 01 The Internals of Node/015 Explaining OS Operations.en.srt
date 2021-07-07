@@ -1,0 +1,223 @@
+1
+00:00:00,520 --> 00:00:05,340
+In the last couple of videos we examined the thread pool that is automatically created by live TV any
+
+2
+00:00:05,370 --> 00:00:11,710
+time we start up a node program that explain the presence of this pending operations array inside of
+
+3
+00:00:11,710 --> 00:00:13,160
+our event loop.
+
+4
+00:00:13,390 --> 00:00:18,400
+In this section we're going to start to look at the stuff that's going on behind the scenes to explain
+
+5
+00:00:18,400 --> 00:00:21,670
+this pending OS tasks array right here.
+
+6
+00:00:21,670 --> 00:00:24,670
+We're going to take a very similar approach to what we did previously.
+
+7
+00:00:24,670 --> 00:00:29,300
+So we're going to first start off by writing out a little program that is going to run some code that's
+
+8
+00:00:29,320 --> 00:00:32,810
+going to benchmark a function inside the nonstandard library.
+
+9
+00:00:33,100 --> 00:00:37,660
+We're going to benchmark it and we'll be able to kind of derive some understanding of what's actually
+
+10
+00:00:37,660 --> 00:00:43,210
+going on behind the scenes so we'll first get started by creating a new file that's going to house the
+
+11
+00:00:43,210 --> 00:00:46,450
+benchmarking code inside of my code editor.
+
+12
+00:00:46,450 --> 00:00:50,100
+I'm going to make a new file called async dot J.S..
+
+13
+00:00:50,650 --> 00:00:56,330
+So the benchmark that we're going to do is to fetch the Google home page we're just going to make a
+
+14
+00:00:56,350 --> 00:00:57,780
+request over to Google.
+
+15
+00:00:57,820 --> 00:01:02,330
+We're going to get their home page and then we're going to calculate exactly how long that takes will
+
+16
+00:01:02,350 --> 00:01:07,150
+then do that process multiple times and we can use that to kind of figure out exactly what's going on
+
+17
+00:01:07,150 --> 00:01:08,940
+behind the scenes.
+
+18
+00:01:08,940 --> 00:01:15,790
+So at the top we're going to require in the H teach module to make the actual request if you've never
+
+19
+00:01:15,790 --> 00:01:18,040
+used this module before to make a request.
+
+20
+00:01:18,040 --> 00:01:18,660
+Don't sweat it.
+
+21
+00:01:18,670 --> 00:01:21,540
+It's going to be relatively straightforward.
+
+22
+00:01:22,270 --> 00:01:29,710
+Immediately after required them module in we will then store the starting time of our benchmark with
+
+23
+00:01:29,710 --> 00:01:34,700
+a date right now and then immediately after that we'll make our actual request.
+
+24
+00:01:35,110 --> 00:01:38,940
+So I can write out HEG P.S. Don't request.
+
+25
+00:01:39,280 --> 00:01:44,080
+The first argument is going to be the you or L that we want to make a request to which in this case
+
+26
+00:01:44,350 --> 00:01:48,290
+is teach us colon slash slash.
+
+27
+00:01:48,430 --> 00:01:54,810
+W w w Google dot com like so and then the second argument is a callback function.
+
+28
+00:01:57,520 --> 00:02:00,600
+Now the argument to the callback function I marked as.
+
+29
+00:02:00,790 --> 00:02:03,780
+But this is not like when you're using accedes or Jey query.
+
+30
+00:02:03,910 --> 00:02:06,970
+This is not the entire response object right here.
+
+31
+00:02:06,970 --> 00:02:12,630
+Instead this is an object that emits events as we receive data from Google servers.
+
+32
+00:02:12,670 --> 00:02:16,870
+So it's a little bit more complex and low level than some of the networking libraries that you might
+
+33
+00:02:16,870 --> 00:02:18,330
+have used before.
+
+34
+00:02:18,340 --> 00:02:22,960
+Basically what that means is we're going to have to write some fancy looking code inside this callback.
+
+35
+00:02:22,960 --> 00:02:26,650
+I'm not going to talk about what this code is doing too much because honestly it's not really at all
+
+36
+00:02:26,680 --> 00:02:28,920
+relevant to what we're doing right now.
+
+37
+00:02:28,990 --> 00:02:38,000
+So I going to say red dot on data and then as a second argument I'll pass an empty function and then
+
+38
+00:02:38,000 --> 00:02:44,080
+I'll also do rez done on end and I'll do another arrow function.
+
+39
+00:02:44,300 --> 00:02:47,270
+But inside this one we'll do our actual benchmarking.
+
+40
+00:02:47,360 --> 00:02:51,620
+So I'll say cancel the log date right now minus.
+
+41
+00:02:51,620 --> 00:02:59,660
+Start time and then one last line of code inside of here after the request call closing parentheses.
+
+42
+00:02:59,720 --> 00:03:06,140
+So like right here to actually get this request to be issued we have to call Daut and on it like so
+
+43
+00:03:07,140 --> 00:03:12,170
+now when I save it my code jumps on the screen because I have a code reformatted but basically just
+
+44
+00:03:12,260 --> 00:03:14,710
+don't forget to put on that end.
+
+45
+00:03:15,050 --> 00:03:15,310
+All right.
+
+46
+00:03:15,310 --> 00:03:17,120
+So let's now flip back over to our terminal.
+
+47
+00:03:17,150 --> 00:03:24,150
+We're going to run this file and see how long it takes to make this request so over at the terminal
+
+48
+00:03:24,210 --> 00:03:32,670
+we'll do node A Cincom J us and see that it takes about 270 milliseconds maybe plus or minus a couple
+
+49
+00:03:33,000 --> 00:03:35,610
+to make the request over to Google servers.
+
+50
+00:03:35,670 --> 00:03:38,180
+It looks like I'm kind of around maybe 240 now.
+
+51
+00:03:38,630 --> 00:03:38,900
+OK.
+
+52
+00:03:38,920 --> 00:03:39,810
+So this looks good.
+
+53
+00:03:39,930 --> 00:03:44,160
+Let's pause right here and then we're going to use this code to do some more benchmarking in the next
+
+54
+00:03:44,160 --> 00:03:44,810
+section.
+
+55
+00:03:44,940 --> 00:03:50,100
+And that's going to give us a better sense of what node is doing internally to handle network requests.
+
+56
+00:03:50,100 --> 00:03:52,300
+So quick break and I'll see you in just a minute.

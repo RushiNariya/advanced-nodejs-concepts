@@ -1,0 +1,327 @@
+1
+00:00:00,600 --> 00:00:06,540
+Você sabe que a última seção falamos sobre o que aconteceu quando fizemos cinco chamadas para o PBK e as
+
+2
+00:00:06,540 --> 00:00:12,000
+quatro primeiras chamadas foram alocadas para o próprio indivíduo para ler no pool de threads e, em seguida, grupos
+
+3
+00:00:12,000 --> 00:00:15,710
+de dois threads, cada um atribuído a cada um dos nossos cursos. .
+
+4
+00:00:15,780 --> 00:00:21,300
+Agora lembre-se de que essas ameaças podem ser executadas tecnicamente ao mesmo tempo, mas elas ainda precisam trabalhar
+
+5
+00:00:21,300 --> 00:00:26,880
+tanto quanto antes e é por isso que vimos o dobro do tempo necessário para todos os hashes
+
+6
+00:00:27,360 --> 00:00:31,340
+serem concluídos, pois sempre leva um segundo para calcular um jogo da velha.
+
+7
+00:00:31,350 --> 00:00:38,040
+Então, se temos quatro casas, mas cada núcleo está levando o dobro do tempo para fazer esse trabalho,
+
+8
+00:00:38,040 --> 00:00:40,110
+vai demorar dois segundos no total.
+
+9
+00:00:40,110 --> 00:00:44,310
+Vamos agora avançar um pouco e descobrir como podemos trabalhar e personalizar o pool
+
+10
+00:00:44,310 --> 00:00:45,930
+de threads que vemos aqui.
+
+11
+00:00:45,960 --> 00:00:50,880
+Então, vamos voltar para o meu editor de código e vamos adicionar um pouco de código para
+
+12
+00:00:50,880 --> 00:00:55,630
+brincar com um número de threads que são criados e cada vez que iniciamos o nosso programa.
+
+13
+00:00:55,660 --> 00:01:01,780
+Então, de volta ao meu editor de código, vou até a linha superior e, acima disso, require
+
+14
+00:01:02,020 --> 00:01:04,600
+statement. Vou atualizar uma variável de ambiente.
+
+15
+00:01:04,960 --> 00:01:06,790
+Então eu vou dizer processo.
+
+16
+00:01:06,840 --> 00:01:16,730
+Ian inveja ponto U-V sites de pool de discussão e eu vou definir o valor que a ser igual a 2.
+
+17
+00:01:16,780 --> 00:01:22,510
+Então isso vai dizer ao Liv U-V que sempre que criar um pool de threads ele deve apenas criar dois
+
+18
+00:01:22,570 --> 00:01:27,000
+threads dentro deles, eles não irão salvar este arquivo e eu vou re-executá-lo no terminal.
+
+19
+00:01:27,160 --> 00:01:30,660
+Mas antes eu quero te pedir para pausar um vídeo por um segundo.
+
+20
+00:01:30,660 --> 00:01:34,650
+Eu quero que você adivinhe sobre o efeito que isso terá em nosso benchmark.
+
+21
+00:01:34,780 --> 00:01:36,300
+Então, pense nisso por um segundo.
+
+22
+00:01:37,460 --> 00:01:37,750
+ESTÁ BEM.
+
+23
+00:01:37,760 --> 00:01:39,090
+Espero que você tenha uma ideia.
+
+24
+00:01:39,550 --> 00:01:41,600
+Então, vamos rodar esse código e ver o que acontece.
+
+25
+00:01:42,600 --> 00:01:45,490
+Então agora nós vemos isso sendo completado em grupos de dois.
+
+26
+00:01:45,780 --> 00:01:46,700
+Bem, isso é interessante.
+
+27
+00:01:46,740 --> 00:01:49,280
+Dê uma olhada em um diagrama que resume o que está acontecendo.
+
+28
+00:01:49,530 --> 00:01:50,970
+Então aqui está nosso diagrama.
+
+29
+00:01:51,270 --> 00:01:58,350
+Então, agora temos duas dessas funções ou duas chamadas de hash sendo executadas por vez, porque temos apenas dois
+
+30
+00:01:58,350 --> 00:02:00,010
+pools de threads separados.
+
+31
+00:02:00,330 --> 00:02:02,920
+Portanto, a primeira chamada é atribuída ao Thread 1.
+
+32
+00:02:02,970 --> 00:02:08,460
+A segunda chamada é atribuída ao número correto para o número de thread um, provavelmente, é alocado para o
+
+33
+00:02:08,460 --> 00:02:09,880
+thread número 1 do núcleo.
+
+34
+00:02:09,930 --> 00:02:12,530
+Número dois provavelmente recebe o número dois da Al Qaeda.
+
+35
+00:02:12,630 --> 00:02:18,350
+E agora estamos de volta à situação em que cada núcleo só precisa fazer um hash de cada vez.
+
+36
+00:02:18,360 --> 00:02:24,890
+Então voltamos ao hashing levando apenas um segundo depois que os dois primeiros hashes estão completos.
+
+37
+00:02:25,560 --> 00:02:30,260
+As próximas duas chamadas são carregadas no número de linha um e no número de linha dois.
+
+38
+00:02:30,270 --> 00:02:35,640
+Novamente, isso leva um segundo e, finalmente, depois disso, finalmente a quinta chamada pode
+
+39
+00:02:35,670 --> 00:02:37,040
+ser carregada também.
+
+40
+00:02:37,920 --> 00:02:42,840
+Isso dá uma ideia melhor de como podemos personalizar um conjunto de encadeamentos e ver o que acontece quando
+
+41
+00:02:42,900 --> 00:02:44,510
+diminuímos o número de encadeamentos disponíveis.
+
+42
+00:02:44,790 --> 00:02:46,680
+Agora vamos fazer o oposto apenas por diversão.
+
+43
+00:02:46,710 --> 00:02:47,930
+Vamos inverter.
+
+44
+00:02:48,030 --> 00:02:50,840
+Vamos tentar aumentar o número de threads que temos disponíveis.
+
+45
+00:02:50,850 --> 00:02:54,250
+Vamos tentar ir até 5 como assim.
+
+46
+00:02:54,270 --> 00:02:56,120
+Então, novamente eu vou salvar este arquivo.
+
+47
+00:02:56,150 --> 00:03:01,380
+Nós vamos voltar pelo terminal e salvar isso e executar isso de novo e de novo Eu quero que você
+
+48
+00:03:01,380 --> 00:03:02,710
+adivinhe o que vai acontecer.
+
+49
+00:03:03,730 --> 00:03:06,770
+OK, vamos rodar isso de novo e vamos ver.
+
+50
+00:03:06,840 --> 00:03:12,290
+Então agora, desta vez, parece que demorou um pouco, mas quando finalmente resolveu, levou um
+
+51
+00:03:12,290 --> 00:03:17,230
+total de cerca de três segundos e tudo foi completado ao mesmo tempo.
+
+52
+00:03:17,240 --> 00:03:19,880
+Então, vamos novamente olhar para um diagrama.
+
+53
+00:03:19,880 --> 00:03:22,190
+Tudo bem então agora aqui está a situação em que estamos agora.
+
+54
+00:03:22,490 --> 00:03:24,850
+Então nós temos Thread 1 a 5.
+
+55
+00:03:24,950 --> 00:03:29,640
+Temos um número igual de threads para o número de chamadas de função de hash.
+
+56
+00:03:29,720 --> 00:03:33,850
+Assim, cada chamada de função de hash obtém instantaneamente seu próprio thread atribuído.
+
+57
+00:03:33,950 --> 00:03:43,260
+E agora, desta vez, vemos que a ameaça número um e talvez 4 e 5 vai para o núcleo número 2.
+
+58
+00:03:43,360 --> 00:03:47,290
+Então eu sei que você mal consegue ver essas flechas, mas eu acho que você entendeu e
+
+59
+00:03:47,290 --> 00:03:52,300
+então você pode ter pensado que talvez um núcleo demorasse um pouco mais porque tinha que acertar a terceira ameaça, então talvez
+
+60
+00:03:52,310 --> 00:03:55,700
+um ou dois cantos também tivessem para fazer o número do fio três aqui.
+
+61
+00:03:55,690 --> 00:04:02,800
+E então você pode esperar que o núcleo número dois demore um pouco mais, mas na realidade o RCP pode
+
+62
+00:04:02,830 --> 00:04:06,960
+usar todos os núcleos dentro dele para fazer malabarismos entre várias ameaças.
+
+63
+00:04:07,030 --> 00:04:11,280
+Então, quando digo que sim, o núcleo Dourdan número um é atribuído ao núcleo número um.
+
+64
+00:04:11,470 --> 00:04:13,290
+Isso não é totalmente exato.
+
+65
+00:04:13,390 --> 00:04:18,790
+Este programa de detenção aqui decide como conciliar todo o trabalho por trás de todos os carros que
+
+66
+00:04:18,790 --> 00:04:19,500
+estão disponíveis.
+
+67
+00:04:19,630 --> 00:04:25,210
+Assim, no final do dia, todos os cinco tópicos recebem quantidades aproximadamente iguais de tempo de sono ao mesmo tempo e
+
+68
+00:04:25,240 --> 00:04:28,040
+é por isso que vimos tudo completo ao mesmo tempo.
+
+69
+00:04:28,270 --> 00:04:34,300
+Mas desta vez demorou cerca de 2. 5 segundos ou Rindy logo acima que um pouco mais de 2. 5
+
+70
+00:04:34,300 --> 00:04:39,940
+Novamente, se eu não estivesse executando meu software de gravação de vídeo, isso deveria ter levado cerca de 2. 5 segundos porque, como antes,
+
+71
+00:04:39,940 --> 00:04:47,620
+temos apenas dois núcleos disponíveis por padrão. Um núcleo de um segundo para processar
+
+72
+00:04:47,620 --> 00:04:48,340
+um hash.
+
+73
+00:04:48,520 --> 00:04:55,120
+Então, quando temos cinco hashes ao mesmo tempo, serão necessários dois núcleos, cinco divididos por dois. 5 segundos para
+
+74
+00:04:55,120 --> 00:04:56,200
+calcular.
+
+75
+00:04:56,200 --> 00:05:01,660
+Então, novamente, meus tempos não se alinharam muito bem com isso, mas se eu não estivesse gravando minha tela
+
+76
+00:05:01,660 --> 00:05:04,700
+agora, seria exatamente exatamente 2. 5 segundos.
+
+77
+00:05:05,140 --> 00:05:05,590
+ESTÁ BEM.
+
+78
+00:05:05,620 --> 00:05:10,810
+Portanto, nesta seção, falamos sobre a existência do conjunto de encadeamentos U-V ao vivo que é usado
+
+79
+00:05:10,810 --> 00:05:11,910
+para cálculos dispendiosos.
+
+80
+00:05:12,130 --> 00:05:17,140
+Então você provavelmente está realmente curioso sobre quais funções na biblioteca NO JUST realmente fazem uso deste pool
+
+81
+00:05:17,140 --> 00:05:21,660
+de threads e sobre como você pode usar o pool de threads para seu próprio código pessoal.
+
+82
+00:05:21,670 --> 00:05:24,040
+Então, vamos começar a responder a essas perguntas na próxima seção.

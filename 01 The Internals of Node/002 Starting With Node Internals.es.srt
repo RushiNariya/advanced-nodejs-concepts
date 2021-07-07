@@ -1,0 +1,203 @@
+1
+00:00:00,700 --> 00:00:04,800
+Ahora que tenemos algunas cosas administrativas, vamos a sumergirnos de inmediato en
+
+2
+00:00:04,810 --> 00:00:07,050
+nuestro primer tema técnico en esta sección.
+
+3
+00:00:07,060 --> 00:00:12,010
+Vamos a empezar a ver algunos de los aspectos internos de no sí una vez que tenemos una mejor idea
+
+4
+00:00:12,010 --> 00:00:13,160
+de cómo funciona Noad internamente.
+
+5
+00:00:13,210 --> 00:00:18,170
+Entonces podremos aprovechar ese conocimiento para escribir un código de rendimiento más dentro de nuestras aplicaciones.
+
+6
+00:00:18,430 --> 00:00:20,570
+Así que comencemos ahora mismo.
+
+7
+00:00:20,710 --> 00:00:23,970
+Vamos a comenzar echando un vistazo a un diagrama muy simple.
+
+8
+00:00:24,190 --> 00:00:29,020
+Y luego, con el tiempo, volveremos a este diagrama aquí mismo y le agregaremos muchos
+
+9
+00:00:29,020 --> 00:00:32,130
+más detalles para mostrarle cómo se estructura internamente un nodo.
+
+10
+00:00:32,620 --> 00:00:35,130
+Así que aquí está nuestra primera iteración en la parte superior.
+
+11
+00:00:35,140 --> 00:00:38,630
+Tenemos un recuadro que representa el código de JavaScript que usted y yo escribimos.
+
+12
+00:00:38,650 --> 00:00:44,230
+Entonces este es el código real que colocamos en los archivos javascript y luego lo ejecutamos en la línea
+
+13
+00:00:44,230 --> 00:00:44,760
+de comando.
+
+14
+00:00:45,640 --> 00:00:52,530
+Cuando ejecutamos un nodo y luego indexamos no solo en la línea de comando, estamos invocando el proyecto no J us.
+
+15
+00:00:52,660 --> 00:00:58,810
+Ahora, al igual que cualquier otro proyecto de javascript, ningún caos tiene internamente una colección de dependencias
+
+16
+00:00:58,990 --> 00:01:01,760
+que utiliza para ejecutar realmente su código.
+
+17
+00:01:02,230 --> 00:01:06,250
+Dos de las dependencias más importantes y estas son dos dependencias en las que nos centraremos bastante a lo largo de
+
+18
+00:01:06,250 --> 00:01:12,670
+este curso son el proyecto V8 y la U en vivo. V. proyecto.
+
+19
+00:01:12,670 --> 00:01:18,410
+El proyecto V8 es un motor de JavaScript de código abierto creado por Google.
+
+20
+00:01:18,430 --> 00:01:23,920
+El objetivo de este proyecto es poder ejecutar código de JavaScript fuera del navegador y eso es
+
+21
+00:01:23,920 --> 00:01:27,620
+lo que hacemos cuando ejecutamos nuestro código de JavaScript desde la terminal.
+
+22
+00:01:27,850 --> 00:01:35,410
+El proyecto de U-V de lib aquí es un proyecto de código abierto de C ++ que da acceso al nodo al sistema
+
+23
+00:01:35,680 --> 00:01:37,550
+operativo subyacente del sistema de archivos.
+
+24
+00:01:37,570 --> 00:01:42,650
+Nos da acceso a redes y también maneja algunos aspectos de concurrencia también.
+
+25
+00:01:44,090 --> 00:01:48,640
+Entonces, cada vez que le muestres este diagrama a alguien, su primera pregunta podría estar bien.
+
+26
+00:01:48,680 --> 00:01:55,040
+Así que tenemos un módulo aquí que nos da acceso al sistema de archivos y redes y otras cosas.
+
+27
+00:01:55,040 --> 00:01:58,550
+Y luego tenemos este aquí que realmente ejecuta nuestro código Javascript.
+
+28
+00:01:58,760 --> 00:02:02,070
+Entonces, ¿cuál es el propósito de ningún genio?
+
+29
+00:02:02,330 --> 00:02:03,680
+Y esa es una muy buena pregunta.
+
+30
+00:02:03,830 --> 00:02:11,820
+Así que quiero darte una idea de por qué usamos la nota y por qué no usamos directamente V8 o U-V en vivo.
+
+31
+00:02:12,080 --> 00:02:17,390
+Lo primero que debe entender es que internamente algunas de estas otras bibliotecas no son
+
+32
+00:02:17,450 --> 00:02:18,990
+código javascript en absoluto.
+
+33
+00:02:19,070 --> 00:02:27,010
+El proyecto V8 es como el 70 por ciento del código C ++ y lib U-V aquí es 100 por ciento C ++.
+
+34
+00:02:27,140 --> 00:02:32,990
+Así que es probable que, como desarrollador de JavaScript, probablemente no desee escribir código C ++ todo
+
+35
+00:02:32,990 --> 00:02:33,530
+el día.
+
+36
+00:02:33,590 --> 00:02:36,940
+Desea escribir código JavaScript y simplemente hacer que funcione.
+
+37
+00:02:36,980 --> 00:02:44,120
+Así que ese es uno de los propósitos de ningún nodo G-S que nos brinde una interfaz agradable para relacionar nuestro
+
+38
+00:02:44,120 --> 00:02:50,900
+lado de JavaScript de nuestra aplicación con el C ++ real que se está ejecutando en nuestra computadora para realmente
+
+39
+00:02:50,900 --> 00:02:53,090
+interpretar y ejecutar nuestro código JavaScript.
+
+40
+00:02:53,090 --> 00:02:59,630
+La otra cosa que no hace es proporcionar una serie de envoltorios y una API inconsistente muy unificada para
+
+41
+00:02:59,630 --> 00:03:01,840
+que podamos usar dentro de nuestros proyectos.
+
+42
+00:03:02,270 --> 00:03:10,190
+Entonces, por ejemplo, el nodo implementa el módulo HTP y el criptograma de la ruta FS. Todos estos módulos
+
+43
+00:03:10,190 --> 00:03:11,790
+tienen API muy consistente.
+
+44
+00:03:12,140 --> 00:03:18,740
+Y todos ellos finalmente se refieren a una funcionalidad que se implementa principalmente dentro del proyecto
+
+45
+00:03:18,740 --> 00:03:19,640
+lib aquí.
+
+46
+00:03:20,000 --> 00:03:24,610
+Entonces, de nuevo, probablemente no desee obtener acceso al código directo de C ++.
+
+47
+00:03:24,710 --> 00:03:30,850
+Desea requerir alguna función de javascript y usar una función de javascript dentro de su base de código.
+
+48
+00:03:30,920 --> 00:03:37,740
+Entonces al hacer uso del nodo no tienes que trabajar con todo el C ++ que existe dentro de Libia.
+
+49
+00:03:38,450 --> 00:03:41,780
+OK ahora tenemos una mejor idea de por qué usamos la nota en absoluto.
+
+50
+00:03:41,780 --> 00:03:46,040
+Hagamos una pausa rápida aquí mismo y vamos a continuar la siguiente sección y
+
+51
+00:03:46,040 --> 00:03:47,150
+continuar desarrollando este diagrama.

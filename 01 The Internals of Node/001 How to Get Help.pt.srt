@@ -1,0 +1,75 @@
+1
+00:00:00,690 --> 00:00:02,080
+Olá e bem-vindo.
+
+2
+00:00:02,220 --> 00:00:06,330
+Vamos começar o curso em apenas um momento, mas antes disso eu quero contar como
+
+3
+00:00:06,330 --> 00:00:09,850
+você pode obter ajuda se ficar preso a qualquer momento durante o curso.
+
+4
+00:00:09,900 --> 00:00:12,200
+Então, há três ótimas maneiras de me alcançar.
+
+5
+00:00:12,210 --> 00:00:14,870
+O primeiro é postar nos fóruns de discussão do curso.
+
+6
+00:00:15,090 --> 00:00:20,760
+Eu costumo verificar a discussão do Curso uma vez por dia, de segunda a sexta, então eu farei o meu melhor para
+
+7
+00:00:20,760 --> 00:00:23,820
+entrar em contato com você o mais rápido possível, se algo acontecer.
+
+8
+00:00:24,030 --> 00:00:28,490
+A próxima melhor maneira de chegar até mim é enviar-me uma mensagem direta para mim.
+
+9
+00:00:28,560 --> 00:00:33,090
+Normalmente, sou muito bom em responder a essas solicitações e geralmente é melhor do que com
+
+10
+00:00:33,090 --> 00:00:34,660
+as perguntas e respostas do curso.
+
+11
+00:00:34,710 --> 00:00:37,290
+Finalmente, você pode entrar em contato comigo via Twitter.
+
+12
+00:00:37,350 --> 00:00:39,840
+E aqui está minha alça listada aqui.
+
+13
+00:00:39,840 --> 00:00:44,910
+O Twitter é uma ótima maneira de me contatar com perguntas curtas, mas se é algo
+
+14
+00:00:45,120 --> 00:00:50,970
+técnico eu geralmente recomendo postar na discussão do curso ou me mandar um PM porque obviamente com o
+
+15
+00:00:51,180 --> 00:00:56,100
+Twitter nós temos esse limite de caracteres que faz discussões técnicas um pouco pouco mais desafiador.
+
+16
+00:00:56,100 --> 00:00:56,420
+Tudo bem.
+
+17
+00:00:56,430 --> 00:01:00,120
+Então, essas são as três maneiras de obter ajuda se você ficar preso durante esse curso.
+
+18
+00:01:00,120 --> 00:01:05,700
+Vamos pausar agora e começaremos a falar sobre o nosso primeiro tópico técnico no próximo vídeo, então eu vou
+
+19
+00:01:05,700 --> 00:01:07,340
+vê-lo em apenas um minuto.

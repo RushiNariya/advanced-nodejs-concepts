@@ -1,0 +1,223 @@
+1
+00:00:00,520 --> 00:00:05,340
+En los últimos dos videos, examinamos el grupo de subprocesos creado automáticamente por TV en
+
+2
+00:00:05,370 --> 00:00:11,710
+vivo cada vez que iniciamos un programa de nodos que explica la presencia de este conjunto de operaciones pendientes dentro
+
+3
+00:00:11,710 --> 00:00:13,160
+de nuestro ciclo de eventos.
+
+4
+00:00:13,390 --> 00:00:18,400
+En esta sección, comenzaremos a ver lo que está sucediendo detrás de las escenas para
+
+5
+00:00:18,400 --> 00:00:21,670
+explicar este conjunto pendiente de tareas del sistema operativo aquí.
+
+6
+00:00:21,670 --> 00:00:24,670
+Vamos a adoptar un enfoque muy similar a lo que hicimos anteriormente.
+
+7
+00:00:24,670 --> 00:00:29,300
+Así que primero vamos a comenzar escribiendo un pequeño programa que ejecutará un código
+
+8
+00:00:29,320 --> 00:00:32,810
+que comparará una función dentro de la biblioteca no estándar.
+
+9
+00:00:33,100 --> 00:00:37,660
+Vamos a compararlo y vamos a poder entender algo de lo que sucede
+
+10
+00:00:37,660 --> 00:00:43,210
+detrás de las escenas, así que primero comenzaremos creando un nuevo archivo que albergará el
+
+11
+00:00:43,210 --> 00:00:46,450
+código de evaluación comparativa dentro de mi código editor.
+
+12
+00:00:46,450 --> 00:00:50,100
+Voy a hacer un nuevo archivo llamado async dot J. S. Entonces, el punto de referencia que
+
+13
+00:00:50,650 --> 00:00:56,330
+vamos a hacer es buscar la página de inicio de Google que vamos a enviar a Google.
+
+14
+00:00:56,350 --> 00:00:57,780
+Vamos a obtener su
+
+15
+00:00:57,820 --> 00:01:02,330
+página de inicio y luego vamos a calcular exactamente cuánto tiempo demorará ese proceso
+
+16
+00:01:02,350 --> 00:01:07,150
+varias veces y podemos usar eso para averiguar qué está sucediendo exactamente detrás de escena.
+
+17
+00:01:07,150 --> 00:01:08,940
+Entonces, en la parte superior vamos
+
+18
+00:01:08,940 --> 00:01:15,790
+a requerir en el módulo de enseñanza H que realice la solicitud real si nunca antes ha utilizado este módulo para realizar una solicitud.
+
+19
+00:01:15,790 --> 00:01:18,040
+No te preocupes
+
+20
+00:01:18,040 --> 00:01:18,660
+Va a ser relativamente sencillo.
+
+21
+00:01:18,670 --> 00:01:21,540
+Inmediatamente después de que se les solicite el módulo,
+
+22
+00:01:22,270 --> 00:01:29,710
+almacenaremos la hora de inicio de nuestro índice de referencia con una fecha ahora y luego inmediatamente después haremos nuestra solicitud real.
+
+23
+00:01:29,710 --> 00:01:34,700
+Entonces puedo escribir HEG P. S. No pedir
+
+24
+00:01:35,110 --> 00:01:38,940
+El primer argumento será
+
+25
+00:01:39,280 --> 00:01:44,080
+el tú o el que queremos hacer una solicitud, que en este caso nos enseña barra diagonal.
+
+26
+00:01:44,350 --> 00:01:48,290
+W w w Google dot com así y luego el segundo argumento es una función de devolución de llamada.
+
+27
+00:01:48,430 --> 00:01:54,810
+Ahora el argumento para la función de devolución de llamada que marqué como.
+
+28
+00:01:57,520 --> 00:02:00,600
+Pero esto no es así cuando estás usando Accedes o la consulta de Jey.
+
+29
+00:02:00,790 --> 00:02:03,780
+Este no es el objeto de respuesta completo aquí.
+
+30
+00:02:03,910 --> 00:02:06,970
+En cambio, este es un objeto que emite eventos a medida que recibimos datos de los servidores de Google.
+
+31
+00:02:06,970 --> 00:02:12,630
+Por lo tanto, es un poco más complejo y de bajo nivel que algunas
+
+32
+00:02:12,670 --> 00:02:16,870
+de las bibliotecas de red que podría haber usado antes.
+
+33
+00:02:16,870 --> 00:02:18,330
+Básicamente lo que eso significa es que vamos a tener que escribir un código de aspecto elegante dentro de esta devolución de llamada.
+
+34
+00:02:18,340 --> 00:02:22,960
+No voy a hablar demasiado sobre lo que este código está haciendo porque, sinceramente, no
+
+35
+00:02:22,960 --> 00:02:26,650
+es en absoluto relevante para lo que estamos haciendo en este momento.
+
+36
+00:02:26,680 --> 00:02:28,920
+Así que voy a decir punto rojo
+
+37
+00:02:28,990 --> 00:02:38,000
+en los datos y luego, como segundo argumento, pasaré una función vacía y luego también haré Rez hecho al final y haré otra función de flecha.
+
+38
+00:02:38,000 --> 00:02:44,080
+Pero dentro de este vamos a hacer nuestro benchmarking real.
+
+39
+00:02:44,300 --> 00:02:47,270
+Así que voy a decir cancelar la fecha de registro ahora menos.
+
+40
+00:02:47,360 --> 00:02:51,620
+Hora de inicio y luego una última línea de código dentro de aquí después de que la solicitud solicite el cierre de paréntesis.
+
+41
+00:02:51,620 --> 00:02:59,660
+Así que, como aquí mismo para que se emita esta solicitud, tenemos que llamar a Daut
+
+42
+00:02:59,720 --> 00:03:06,140
+y así, cuando lo guardo, mi código salta a la pantalla porque tengo
+
+43
+00:03:07,140 --> 00:03:12,170
+un código reformateado, pero básicamente no olvides ponerlo. fin.
+
+44
+00:03:12,260 --> 00:03:14,710
+Todo bien.
+
+45
+00:03:15,050 --> 00:03:15,310
+Así que volvamos a nuestra terminal.
+
+46
+00:03:15,310 --> 00:03:17,120
+Vamos a ejecutar este archivo
+
+47
+00:03:17,150 --> 00:03:24,150
+y ver cuánto tiempo lleva hacer esta solicitud en la terminal. Haremos el nodo A Cincom J y
+
+48
+00:03:24,210 --> 00:03:32,670
+veremos que se necesitan unos 270 milisegundos más o menos un par para realizar la solicitud. a los servidores de Google.
+
+49
+00:03:33,000 --> 00:03:35,610
+Parece que estoy alrededor de tal vez 240 ahora.
+
+50
+00:03:35,670 --> 00:03:38,180
+DE ACUERDO.
+
+51
+00:03:38,630 --> 00:03:38,900
+Así que esto se ve bien.
+
+52
+00:03:38,920 --> 00:03:39,810
+Hagamos una pausa
+
+53
+00:03:39,930 --> 00:03:44,160
+aquí y luego vamos a usar este código para hacer más benchmarking en la siguiente sección.
+
+54
+00:03:44,160 --> 00:03:44,810
+Y eso nos dará una mejor idea de qué nodo está haciendo internamente para manejar las solicitudes de red.
+
+55
+00:03:44,940 --> 00:03:50,100
+Así que toma un descanso rápido y te veré en solo un minuto.
+
+56
+00:03:50,100 --> 00:03:52,300
+&nbsp;

@@ -1,0 +1,327 @@
+1
+00:00:00,540 --> 00:00:03,570
+En la última sección obtuvimos una descripción general muy rápida de las amenazas.
+
+2
+00:00:03,660 --> 00:00:08,720
+No vamos a tomar ese conocimiento y aplicarlo al mundo de no J. S. cada vez que usted
+
+3
+00:00:08,720 --> 00:00:14,780
+y yo iniciamos un programa de nodo en nuestro nodo de computadora crea automáticamente un hilo
+
+4
+00:00:14,780 --> 00:00:21,320
+y luego ejecuta todo nuestro código dentro de ese único hilo dentro del único hilo representado por
+
+5
+00:00:21,320 --> 00:00:25,210
+el cuadro azul aquí hay algo llamado bucle de evento.
+
+6
+00:00:25,340 --> 00:00:31,700
+Puedes pensar que el ciclo de eventos es como una estructura de control que decide lo que nuestro hilo debería
+
+7
+00:00:31,700 --> 00:00:34,710
+estar haciendo en un punto dado en el tiempo.
+
+8
+00:00:34,820 --> 00:00:40,130
+Este ciclo de eventos es el núcleo absoluto de cada programa que tú y yo
+
+9
+00:00:40,130 --> 00:00:47,930
+ejecutamos y cada programa que tú y yo ejecutamos tiene exactamente un ciclo de eventos, entendiendo cómo funciona el ciclo de eventos
+
+10
+00:00:47,930 --> 00:00:54,770
+es extremadamente importante porque muchas preocupaciones sobre el nodo se reducen a cómo finalmente el bucle de evento se comporta.
+
+11
+00:00:54,770 --> 00:01:00,950
+Entonces, en esencia, si usted entiende este ciclo de eventos, también estará muy bien equipado para comprender los
+
+12
+00:01:00,980 --> 00:01:02,900
+problemas de rendimiento en los nodos.
+
+13
+00:01:03,350 --> 00:01:09,800
+Pero hay un pequeño problema para entenderlo y entender el ciclo de eventos es difícil.
+
+14
+00:01:09,800 --> 00:01:11,210
+No es fácil.
+
+15
+00:01:11,210 --> 00:01:18,320
+Hay muchas charlas en muchos blogs, muchos diagramas en línea para ayudarlo a entenderlo,
+
+16
+00:01:18,320 --> 00:01:20,760
+pero es muy difícil entenderlo.
+
+17
+00:01:21,230 --> 00:01:23,540
+Afortunadamente, tengo una solución.
+
+18
+00:01:23,540 --> 00:01:27,470
+Tengo una solución para ayudarte a comprender cómo funciona el ciclo de eventos.
+
+19
+00:01:27,490 --> 00:01:33,620
+Entonces, en lugar de mirar algunos diagramas realmente complicados, vamos a escribir un código falso dentro de nuestro editor
+
+20
+00:01:33,770 --> 00:01:39,950
+de código, así que vamos a escribir un código completamente falso que no funciona en absoluto con este código
+
+21
+00:01:39,950 --> 00:01:40,500
+falso.
+
+22
+00:01:40,500 --> 00:01:47,300
+Somos como un pseudo código que va a emular el bucle de evento y cómo funciona para que funcione el
+
+23
+00:01:47,300 --> 00:01:47,820
+nodo.
+
+24
+00:01:48,590 --> 00:01:49,930
+Entonces, demos una oportunidad.
+
+25
+00:01:49,970 --> 00:01:54,710
+Vamos a crear un nuevo archivo dentro de nuestro editor de código y vamos a
+
+26
+00:01:54,710 --> 00:02:00,250
+agregarle un código falso para ver lo que hace el ciclo de eventos dentro de nuestros nuevos programas.
+
+27
+00:02:00,290 --> 00:02:06,010
+Entonces necesito abrir mi editor de código y luego decidir si vas a hacer un nuevo archivo.
+
+28
+00:02:06,510 --> 00:02:08,940
+Y lo llamaría simplemente loop.
+
+29
+00:02:09,120 --> 00:02:10,740
+Sí.
+
+30
+00:02:10,800 --> 00:02:16,860
+Entonces, de nuevo, este será un código completamente falso dentro del código que estamos obteniendo aquí. Lo
+
+31
+00:02:16,860 --> 00:02:24,310
+guiaremos a través de esta serie de operaciones que ocurren cada vez que iniciamos un nuevo programa en nuestra máquina.
+
+32
+00:02:25,060 --> 00:02:28,000
+Comencemos agregando un comentario en la parte superior.
+
+33
+00:02:28,110 --> 00:02:34,650
+Es como si fingiéramos que estamos comenzando una aplicación de nodo para poder comenzar una aplicación de
+
+34
+00:02:34,860 --> 00:02:40,090
+nodo ejecutando un comando en nuestro terminal de algo así como nodo mi archivo.
+
+35
+00:02:40,160 --> 00:02:41,220
+Sí.
+
+36
+00:02:42,180 --> 00:02:44,270
+Y luego tal vez un par de líneas después de eso.
+
+37
+00:02:44,310 --> 00:02:50,760
+Agreguemos otro comentario que diga salir a la terminal.
+
+38
+00:02:50,820 --> 00:02:57,070
+Entonces, entre estas dos líneas, vamos a escribir todo el ciclo de vida de una aplicación de nodo.
+
+39
+00:02:57,330 --> 00:03:05,780
+Todo, desde iniciarlo hasta salir de nuevo a la terminal ahora, cada vez que tú y yo iniciamos un archivo de notas
+
+40
+00:03:05,780 --> 00:03:11,660
+o ejecutamos un nodo y alimentamos algún archivo como lo estamos haciendo aquí, el ciclo
+
+41
+00:03:11,660 --> 00:03:14,020
+de eventos no se ejecuta inmediatamente.
+
+42
+00:03:14,330 --> 00:03:20,720
+En cambio, al principio, al igual que cuando llamamos por primera vez al nodo y lo alimentamos en un nodo de archivo,
+
+43
+00:03:20,720 --> 00:03:26,640
+toma el contenido de este archivo, aquí el contenido de mis archivos es G-S y ejecuta todo el código dentro
+
+44
+00:03:26,640 --> 00:03:27,040
+de él.
+
+45
+00:03:27,050 --> 00:03:34,340
+Entonces, todo el código que escribió Vamos a escribir una línea de código debajo del comentario
+
+46
+00:03:34,430 --> 00:03:38,570
+que simule o simboliza el contenido de mis archivos.
+
+47
+00:03:38,690 --> 00:03:40,930
+Nosotros somos ejecutados por nodo.
+
+48
+00:03:41,210 --> 00:03:48,330
+Así que tal vez escribamos algo así como mis puntos de archivos ejecuten contenidos como ese.
+
+49
+00:03:48,740 --> 00:03:51,460
+Así que de nuevo no hay una variable aquí llamada mi archivo.
+
+50
+00:03:51,470 --> 00:03:53,800
+No hay una función de contenido de ejecución.
+
+51
+00:03:53,900 --> 00:04:00,460
+Simplemente estamos fingiendo con pseudo código que esto es lo que está sucediendo dentro de nosotros ahora.
+
+52
+00:04:00,530 --> 00:04:07,200
+Después de que se ejecuten los contenidos de ese archivo, inmediatamente ingresamos el ciclo de eventos sin G-S.
+
+53
+00:04:07,340 --> 00:04:11,340
+Tú y yo representaremos este ciclo de eventos con un ciclo WHILE.
+
+54
+00:04:11,510 --> 00:04:12,620
+Entonces debajo de esta línea.
+
+55
+00:04:12,680 --> 00:04:23,570
+Escribamos un ciclo while típico como este ciclo de evento aquí o este ciclo while esencialmente se ejecutará una
+
+56
+00:04:23,810 --> 00:04:26,700
+y otra y otra vez.
+
+57
+00:04:27,080 --> 00:04:32,630
+Entonces, el cuerpo del ciclo while se ejecutará una y otra vez en el caso de que se repita el ciclo.
+
+58
+00:04:32,630 --> 00:04:36,700
+Nos referimos a esta ejecución del cuerpo como un tic.
+
+59
+00:04:36,710 --> 00:04:43,660
+Así que cada vez que el bucle de evento se ejecuta dentro de nuestra aplicación de nodo, nos referimos a eso como un tic.
+
+60
+00:04:43,660 --> 00:04:47,910
+Voy a agregar un comentario justo sobre el ciclo while solo para recordarme eso.
+
+61
+00:04:48,080 --> 00:04:57,190
+Así que diré que todo el cuerpo se ejecuta de un tic de una vez, ya que usted y yo sabemos muy bien que cada
+
+62
+00:04:57,250 --> 00:05:01,460
+bucle que alguna vez escribamos debe tener algún tipo de condición asociada.
+
+63
+00:05:01,510 --> 00:05:06,910
+Ponemos esa condición dentro del conjunto de paréntesis aquí y siempre que esa condición devuelva falso.
+
+64
+00:05:06,910 --> 00:05:13,570
+El ciclo while ya no va a ejecutar esa misma idea, también se aplica al ciclo de eventos.
+
+65
+00:05:13,570 --> 00:05:19,990
+Así que cada vez que el bucle de evento está a punto de ejecutar nodo hace una comprobación rápida
+
+66
+00:05:19,990 --> 00:05:26,540
+para decidir si debe permitir o no que el bucle proceda para otra iteración si no decide que el
+
+67
+00:05:26,540 --> 00:05:33,550
+bucle no se debe ingresar o no se debe ejecutar nuevamente que el cuerpo de o tiene todo el ciclo de
+
+68
+00:05:33,550 --> 00:05:34,360
+eventos salteado.
+
+69
+00:05:34,360 --> 00:05:39,700
+Estamos en nuestro programa, el cuerpo del ciclo while se mantiene y el programa vuelve a la terminal como
+
+70
+00:05:39,790 --> 00:05:41,360
+abajo en la parte inferior.
+
+71
+00:05:41,830 --> 00:05:48,370
+Entonces, para determinar si nuestro bucle while o el bucle de evento se va a ejecutar
+
+72
+00:05:48,430 --> 00:05:52,300
+creemos que una pequeña función de ayuda llamada debería continuar.
+
+73
+00:05:52,670 --> 00:06:00,960
+Así que puedo escribir una función auxiliar llamada llamada que debe continuar y luego la
+
+74
+00:06:00,960 --> 00:06:05,680
+llamaremos desde el área de condición del ciclo While.
+
+75
+00:06:05,690 --> 00:06:08,710
+Ahora, siempre y cuando continúe aquí.
+
+76
+00:06:08,840 --> 00:06:10,950
+Devuelve algo verdadero.
+
+77
+00:06:10,970 --> 00:06:16,820
+El ciclo de eventos continuará ejecutándose, pero en cuanto devuelva algo falso, nuestro ciclo se
+
+78
+00:06:16,820 --> 00:06:22,200
+detendrá y el programa bajará al final de este archivo y esencialmente saldrá.
+
+79
+00:06:22,670 --> 00:06:24,190
+Entonces tomemos una pausa rápida.
+
+80
+00:06:24,200 --> 00:06:28,250
+Volveremos al próximo video y comenzaremos a hablar sobre qué lógica debería
+
+81
+00:06:28,310 --> 00:06:30,770
+ir dentro de la función debería continuar.
+
+82
+00:06:31,100 --> 00:06:33,670
+Así que toma un descanso rápido y te veré en solo un minuto.

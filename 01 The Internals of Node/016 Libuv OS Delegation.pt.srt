@@ -1,0 +1,179 @@
+1
+00:00:00,620 --> 00:00:06,120
+Na última seção, escrevemos um pequeno arquivo para fazer uma requisição para o H TGP e depois executamos o processo
+
+2
+00:00:06,120 --> 00:00:10,770
+e vimos que foram necessários cerca de 240 milissegundos para fazer uma única solicitação ao Google.
+
+3
+00:00:10,770 --> 00:00:13,250
+Agora vamos adicionar mais algumas solicitações para esse arquivo.
+
+4
+00:00:13,410 --> 00:00:18,120
+E quando fizermos isso, vamos ver algumas evidências de que algumas das funções nas notas de
+
+5
+00:00:18,390 --> 00:00:24,140
+uma biblioteca não parecem usar o mesmo tipo de conjunto de encadeamentos que a função de hash fazia anteriormente.
+
+6
+00:00:24,150 --> 00:00:29,950
+Então, dentro da minha função assíncrona, de volta aqui, eu realmente não quero copiar e colar esse código
+
+7
+00:00:30,030 --> 00:00:31,830
+inteiro, bloqueia como seis vezes.
+
+8
+00:00:31,830 --> 00:00:38,910
+Então eu começo a envolver este pedido dentro de uma pequena função auxiliar que eu
+
+9
+00:00:39,150 --> 00:00:41,580
+vou chamar, simplesmente pedir assim.
+
+10
+00:00:41,730 --> 00:00:46,830
+Então, agora, em vez de fazer um monte de cópias colando na parte inferior
+
+11
+00:00:46,950 --> 00:00:53,180
+do arquivo, em vez disso, vou fazer uma solicitação algumas vezes seguidas e talvez seja bom assim.
+
+12
+00:00:53,760 --> 00:00:55,050
+OK, então vamos salvar o arquivo.
+
+13
+00:00:55,080 --> 00:00:59,080
+E agora vamos executar esse arquivo novamente no nosso terminal.
+
+14
+00:00:59,130 --> 00:01:06,750
+Então, de volta ao terminal novamente, faça o nó A Cincom Sim e agora vemos um comportamento muito interessante.
+
+15
+00:01:06,750 --> 00:01:12,580
+Observe como parece que todas as seis chamadas parecem estar concluídas no mesmo horário exato.
+
+16
+00:01:12,660 --> 00:01:17,150
+Este é um comportamento distintamente diferente do que vimos anteriormente com o nosso pool de threads.
+
+17
+00:01:17,400 --> 00:01:23,280
+Portanto, lembre-se, por padrão, que o conjunto de encadeamentos tem quatro encadeamentos, o que significa que apenas quatro tarefas podem ser
+
+18
+00:01:23,310 --> 00:01:24,580
+processadas de cada vez.
+
+19
+00:01:24,660 --> 00:01:29,440
+Mas neste caso, tivemos seis tarefas concluídas simultaneamente.
+
+20
+00:01:29,460 --> 00:01:32,860
+Então, o que está acontecendo aqui?
+
+21
+00:01:32,920 --> 00:01:35,960
+Vamos dar uma olhada em um diagrama rápido.
+
+22
+00:01:36,180 --> 00:01:38,100
+Deixe-me mexer nessa coisa.
+
+23
+00:01:38,100 --> 00:01:39,410
+Aqui vamos nós.
+
+24
+00:01:40,000 --> 00:01:41,650
+Tudo bem muito melhor.
+
+25
+00:01:41,670 --> 00:01:46,070
+Então, o que estamos vendo aqui é mais uma evidência da lib U. V. jogando.
+
+26
+00:01:46,200 --> 00:01:48,790
+Mas não está relacionado ao nosso pool de threads.
+
+27
+00:01:48,870 --> 00:01:54,660
+Portanto, assim como a biblioteca padrão do nó tem algumas funções que fazem uso do conjunto de encadeamentos ao
+
+28
+00:01:54,660 --> 00:02:00,690
+vivo do Uvas, ela também possui algumas funções que fazem uso do código que está embutido no sistema operacional subjacente
+
+29
+00:02:00,990 --> 00:02:02,540
+por meio do U-V ativo.
+
+30
+00:02:02,580 --> 00:02:07,950
+Então, neste caso, o live U-V vê que estamos tentando fazer uma solicitação de HTP.
+
+31
+00:02:08,400 --> 00:02:17,340
+Nem lib U. V. nem código ou C nem nó possui qualquer código para manipular todas as operações de
+
+32
+00:02:17,550 --> 00:02:19,870
+nível muito baixo que estão envolvidas com uma solicitação de rede.
+
+33
+00:02:20,070 --> 00:02:25,910
+Em vez disso, o U-V ativo delega a solicitação ao sistema operacional subjacente.
+
+34
+00:02:26,250 --> 00:02:34,260
+Portanto, na verdade, é o nosso sistema operacional que faz a solicitação HTP real que Libby é usada para emitir a solicitação e,
+
+35
+00:02:34,620 --> 00:02:39,840
+em seguida, apenas espera que o sistema operacional emita um sinal de que alguma resposta
+
+36
+00:02:39,840 --> 00:02:40,980
+retornou à solicitação.
+
+37
+00:02:41,430 --> 00:02:47,490
+Então, como Libby está delegando o trabalho feito ao sistema operacional, o próprio sistema operacional decide se fará
+
+38
+00:02:47,490 --> 00:02:49,150
+uma nova ameaça ou não.
+
+39
+00:02:49,290 --> 00:02:53,220
+Ou, geralmente, como lidar com todo o processo de fazer a solicitação.
+
+40
+00:02:53,580 --> 00:02:59,190
+Então, como o sistema operacional está fazendo a solicitação, não há bloqueio do nosso código javascript dentro
+
+41
+00:02:59,190 --> 00:03:03,360
+do nosso loop de eventos ou qualquer outra coisa dentro do nosso aplicativo.
+
+42
+00:03:03,360 --> 00:03:08,520
+Tudo ou todo o trabalho está sendo feito pelo próprio sistema operacional e, nesse caso, não estamos
+
+43
+00:03:08,520 --> 00:03:10,520
+tocando em um conjunto de encadeamentos.
+
+44
+00:03:11,000 --> 00:03:15,870
+OK, então vamos pausar aqui e continuaremos na próxima seção e falaremos sobre como isso se relaciona com
+
+45
+00:03:16,080 --> 00:03:18,120
+o nosso loop de eventos no próximo vídeo.

@@ -1,0 +1,467 @@
+1
+00:00:00,900 --> 00:00:05,520
+In the last section we started talking about the internals of no J.S. and we had said that the purpose
+
+2
+00:00:05,520 --> 00:00:12,150
+of node is to give us a nice consistent API for getting access to functionality that is ultimately implemented
+
+3
+00:00:12,180 --> 00:00:14,830
+inside a V8 in live U-V.
+
+4
+00:00:15,150 --> 00:00:20,690
+I want to give you a very concrete and practical example of how this actually works behind the scenes.
+
+5
+00:00:20,940 --> 00:00:24,410
+So in this section we're going to go through a little bit of an exercise.
+
+6
+00:00:24,570 --> 00:00:29,100
+This is going to be a lot of fun but it is going to revolve around kind of clicking around to a lot
+
+7
+00:00:29,100 --> 00:00:31,710
+of different pages inside of our browser.
+
+8
+00:00:31,710 --> 00:00:35,910
+So we're going to look at some different documentation and some source code but along the way you'll
+
+9
+00:00:35,910 --> 00:00:40,220
+get a much better idea of what no genius is really doing for you and me.
+
+10
+00:00:40,710 --> 00:00:44,810
+So this exercise that we're going to go through is this right here.
+
+11
+00:00:44,820 --> 00:00:46,540
+Here's what we're going to do.
+
+12
+00:00:46,590 --> 00:00:52,230
+So the very top We're going to first start off by picking out some random function inside the node standard
+
+13
+00:00:52,320 --> 00:00:53,970
+library.
+
+14
+00:00:53,970 --> 00:00:59,430
+We're then going to try to find where that function is implemented in the node J.S. source code.
+
+15
+00:00:59,430 --> 00:01:06,180
+So like the actual source code that comprises the node project and then once we find that source code
+
+16
+00:01:06,450 --> 00:01:12,450
+we're going to figure out how node leverage is in kind of Raf's functionality that is implemented inside
+
+17
+00:01:12,450 --> 00:01:18,720
+of Lyd V8 in lib U.V. So this is going to be a really fun exercise and it gave you a much better idea
+
+18
+00:01:18,990 --> 00:01:22,890
+of how node is internally structured and how it works.
+
+19
+00:01:22,890 --> 00:01:26,450
+So step one is to pick a function in the node standard library.
+
+20
+00:01:26,460 --> 00:01:31,380
+Now I had said that we're going to take a random one but in truth I already picked one particular function
+
+21
+00:01:31,380 --> 00:01:35,160
+out and this is going to be a function that we're actually going to use quite a bit later on inside
+
+22
+00:01:35,160 --> 00:01:37,260
+the course as well.
+
+23
+00:01:37,260 --> 00:01:44,520
+So the function that you and I are going to investigate is called Let's pull up an example of it right
+
+24
+00:01:44,520 --> 00:01:44,830
+here.
+
+25
+00:01:44,830 --> 00:01:46,090
+Here we go.
+
+26
+00:01:46,170 --> 00:01:49,240
+It's going to be a function called PBK DFI too.
+
+27
+00:01:49,380 --> 00:01:51,700
+So that's the actual function name right there.
+
+28
+00:01:51,750 --> 00:01:54,200
+And I know that's a really weird function name.
+
+29
+00:01:54,210 --> 00:01:58,720
+It's the name of an algorithm that is used for hashing some arbitrary data.
+
+30
+00:01:58,740 --> 00:02:02,270
+So this is a function inside of nodes crypto library.
+
+31
+00:02:02,400 --> 00:02:08,040
+And usually it is used to hash a password for storage inside of a database.
+
+32
+00:02:08,040 --> 00:02:12,720
+So again I know it's a weirdly named function but it's just the name of some hashing algorithm that's
+
+33
+00:02:12,720 --> 00:02:14,040
+all.
+
+34
+00:02:14,040 --> 00:02:20,950
+So let's take a look at the actual implementation of PBK DFA to inside the node code base.
+
+35
+00:02:21,060 --> 00:02:25,650
+And as we go through this process you're going to very quickly see how a node internally makes use of
+
+36
+00:02:25,650 --> 00:02:28,590
+live U-V and the eight project as well.
+
+37
+00:02:29,280 --> 00:02:29,670
+All right.
+
+38
+00:02:29,680 --> 00:02:35,660
+So going to pull up the node j J.S. source code on get dot com if you want to follow along.
+
+39
+00:02:35,700 --> 00:02:41,820
+You can open up your own browser and go to get how come no US slashed note.
+
+40
+00:02:42,870 --> 00:02:43,110
+All right.
+
+41
+00:02:43,110 --> 00:02:44,230
+Here we go.
+
+42
+00:02:45,030 --> 00:02:46,670
+So here's the noter posit Tory.
+
+43
+00:02:46,710 --> 00:02:50,160
+This is all the source code that you have already installed on your computer.
+
+44
+00:02:50,190 --> 00:02:56,400
+When you installed node inside this repository you're going to find a bunch of different files and folders
+
+45
+00:02:56,700 --> 00:03:00,630
+but there's two folders that are very relevant for what we're trying to do right now.
+
+46
+00:03:01,020 --> 00:03:08,460
+There's the lib directory right here and the sarcy directory right here the live folder contains all
+
+47
+00:03:08,460 --> 00:03:14,940
+the javascript definitions of functions and modules that you and I require into our projects.
+
+48
+00:03:15,060 --> 00:03:20,550
+So you can think of this live right here as being like javascript world or the javascript side of the
+
+49
+00:03:20,550 --> 00:03:22,020
+node project.
+
+50
+00:03:22,770 --> 00:03:28,860
+Then inside the SIRC directory is the C++ implementation of all those functions.
+
+51
+00:03:28,860 --> 00:03:33,590
+So as sarcy directory right here is where node actually pulls in live.
+
+52
+00:03:33,780 --> 00:03:39,420
+And that the project actually flushes out the implementation of all the models that you and I are used
+
+53
+00:03:39,420 --> 00:03:44,670
+to using like the FS module the HTP module and so on.
+
+54
+00:03:44,670 --> 00:03:50,880
+So let's first get started by looking up that PBK DFT function inside this live folder and we're going
+
+55
+00:03:50,880 --> 00:03:55,040
+to find the javascript definition of that function.
+
+56
+00:03:55,080 --> 00:04:02,760
+So inside of Lyd we're then going to find the internal directory which is right here.
+
+57
+00:04:02,790 --> 00:04:06,810
+We'll then find the crypto directory right here.
+
+58
+00:04:06,810 --> 00:04:11,680
+And then finally we'll find the PBK DFI to dot J S file.
+
+59
+00:04:11,680 --> 00:04:12,580
+Here it is right here.
+
+60
+00:04:16,400 --> 00:04:17,440
+All right here we go.
+
+61
+00:04:18,250 --> 00:04:24,590
+This is a javascript file that contains the javascript definition of the PBK DFT function.
+
+62
+00:04:24,590 --> 00:04:30,860
+Now remember this is a normal function that is just included inside of the standard library of Node.
+
+63
+00:04:31,390 --> 00:04:36,130
+You're going to find that the contents of this file looks very much like a javascript file that you
+
+64
+00:04:36,130 --> 00:04:37,480
+and I might write.
+
+65
+00:04:37,510 --> 00:04:41,620
+So at the very top you'll find a bunch of require statements in the body.
+
+66
+00:04:41,620 --> 00:04:47,050
+You'll find a bunch of function deck declarations and then down at the very bottom you'll eventually
+
+67
+00:04:47,050 --> 00:04:50,210
+see an export statement as well.
+
+68
+00:04:50,230 --> 00:04:55,430
+So here's where the actual PBK due to function gets exported from this file.
+
+69
+00:04:56,020 --> 00:05:01,180
+Let's go up a little bit and we're going to find where this function actually gets declared.
+
+70
+00:05:01,240 --> 00:05:01,570
+All right.
+
+71
+00:05:01,570 --> 00:05:07,500
+So right about here on line 16 or so you'll find the definition for PBK do you have to.
+
+72
+00:05:07,510 --> 00:05:13,390
+So if you and I were to require in this function and then run it from inside of our code base this is
+
+73
+00:05:13,390 --> 00:05:16,490
+the function that would get executed.
+
+74
+00:05:16,490 --> 00:05:20,010
+Now this next part that we're going to go through is going to be just a little bit complicated because
+
+75
+00:05:20,020 --> 00:05:25,160
+I get to very quickly kind of run through some of the source code that is executed anytime we call this
+
+76
+00:05:25,160 --> 00:05:26,150
+function right here.
+
+77
+00:05:26,420 --> 00:05:30,710
+But eventually we're going to end up on another part of the code base that starts to take us to like
+
+78
+00:05:31,010 --> 00:05:34,270
+the C++ side of no J.S..
+
+79
+00:05:34,310 --> 00:05:37,330
+So any time you run this PBK do you have to function.
+
+80
+00:05:37,490 --> 00:05:39,540
+It does a little bit of error checking.
+
+81
+00:05:39,770 --> 00:05:48,360
+It does a little bit more error checking and then eventually it calls underscore PBK DFA to.
+
+82
+00:05:48,500 --> 00:05:53,990
+So let's find the definition for underscore PBK DFT and see what happens inside of there.
+
+83
+00:05:54,500 --> 00:05:55,490
+So scroll down.
+
+84
+00:05:55,580 --> 00:06:03,530
+And then on around like 32 or so you'll find the definition for underscore PBK DFA to inside of here
+
+85
+00:06:03,540 --> 00:06:08,330
+you'll again see a bunch of error checking error checking error checking just a bunch of error checking
+
+86
+00:06:08,330 --> 00:06:15,280
+stuff you know all this stuff is there checking and then eventually you'll see this block of code around
+
+87
+00:06:15,410 --> 00:06:17,360
+in 72 or so.
+
+88
+00:06:17,860 --> 00:06:26,380
+So right here you'll see a call to another function called PBK D-Nev. two and it takes in all the arguments
+
+89
+00:06:26,380 --> 00:06:32,500
+that are passed to our current function and passes them to this PBK do you have to say this right here
+
+90
+00:06:32,530 --> 00:06:35,950
+is where the hash is actually calculated.
+
+91
+00:06:35,950 --> 00:06:42,010
+Essentially no J us takes all the inputs that you provide to this function and it forwards them on to
+
+92
+00:06:42,010 --> 00:06:45,540
+the C++ implementation of this function.
+
+93
+00:06:45,580 --> 00:06:49,290
+So this PBK DFT thing right here in all capitals.
+
+94
+00:06:49,420 --> 00:06:52,510
+This is a C++ function.
+
+95
+00:06:52,600 --> 00:06:56,130
+Let's see where this thing actually gets required into his file.
+
+96
+00:06:56,230 --> 00:07:04,500
+If you scroll back up to the top you're going to see around Line 9 or so where we require an PBK DFA
+
+97
+00:07:04,560 --> 00:07:05,140
+to.
+
+98
+00:07:05,280 --> 00:07:09,660
+And that's coming from a very unfamiliar looking require statement.
+
+99
+00:07:09,660 --> 00:07:14,250
+So this says Process stop binding and then crypto.
+
+100
+00:07:14,250 --> 00:07:21,420
+This line of code right here is how no G-S joins up the C++ side of its project to the javascript site.
+
+101
+00:07:21,780 --> 00:07:25,490
+So I can show you another diagram that's going to help flesh out the process of all the code that we've
+
+102
+00:07:25,500 --> 00:07:26,760
+looked at so far.
+
+103
+00:07:27,930 --> 00:07:30,220
+All right here we go.
+
+104
+00:07:31,170 --> 00:07:34,640
+So the very top again is our Javascript code.
+
+105
+00:07:34,740 --> 00:07:42,270
+Then we went into the node javascript's side of the node repository to look up how that function PBK
+
+106
+00:07:42,270 --> 00:07:44,600
+DFT you actually gets defined.
+
+107
+00:07:45,300 --> 00:07:50,280
+We looked up a file inside the live folder which is all the actual javascript code works and we found
+
+108
+00:07:50,280 --> 00:07:56,550
+that eventually it looks like that PBK idea of two function is defined from something called process
+
+109
+00:07:56,750 --> 00:07:57,660
+binding.
+
+110
+00:07:58,020 --> 00:08:04,980
+That process of binding thing is what connects the javascript world to the C++ world of the node J.S.
+
+111
+00:08:04,980 --> 00:08:06,900
+project.
+
+112
+00:08:06,910 --> 00:08:08,150
+Let's take a pause right here.
+
+113
+00:08:08,170 --> 00:08:10,850
+I know we're in the thick of things but let's take a pause right here.
+
+114
+00:08:10,870 --> 00:08:12,490
+We're going to come back in the next video.
+
+115
+00:08:12,580 --> 00:08:17,920
+We're going to start to explore what that process does planning thing does and how it joins up to the
+
+116
+00:08:17,920 --> 00:08:20,470
+C plus plus side of the node project.
+
+117
+00:08:20,470 --> 00:08:22,570
+So quick break and I'll see you in just a minute.

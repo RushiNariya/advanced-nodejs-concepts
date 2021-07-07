@@ -1,0 +1,343 @@
+1
+00:00:00,750 --> 00:00:05,490
+In the last section we finished up our should continue function which decides whether or not our event
+
+2
+00:00:05,490 --> 00:00:08,310
+loop is going to run for one additional tick.
+
+3
+00:00:08,850 --> 00:00:12,050
+We're now going to move to the body of our event loop.
+
+4
+00:00:12,180 --> 00:00:17,160
+We're going to write out a series of comments that explain what occurs during every single tick.
+
+5
+00:00:17,220 --> 00:00:21,630
+So these steps are occurring very very quickly again and again and again.
+
+6
+00:00:22,080 --> 00:00:25,070
+Let's write out the first step that occurs inside the event loop.
+
+7
+00:00:25,170 --> 00:00:31,540
+So the first thing that happens here is node looks at Pending timer's.
+
+8
+00:00:31,610 --> 00:00:32,880
+That's what we call that right.
+
+9
+00:00:32,890 --> 00:00:42,870
+Talked about this array up here pending timer's and sees if any functions are ready to be called.
+
+10
+00:00:42,880 --> 00:00:48,810
+So the very first thing occurs is node looks at that array of pending timers and it looks at all the
+
+11
+00:00:48,810 --> 00:00:52,630
+different functions that have been passed to set time out and set interval.
+
+12
+00:00:52,950 --> 00:00:58,980
+If any of those timers have expired the node calls the relevant callbacks associated with each one.
+
+13
+00:00:58,980 --> 00:01:00,390
+So that's step number one.
+
+14
+00:01:00,390 --> 00:01:05,040
+Let's also add in a little one here just to keep track.
+
+15
+00:01:05,040 --> 00:01:07,980
+The next thing that happens is very similar to the first step.
+
+16
+00:01:07,980 --> 00:01:19,080
+So for the second step here no that looks at Pending OS tasks and pending operations and calls relevant
+
+17
+00:01:19,680 --> 00:01:21,420
+callbacks.
+
+18
+00:01:21,440 --> 00:01:27,530
+So in the second step note we'll look at that collection of all the different tasks and operations and
+
+19
+00:01:27,530 --> 00:01:32,540
+if any of these things have been completed or any new events have been triggered the node executes the
+
+20
+00:01:32,540 --> 00:01:34,420
+relevant callbacks.
+
+21
+00:01:34,460 --> 00:01:38,100
+Examples of these would be like the same examples that we laid out before.
+
+22
+00:01:38,150 --> 00:01:44,630
+So for example if some request comes into some port that a server is listening on or if some file is
+
+23
+00:01:44,630 --> 00:01:50,810
+successfully retrieved off of our computers harddrive then during this stage notable detect that those
+
+24
+00:01:50,810 --> 00:01:56,000
+things have been completed and we'll call the relevant callbacks like the callback to receive a file
+
+25
+00:01:56,000 --> 00:02:01,420
+that's been fetched or a callback to handle an incoming request.
+
+26
+00:02:01,710 --> 00:02:04,400
+So you can really consider these first two steps right here.
+
+27
+00:02:04,470 --> 00:02:10,240
+As we know does the bulk of its work and handles all the relevant callbacks.
+
+28
+00:02:10,410 --> 00:02:15,660
+Now moving on to the third step is where things start to get a little bit more interesting during step
+
+29
+00:02:15,660 --> 00:02:20,020
+3 node actually pauses execution temporarily.
+
+30
+00:02:20,290 --> 00:02:28,100
+So we say pause execution and during this pause No just sits around and waits for new events to occur.
+
+31
+00:02:28,140 --> 00:02:35,380
+So no just sits here it pauses and it says that I will continue whenever some number of events occur.
+
+32
+00:02:35,490 --> 00:02:47,670
+And that is whenever a new pending OS task is done whenever a new pending operation is done or whenever
+
+33
+00:02:47,910 --> 00:02:51,910
+a timer is about to complete.
+
+34
+00:02:51,930 --> 00:02:57,090
+So during this pause phase no decides that its not going to just run through the event loop as fast
+
+35
+00:02:57,120 --> 00:02:58,610
+as it possibly can.
+
+36
+00:02:58,620 --> 00:03:04,410
+Remember that if you and I wrote out a while loop inside of javascript code and wrote in like say while
+
+37
+00:03:04,500 --> 00:03:05,550
+true right.
+
+38
+00:03:05,610 --> 00:03:10,580
+You know something like this that while loop would execute as fast as it possibly could.
+
+39
+00:03:10,800 --> 00:03:15,060
+And thats not actually what occurs inside the event loop inside the event loop.
+
+40
+00:03:15,060 --> 00:03:20,310
+This pause during step 3 just sits around and says you know what I've got no other work to do.
+
+41
+00:03:20,490 --> 00:03:24,160
+I'm just going to wait until I see that a new pending task has been completed.
+
+42
+00:03:24,390 --> 00:03:29,760
+Like a new request has come in on some port that we're listening to a new pending operation is completed
+
+43
+00:03:29,880 --> 00:03:36,420
+like we fetch some file off the hard drive or a timer for one of the set timeouts in set intervals is
+
+44
+00:03:36,420 --> 00:03:39,870
+about to expire and the relevant function needs to be called.
+
+45
+00:03:40,290 --> 00:03:43,890
+So we just sit around and wait for that stuff to happen.
+
+46
+00:03:44,070 --> 00:03:48,810
+Then once that pause is complete because we presumably see that something is about to occur we then
+
+47
+00:03:48,810 --> 00:03:52,360
+continue with the last two steps inside of the event loop.
+
+48
+00:03:52,890 --> 00:03:58,320
+Step Number four is very similar to step number one up is inside step number one.
+
+49
+00:03:58,320 --> 00:04:04,360
+You'll notice I had said that we're checking to see if any functions related to pending timers are called
+
+50
+00:04:04,920 --> 00:04:10,230
+and I use the words I didn't actually write this out but I had said set time out and set interval.
+
+51
+00:04:10,560 --> 00:04:17,890
+So this first step up here is about set time out set interval during step number four down here node
+
+52
+00:04:17,970 --> 00:04:20,330
+again looks at Pending timers.
+
+53
+00:04:20,520 --> 00:04:24,280
+So again look at Pending timer's.
+
+54
+00:04:25,200 --> 00:04:30,030
+But in this case no does not care about set time out in set interval function calls.
+
+55
+00:04:30,120 --> 00:04:35,790
+It only looks for functions that have been registered with set immediate and remember set immediate
+
+56
+00:04:35,790 --> 00:04:38,490
+is very similar to set in time out and set interval.
+
+57
+00:04:38,520 --> 00:04:41,160
+Just in case you've never used it before.
+
+58
+00:04:41,160 --> 00:04:46,110
+So look at Pending timers call any set immediate.
+
+59
+00:04:46,470 --> 00:04:50,370
+And then finally for Step 5 and this one might be a little bit surprising.
+
+60
+00:04:50,370 --> 00:05:00,690
+Step Five is to handle any close events now this one is a little bit harder to explain.
+
+61
+00:05:00,820 --> 00:05:02,810
+So let me show you a very quick example.
+
+62
+00:05:02,820 --> 00:05:08,840
+You know open up a separate file here and I'll write out a very quick example for you to see.
+
+63
+00:05:08,870 --> 00:05:15,260
+So an example of this would be if we use something like a standard object in the note library that events
+
+64
+00:05:15,320 --> 00:05:17,270
+a close event.
+
+65
+00:05:17,270 --> 00:05:21,990
+Now one particular event or one particular object that does this is a read stream.
+
+66
+00:05:22,040 --> 00:05:24,670
+If you've never worked with a read string before it that's totally fine.
+
+67
+00:05:24,710 --> 00:05:29,110
+Let me just write out the example and I think you'll very quickly understand what we're talking about.
+
+68
+00:05:29,180 --> 00:05:37,120
+So if we had a read stream we can register an event to run whenever this thing is about to close.
+
+69
+00:05:37,370 --> 00:05:40,430
+And during that event trigger we could do some cleanup work.
+
+70
+00:05:40,430 --> 00:05:43,520
+So we might do a console log of like cleanup code
+
+71
+00:05:46,320 --> 00:05:48,410
+so we can listen to this Close event.
+
+72
+00:05:48,450 --> 00:05:54,210
+And any time the event loop is about to finish we can run some amount of cleanup code that maybe terminates
+
+73
+00:05:54,210 --> 00:05:59,660
+any running servers or terminates any open files we have open or something like that.
+
+74
+00:05:59,730 --> 00:06:05,250
+Essentially this last step inside the event loop is about just handling cleanup code and cleaning up
+
+75
+00:06:05,280 --> 00:06:10,370
+after ourselves and making sure that we don't have any dangling loose ends inside of our program.
+
+76
+00:06:10,950 --> 00:06:11,290
+OK.
+
+77
+00:06:11,310 --> 00:06:11,900
+So that's it.
+
+78
+00:06:11,910 --> 00:06:18,570
+The five steps that are executed during every execution of the event loop this occurs during every single
+
+79
+00:06:18,570 --> 00:06:19,870
+tick that occurs.
+
+80
+00:06:19,920 --> 00:06:23,770
+And probably the most important thing to understand here is step number three.
+
+81
+00:06:23,790 --> 00:06:29,970
+The fact that we wait around and just wait for some amount or some event to occur rather than running
+
+82
+00:06:29,970 --> 00:06:33,240
+through the event loop as fast as it possibly can.
+
+83
+00:06:33,250 --> 00:06:37,860
+So now that we've seen these five events that occurred during the event loop Let's continue in the next
+
+84
+00:06:37,860 --> 00:06:42,780
+section and we're going to start to discuss some odds and ends around the event loop and also play around
+
+85
+00:06:42,780 --> 00:06:43,980
+with some real code.
+
+86
+00:06:44,130 --> 00:06:46,490
+So a quick break and I'll see you in just a minute.

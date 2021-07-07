@@ -1,0 +1,167 @@
+1
+00:00:00,510 --> 00:00:06,210
+Na última seção, vimos algumas evidências de que uma chamada de função para o PBK não
+
+2
+00:00:06,510 --> 00:00:08,900
+é, na verdade, única thread nesta seção.
+
+3
+00:00:08,910 --> 00:00:13,420
+Vamos expandir um pouco este exemplo e descobrir por que estamos vendo esse comportamento.
+
+4
+00:00:13,830 --> 00:00:18,660
+Primeiro, vamos olhar para um diagrama do que realmente está acontecendo com o PBK D-Nev. para funcionar nos
+
+5
+00:00:18,660 --> 00:00:19,670
+bastidores.
+
+6
+00:00:19,680 --> 00:00:25,370
+Então, lembre-se de que nos inserimos no código-fonte dessa função há pouco tempo e, como vimos,
+
+7
+00:00:25,440 --> 00:00:32,070
+a função PBK DFT tem a implementação do javascript, mas na verdade delegou todo o trabalho feito ao lado
+
+8
+00:00:32,160 --> 00:00:33,020
+do C ++.
+
+9
+00:00:33,480 --> 00:00:36,900
+Então é aí que o processo de hashing aconteceu.
+
+10
+00:00:36,900 --> 00:00:44,400
+Nós também vimos muito brevemente naquele arquivo C ++ que parecia haver algumas referências a uma biblioteca lib que, como
+
+11
+00:00:44,460 --> 00:00:49,460
+você pode lembrar, dá ao nó um melhor acesso ao sistema operacional subjacente.
+
+12
+00:00:49,830 --> 00:00:57,330
+O lib U. V. O módulo tem outra responsabilidade que é relevante para algumas funções
+
+13
+00:00:57,330 --> 00:00:58,610
+muito particulares na biblioteca padrão.
+
+14
+00:00:58,950 --> 00:01:07,140
+Assim, para alguns, essa é a palavra-chave aqui para algumas funções de biblioteca padrão que chamam o nó do lado do C ++
+
+15
+00:01:07,140 --> 00:01:12,840
+e o U-V ao vivo a decidir fazer cálculos caros fora do loop de eventos inteiramente.
+
+16
+00:01:13,920 --> 00:01:21,000
+Em vez disso, eles fazem uso de algo chamado um conjunto de encadeamentos que o conjunto de encadeamentos é uma
+
+17
+00:01:21,060 --> 00:01:28,500
+série de quatro encadeamentos que podem ser usados ​​para executar tarefas computacionalmente intensivas, como o PV KDAF para funcionar por padrão.
+
+18
+00:01:28,640 --> 00:01:32,070
+O U-V cria quatro encadeamentos nesse conjunto de encadeamentos.
+
+19
+00:01:32,070 --> 00:01:38,130
+Isso significa que, além desse encadeamento usado para o loop de eventos, há quatro outros
+
+20
+00:01:38,130 --> 00:01:44,460
+encadeamentos que podem ser usados ​​para descarregar cálculos dispendiosos que precisam ocorrer dentro de nosso aplicativo.
+
+21
+00:01:44,460 --> 00:01:48,990
+Muitas das funções incluídas na biblioteca padrão do nó usarão automaticamente esse conjunto de
+
+22
+00:01:48,990 --> 00:01:49,490
+encadeamentos.
+
+23
+00:01:49,680 --> 00:01:53,400
+E como você pode imaginar, a função PBK DFT é uma delas.
+
+24
+00:01:53,790 --> 00:01:58,560
+Agora, a presença deste pool de threads é muito significativa, obviamente, do ponto de vista das pessoas
+
+25
+00:01:58,560 --> 00:02:01,250
+sempre dizendo oh yeah notei single threaded aviso single threaded.
+
+26
+00:02:01,470 --> 00:02:07,020
+Bem, claramente, ele não é verdadeiramente único com encadeamento porque há outros encadeamentos que
+
+27
+00:02:07,020 --> 00:02:10,410
+o nó usa para executar algumas tarefas computacionalmente intensivas.
+
+28
+00:02:10,530 --> 00:02:15,840
+Você vê este conjunto de encadeamentos aqui porque, se nosso loop de eventos fosse responsável por executar
+
+29
+00:02:15,840 --> 00:02:21,840
+essa tarefa computacionalmente intensa, isso significa que nosso aplicativo de nó não poderia fazer absolutamente nada enquanto estávamos executando
+
+30
+00:02:21,840 --> 00:02:23,950
+o PBK T. F. funcionar.
+
+31
+00:02:24,090 --> 00:02:28,990
+Lembre-se de que nosso CPQ executa todas as instruções dentro de um thread, uma por uma.
+
+32
+00:02:29,070 --> 00:02:33,840
+Até agora o thread tinha alguma linha de instrução ao lado dele que dizia rodar esse código.
+
+33
+00:02:33,860 --> 00:02:36,840
+Isso leva um segundo para ser executado, e é basicamente isso.
+
+34
+00:02:36,840 --> 00:02:39,560
+Temos que esperar um segundo para esse código ser executado.
+
+35
+00:02:39,870 --> 00:02:45,540
+Então, usando este conjunto de threads aqui, não temos que esperar um segundo e podemos fazer outras coisas dentro do
+
+36
+00:02:45,600 --> 00:02:46,820
+nosso loop de eventos.
+
+37
+00:02:46,920 --> 00:02:48,850
+Enquanto esse cálculo está ocorrendo.
+
+38
+00:02:49,520 --> 00:02:49,870
+ESTÁ BEM.
+
+39
+00:02:49,920 --> 00:02:54,820
+Então, agora que vimos esta discussão puxar aqui, vamos fazer uma pausa rápida.
+
+40
+00:02:54,840 --> 00:02:59,670
+Nós vamos voltar na próxima seção e vamos modificar nosso arquivo um pouco
+
+41
+00:02:59,670 --> 00:03:05,080
+e isso nos permitirá detectar a presença desses quatro threads dentro do pool de threads.
+
+42
+00:03:05,130 --> 00:03:07,410
+Tão rápido e eu te vejo daqui a pouco.

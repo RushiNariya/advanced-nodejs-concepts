@@ -1,0 +1,327 @@
+1
+00:00:00,540 --> 00:00:03,570
+In the last section we got a very quick overview on threats.
+
+2
+00:00:03,660 --> 00:00:08,720
+We're not going to take that knowledge and apply it to the world of no J.S. whenever you and I start
+
+3
+00:00:08,720 --> 00:00:14,780
+up a node program on our computer node automatically creates one thread and then executes all of our
+
+4
+00:00:14,780 --> 00:00:21,320
+code inside of that one single thread inside of the single thread represented by the blue box right
+
+5
+00:00:21,320 --> 00:00:25,210
+here is something called the event loop.
+
+6
+00:00:25,340 --> 00:00:31,700
+You can think of the event loop as being like a control structure that decides what our one thread should
+
+7
+00:00:31,700 --> 00:00:34,710
+be doing at any given point in time.
+
+8
+00:00:34,820 --> 00:00:40,130
+This event loop is the absolute core of every program that you and I run and every program that you
+
+9
+00:00:40,130 --> 00:00:47,930
+and I run has exactly one event loop understanding how the event loop works is extremely important because
+
+10
+00:00:47,930 --> 00:00:54,770
+a lot of performance concerns about node boiled down to eventually how the event loop behaves.
+
+11
+00:00:54,770 --> 00:01:00,950
+So essentially if you understand this event loop then you will be very well equipped to understand performance
+
+12
+00:01:00,980 --> 00:01:02,900
+issues in node as well.
+
+13
+00:01:03,350 --> 00:01:09,800
+But there's a little bit of a problem in understanding it understanding the event loop is tough.
+
+14
+00:01:09,800 --> 00:01:11,210
+It's not easy.
+
+15
+00:01:11,210 --> 00:01:18,320
+There are many talks many blog posts many diagrams online to help you understand it but it is just notoriously
+
+16
+00:01:18,320 --> 00:01:20,760
+difficult to wrap your head around.
+
+17
+00:01:21,230 --> 00:01:23,540
+Luckily I have a solution.
+
+18
+00:01:23,540 --> 00:01:27,470
+I've got a solution to help you understand how the event loop works.
+
+19
+00:01:27,490 --> 00:01:33,620
+So rather than looking at some really complicated diagrams you and I are going to write some fake code
+
+20
+00:01:33,770 --> 00:01:39,950
+inside of our code editor so we're gonna write completely fake code that doesn't work at all this fake
+
+21
+00:01:39,950 --> 00:01:40,500
+code.
+
+22
+00:01:40,500 --> 00:01:47,300
+We're kind of like pseudo code is going to sort of emulate the event loop and how it works to make node
+
+23
+00:01:47,300 --> 00:01:47,820
+work.
+
+24
+00:01:48,590 --> 00:01:49,930
+So let's give it a shot.
+
+25
+00:01:49,970 --> 00:01:54,710
+We're going to create a new file inside of our code editor and we're going to add some fake code to
+
+26
+00:01:54,710 --> 00:02:00,250
+it to walk through what the event loop does inside of our new as programs.
+
+27
+00:02:00,290 --> 00:02:06,010
+So I need to open up my code editor and then decide if you're going to make a new file.
+
+28
+00:02:06,510 --> 00:02:08,940
+And I would call it simply loop.
+
+29
+00:02:09,120 --> 00:02:10,740
+Yes.
+
+30
+00:02:10,800 --> 00:02:16,860
+So again this is going to be entirely fake code inside of your code we're getting right here is going
+
+31
+00:02:16,860 --> 00:02:24,310
+to walk you through this series of operations that occur any time we start up a new program on our machine.
+
+32
+00:02:25,060 --> 00:02:28,000
+So let's first start off by adding a comment at the top.
+
+33
+00:02:28,110 --> 00:02:34,650
+That's sort of like pretends that we are starting up a node application so we might start a node application
+
+34
+00:02:34,860 --> 00:02:40,090
+by running a command at our terminal of something like node my file.
+
+35
+00:02:40,160 --> 00:02:41,220
+Yes.
+
+36
+00:02:42,180 --> 00:02:44,270
+And then maybe a couple of lines after that.
+
+37
+00:02:44,310 --> 00:02:50,760
+Let's add another comment that says exit back to terminal.
+
+38
+00:02:50,820 --> 00:02:57,070
+So in between these two lines right here we're going to write out the entire life cycle of a node application.
+
+39
+00:02:57,330 --> 00:03:05,780
+Everything from starting it up to exiting back over to the terminal now whenever you and I first start
+
+40
+00:03:05,780 --> 00:03:11,660
+up a note file or run node and feed in some file like we're doing right here the event loop does not
+
+41
+00:03:11,660 --> 00:03:14,020
+actually immediately get executed.
+
+42
+00:03:14,330 --> 00:03:20,720
+Instead at the very at the very start like when we first invoke node and feed in a file node it takes
+
+43
+00:03:20,720 --> 00:03:26,640
+the contents of this file right here the contents of my files are G-S and it executes all the code inside
+
+44
+00:03:26,640 --> 00:03:27,040
+of it.
+
+45
+00:03:27,050 --> 00:03:34,340
+So all the code that you wrote Let's write out a line of code underneath the comment that kind of pretense
+
+46
+00:03:34,430 --> 00:03:38,570
+or symbolically indicates that the contents of my files.
+
+47
+00:03:38,690 --> 00:03:40,930
+Us get executed by node.
+
+48
+00:03:41,210 --> 00:03:48,330
+So maybe we will write out something like my file dots run contents like so.
+
+49
+00:03:48,740 --> 00:03:51,460
+So again there is no variable here called my file.
+
+50
+00:03:51,470 --> 00:03:53,800
+There is no run contents function.
+
+51
+00:03:53,900 --> 00:04:00,460
+We are entirely just pretending with pseudo code that this is what is happening inside of us now.
+
+52
+00:04:00,530 --> 00:04:07,200
+After the contents of that file are executed we then immediately enter the no G-S event loop.
+
+53
+00:04:07,340 --> 00:04:11,340
+You and I are going to represent this event loop with a WHILE loop.
+
+54
+00:04:11,510 --> 00:04:12,620
+So underneath this line.
+
+55
+00:04:12,680 --> 00:04:23,570
+Let's write out a typical while loop like so this event loop right here or this while loop essentially
+
+56
+00:04:23,810 --> 00:04:26,700
+is going to execute again and again and again.
+
+57
+00:04:27,080 --> 00:04:32,630
+So the body of the while loop is going to run again and again and again in the event loop wrold.
+
+58
+00:04:32,630 --> 00:04:36,700
+We refer to this execution of the body as a tick.
+
+59
+00:04:36,710 --> 00:04:43,660
+So every single time the event loop runs inside of our node application we refer to that as one tick.
+
+60
+00:04:43,660 --> 00:04:47,910
+I'm going to add a comment right above the while loop just to remind myself of that.
+
+61
+00:04:48,080 --> 00:04:57,190
+So I'll say entire body executes in one tick of sorts now as you and I very well know every while loop
+
+62
+00:04:57,250 --> 00:05:01,460
+that we ever write has to have some type of condition tied to it.
+
+63
+00:05:01,510 --> 00:05:06,910
+We put that condition inside the set of parentheses right here and whenever that condition returns false.
+
+64
+00:05:06,910 --> 00:05:13,570
+The while loop is no longer going to execute that same idea applies to the event loop as well.
+
+65
+00:05:13,570 --> 00:05:19,990
+So every single time that the event loop is about to execute node first does a quick check to decide
+
+66
+00:05:19,990 --> 00:05:26,540
+whether or not it should allow the loop to proceed for another iteration if no decides that the loop
+
+67
+00:05:26,540 --> 00:05:33,550
+should not be entered or it should not be executed again than the body of or has the entire event loop
+
+68
+00:05:33,550 --> 00:05:34,360
+gets skipped.
+
+69
+00:05:34,360 --> 00:05:39,700
+We're in our program the body of the while loop gets kept and the program exits back to the terminal
+
+70
+00:05:39,790 --> 00:05:41,360
+like down here at the bottom.
+
+71
+00:05:41,830 --> 00:05:48,370
+So to determine whether or not our while loop or event loop is going to execute let's create a little
+
+72
+00:05:48,430 --> 00:05:52,300
+helper function called should continue.
+
+73
+00:05:52,670 --> 00:06:00,960
+So I can write out a helper function called should continue and then we'll call that from inside the
+
+74
+00:06:00,960 --> 00:06:05,680
+condition area of the While loop.
+
+75
+00:06:05,690 --> 00:06:08,710
+Now as long as should continue right here.
+
+76
+00:06:08,840 --> 00:06:10,950
+Return something truthy.
+
+77
+00:06:10,970 --> 00:06:16,820
+The event loop is going to continue to run but as soon as it returns something falsie our loop is going
+
+78
+00:06:16,820 --> 00:06:22,200
+to stop and the program will go down to the bottom of this file and essentially exit.
+
+79
+00:06:22,670 --> 00:06:24,190
+So let's now take a quick pause.
+
+80
+00:06:24,200 --> 00:06:28,250
+We're going to come back to the next video and we're going to start to talk about exactly what logic
+
+81
+00:06:28,310 --> 00:06:30,770
+should go inside of the should continue function.
+
+82
+00:06:31,100 --> 00:06:33,670
+So quick break and I'll see you in just a minute.

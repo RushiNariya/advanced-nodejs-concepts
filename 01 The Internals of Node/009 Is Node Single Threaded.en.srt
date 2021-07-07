@@ -1,0 +1,295 @@
+1
+00:00:00,710 --> 00:00:05,520
+In the last section we finished up going through the five different steps that occur during one tick
+
+2
+00:00:05,580 --> 00:00:07,880
+of the event loop in this section.
+
+3
+00:00:07,890 --> 00:00:13,090
+We're now going to move on and start talking about some very interesting things about the event loop.
+
+4
+00:00:13,140 --> 00:00:19,200
+The first thing we're going to discuss is to clarify a very common misconception about Noad.
+
+5
+00:00:19,500 --> 00:00:25,720
+So here's the misconception you may have read online from time to time that node is single threaded.
+
+6
+00:00:25,860 --> 00:00:26,870
+That's what people claim.
+
+7
+00:00:26,880 --> 00:00:29,650
+People say no it is single threaded.
+
+8
+00:00:29,670 --> 00:00:34,890
+I even showed you a diagram a few minutes ago that clearly declared that the event loop uses just one
+
+9
+00:00:34,890 --> 00:00:36,030
+thread.
+
+10
+00:00:36,030 --> 00:00:39,170
+However that's not the full story.
+
+11
+00:00:39,210 --> 00:00:41,660
+The truth is much more complicated.
+
+12
+00:00:41,670 --> 00:00:48,900
+So in this section we're going to start to investigate whether or not node is truly single threaded.
+
+13
+00:00:48,900 --> 00:00:49,860
+All right.
+
+14
+00:00:50,050 --> 00:00:53,990
+So here's can I going to clarify what's going on here.
+
+15
+00:00:54,000 --> 00:00:56,100
+We're going to investigate this claim a lot.
+
+16
+00:00:56,130 --> 00:00:58,510
+But here's the first taste of it.
+
+17
+00:00:59,070 --> 00:01:04,020
+So the Noad event loop that we just went through is truly single threaded.
+
+18
+00:01:04,140 --> 00:01:10,110
+When we start up a program with Node a single instance of the event loop is created and placed into
+
+19
+00:01:10,110 --> 00:01:11,160
+one thread.
+
+20
+00:01:11,580 --> 00:01:18,000
+Now that's commonly seen as kind of a bad thing because it means that our program can only run on one
+
+21
+00:01:18,000 --> 00:01:19,210
+core of our seat to you.
+
+22
+00:01:19,440 --> 00:01:24,990
+So if we have many cores inside of our CPQ on our computer then node is not going to automatically take
+
+23
+00:01:24,990 --> 00:01:26,160
+advantage of those.
+
+24
+00:01:26,160 --> 00:01:31,470
+So in other words our program might not run as fast as it could be because it's limited to one single
+
+25
+00:01:31,470 --> 00:01:32,460
+thread.
+
+26
+00:01:32,950 --> 00:01:41,930
+However some of the functions that are included inside of the standard library of node are not actually
+
+27
+00:01:41,940 --> 00:01:43,160
+single threaded.
+
+28
+00:01:43,230 --> 00:01:49,800
+In other words some of the functions that are include inside of node that we run run outside of our
+
+29
+00:01:49,830 --> 00:01:53,370
+event loop and outside of that single thread.
+
+30
+00:01:53,760 --> 00:01:58,890
+So simply declaring that node is single threaded is not absolutely true.
+
+31
+00:01:58,890 --> 00:02:05,540
+The event loop uses a single thread but a lot of the code that you and I write does not actually execute
+
+32
+00:02:05,550 --> 00:02:08,270
+inside that thread entirely.
+
+33
+00:02:08,310 --> 00:02:12,410
+So in this video we're going to start to look at a couple of examples of that.
+
+34
+00:02:12,420 --> 00:02:16,770
+Now I'm not going to show you any diagrams and I'm not going to give you any long speeches to convince
+
+35
+00:02:16,770 --> 00:02:18,390
+you of how this works.
+
+36
+00:02:18,390 --> 00:02:20,980
+Instead you and I are going to write some code.
+
+37
+00:02:21,060 --> 00:02:26,640
+We're going to then executed at the command line and you're going to get some very real proof that not
+
+38
+00:02:26,640 --> 00:02:29,530
+all of node is truly single threaded.
+
+39
+00:02:29,580 --> 00:02:35,970
+So let's open our code editor back up and we're going to write a little bit of code x and so on my code
+
+40
+00:02:35,970 --> 00:02:44,250
+editor we're going to create a new file and I'll call it threads J.S. like so.
+
+41
+00:02:44,670 --> 00:02:51,480
+Inside this file you and I are going to require in the PBK DFT function that's that hashing function
+
+42
+00:02:51,510 --> 00:02:54,980
+that we looked at in the crypto module just a little bit ago.
+
+43
+00:02:55,320 --> 00:03:00,720
+In particular we're going to try to run that function and we're going to benchmark exactly how long
+
+44
+00:03:00,720 --> 00:03:03,190
+it takes to run on our computer.
+
+45
+00:03:03,210 --> 00:03:08,000
+So let's first start off by requiring in crypto at the very top.
+
+46
+00:03:08,280 --> 00:03:12,220
+And remember this is a standard library that is included with node.
+
+47
+00:03:12,930 --> 00:03:18,120
+We're then going to pick off the PBK to function and execute it inside this file.
+
+48
+00:03:18,450 --> 00:03:23,770
+So I'll say crypto dot PBK D F 2.
+
+49
+00:03:24,210 --> 00:03:26,880
+And then we're going to pass in a couple arguments here.
+
+50
+00:03:26,880 --> 00:03:31,110
+Now you don't really need to know exactly what this function is doing because I know I haven't really
+
+51
+00:03:31,110 --> 00:03:33,060
+clearly told you what it's doing.
+
+52
+00:03:33,060 --> 00:03:37,920
+All we're doing is using this function to kind of do some expensive work inside of a program.
+
+53
+00:03:37,950 --> 00:03:42,600
+So it's going to take this function a while to run and we need to benchmark the amount of time that
+
+54
+00:03:42,600 --> 00:03:47,280
+it takes to run and use that to detect whether or not node truly is single threaded.
+
+55
+00:03:47,700 --> 00:03:49,940
+So I'm not going to tell you too much about the arguments here.
+
+56
+00:03:49,980 --> 00:03:52,210
+It's going to throw the arguments in and move on.
+
+57
+00:03:52,530 --> 00:03:57,240
+So as a first argument I'm going to pass in a string of A for the second I'll pass them a string of
+
+58
+00:03:57,240 --> 00:04:01,130
+B for the third argument and this one actually is important.
+
+59
+00:04:01,170 --> 00:04:03,970
+So for this argument please make sure you do the same thing as I.
+
+60
+00:04:04,220 --> 00:04:07,910
+I'm going to put in 100000 thousand like so.
+
+61
+00:04:07,960 --> 00:04:10,020
+Make sure you've got 100000 exactly
+
+62
+00:04:12,720 --> 00:04:19,620
+then as the fourth argument I'll put in five twelth for fifth I'll put in a string of Shaw five one
+
+63
+00:04:19,660 --> 00:04:25,430
+two and then as the last argument I'm going to provide a callback function.
+
+64
+00:04:25,480 --> 00:04:32,480
+Now the Kodak function right here gets invoked after that PBK DFT function has successfully executed
+
+65
+00:04:32,980 --> 00:04:38,080
+so this function takes quite a while to run in total on my machine is probably going to take about 1
+
+66
+00:04:38,080 --> 00:04:43,300
+second to run it to handle that duration or that amount of time that it takes to execute.
+
+67
+00:04:43,330 --> 00:04:48,820
+We get this callback function that gets called after this hash has been successfully computed.
+
+68
+00:04:48,850 --> 00:04:51,540
+Again we don't really need to know what the function itself does.
+
+69
+00:04:51,550 --> 00:04:56,450
+Basically we call the function and then eventually the callbacks going to be executed.
+
+70
+00:04:56,480 --> 00:04:56,760
+OK.
+
+71
+00:04:56,770 --> 00:04:58,380
+So let's take a quick pulse right here.
+
+72
+00:04:58,420 --> 00:05:02,710
+When we come back in the next section we're going to add in a little bit of code to benchmark how long
+
+73
+00:05:02,710 --> 00:05:04,060
+it takes this thing to run.
+
+74
+00:05:04,060 --> 00:05:06,020
+So quick break and I'll see you in just a minute.

@@ -1,0 +1,335 @@
+1
+00:00:00,740 --> 00:00:05,520
+Na última seção, começamos a investigar a implementação de uma função incluída em
+
+2
+00:00:05,520 --> 00:00:08,640
+um dos módulos da biblioteca padrão de nós.
+
+3
+00:00:08,760 --> 00:00:14,310
+Conseguimos encontrar a declaração de função dentro do código-fonte do nó e especificamente dentro
+
+4
+00:00:14,360 --> 00:00:15,750
+da pasta lib.
+
+5
+00:00:15,930 --> 00:00:20,640
+Vimos que dentro da implementação do javascript essa função havia eventualmente uma chamada para uma
+
+6
+00:00:20,640 --> 00:00:23,580
+função que vinha de algo chamado binding de processo.
+
+7
+00:00:24,090 --> 00:00:29,360
+Este processo não vincula coisa aqui é o que serve como uma ponte real entre o lado
+
+8
+00:00:29,360 --> 00:00:35,700
+do Nó do javascript e o lado C + mais, que é onde muito do trabalho interno de tudo o que
+
+9
+00:00:35,700 --> 00:00:38,100
+o nó faz para você é realmente implementado.
+
+10
+00:00:38,100 --> 00:00:43,610
+Então, muito do seu código depende basicamente do código C ++.
+
+11
+00:00:43,740 --> 00:00:46,600
+Nós paramos no processo de declaração não vinculativa.
+
+12
+00:00:46,830 --> 00:00:51,920
+Então, a partir da ligação do processo é um pouco de adesão ao lado do C ++.
+
+13
+00:00:52,050 --> 00:00:56,010
+Então, vamos apenas por um segundo, vamos pular esta parte
+
+14
+00:00:56,010 --> 00:01:03,840
+oito aqui e vamos olhar e encontrar no lado C + + do projeto não onde o PBK DFI para
+
+15
+00:01:04,050 --> 00:01:06,670
+funcionar é realmente realmente verdadeiramente implementado.
+
+16
+00:01:07,340 --> 00:01:12,360
+Então, de volta sobre um hub get eu vou voltar para o diretório do projeto raiz.
+
+17
+00:01:12,780 --> 00:01:18,690
+Então, todo o caminho de volta até aqui no projeto do nó e, em seguida, desta vez, em vez
+
+18
+00:01:18,690 --> 00:01:24,450
+de ir dentro do diretório lib que é onde o lado javascript do Node é pré-colocado, vamos entrar
+
+19
+00:01:24,450 --> 00:01:25,470
+no diretório SIRC.
+
+20
+00:01:25,950 --> 00:01:34,140
+Então, dentro do seu eu vou encontrar dentro deste arquivo ou pasta, você pode encontrar um arquivo chamado
+
+21
+00:01:34,140 --> 00:01:35,720
+Vamos rolar para baixo.
+
+22
+00:01:35,790 --> 00:01:41,170
+Aqui vamos nós nó sublinhar ponto de criptografia CC aqui.
+
+23
+00:01:41,340 --> 00:01:45,600
+Certifique-se de encontrar o arquivo CC do ponto e não o ponto H-1.
+
+24
+00:01:45,660 --> 00:01:54,040
+Então, dentro do arquivo CC do ponto, você encontrará cerca de cinco mil linhas de código C ++ cinco mil
+
+25
+00:01:54,040 --> 00:01:56,510
+setecentas e quarenta e oito linhas.
+
+26
+00:01:56,580 --> 00:01:58,960
+Então este é todo o módulo de criptografia aqui mesmo.
+
+27
+00:01:58,980 --> 00:02:05,890
+Este é todo o código C ++ que o módulo crypto realmente depende dentro do mundo C ++.
+
+28
+00:02:06,540 --> 00:02:12,330
+Dentro deste arquivo eu vou rolar para baixo imediatamente até a parte inferior e descer todo o caminho
+
+29
+00:02:12,330 --> 00:02:18,250
+até a parte inferior ou então rolar de volta um pouco para cima e em torno de uma linha.
+
+30
+00:02:18,480 --> 00:02:18,990
+E aqui vamos nós.
+
+31
+00:02:18,990 --> 00:02:26,520
+Cinqüenta e sete oh quatro ou mais você vai encontrar o que é essencialmente uma declaração de exportação C ++.
+
+32
+00:02:26,520 --> 00:02:30,060
+Agora eu sei que você pode não conhecer o C ++ e está totalmente bem.
+
+33
+00:02:30,120 --> 00:02:33,580
+Mas eu acho que você pode ter uma ideia do que está acontecendo aqui.
+
+34
+00:02:33,750 --> 00:02:40,340
+Esta linha de código é o que leva o PBK você tem que funcionar que é implementado dentro do arquivo
+
+35
+00:02:40,800 --> 00:02:46,070
+C ++ e, em seguida, de alguma forma exporta como uma função chamada PBK você precisa.
+
+36
+00:02:46,230 --> 00:02:51,720
+Portanto, essa linha de código aqui é o que acabou sendo invocado por esse processo que não está
+
+37
+00:02:51,720 --> 00:02:52,340
+em linha.
+
+38
+00:02:52,500 --> 00:02:56,860
+Isto é o que de alguma forma se juntou ao mundo javascript no mundo C ++.
+
+39
+00:02:56,880 --> 00:03:03,840
+E, eventualmente, ele fez esta função C ++ aqui disponível para você no lado do nó vamos encontrar
+
+40
+00:03:03,840 --> 00:03:07,710
+a declaração real do PBK KDAF para dentro deste arquivo.
+
+41
+00:03:08,190 --> 00:03:13,170
+Então, existem cerca de 5000 linhas de código dentro de sua música indo apenas para procurá-lo.
+
+42
+00:03:13,170 --> 00:03:16,440
+Vou procurar por PBK D-Nev. também.
+
+43
+00:03:16,820 --> 00:03:19,830
+E finalmente, certo ano.
+
+44
+00:03:19,850 --> 00:03:21,390
+Aqui vamos nós.
+
+45
+00:03:22,410 --> 00:03:29,310
+Então, isso aqui é onde o verdadeiro real 100 por cento não goofing em torno da implementação
+
+46
+00:03:29,310 --> 00:03:31,580
+dessa função PBK DFT é.
+
+47
+00:03:31,590 --> 00:03:37,050
+Esta é a função real que calcula o hash de algum valor que você fornece para
+
+48
+00:03:37,050 --> 00:03:38,280
+a própria função.
+
+49
+00:03:38,280 --> 00:03:42,420
+Agora não há necessidade de passarmos por todo o código C ++ aqui dentro, mas eu acho que
+
+50
+00:03:42,420 --> 00:03:43,600
+você pode rapidamente entender isso.
+
+51
+00:03:43,620 --> 00:03:50,400
+Sim, parece que sempre que executamos esse código javascript, em última análise, depende de algum código C ++.
+
+52
+00:03:50,400 --> 00:03:55,770
+Agora, a outra coisa em que você pode estar curioso é que o V8 e o lib
+
+53
+00:03:55,770 --> 00:03:56,600
+entram em ação.
+
+54
+00:03:57,030 --> 00:03:59,430
+Se eu for todo o caminho de volta até o topo deste arquivo.
+
+55
+00:03:59,700 --> 00:04:06,720
+E, em seguida, novamente rolar para baixo apenas um par de linhas em torno da linha oitenta e cinco
+
+56
+00:04:06,720 --> 00:04:14,580
+ou então você vai começar a ver um monte de tipo de usar instruções aqui e todos eles estão usando cólon V8
+
+57
+00:04:14,580 --> 00:04:16,350
+e, em seguida, algum nome.
+
+58
+00:04:16,440 --> 00:04:22,230
+Assim, o propósito do projeto V8 dentro de todo esse código-fonte do nó é essencialmente agir
+
+59
+00:04:22,350 --> 00:04:29,270
+como intermediário e permitir que os valores definidos dentro do javascript sejam traduzidos para a equivalência de C ++.
+
+60
+00:04:29,340 --> 00:04:37,330
+Então, todas essas instruções usando aqui estão importando a definição C ++ de conceitos javascript como o entendimento de
+
+61
+00:04:37,480 --> 00:04:45,420
+C ++ do que javascript falsifica onde a compreensão de C ++ do que é um inteiro ou saber
+
+62
+00:04:45,450 --> 00:04:49,420
+ou objeto ou string ou qualquer uma dessas outras coisas.
+
+63
+00:04:49,740 --> 00:04:53,420
+Então é aí que o projeto realmente entra e entra em cena.
+
+64
+00:04:53,710 --> 00:05:00,060
+O projeto é usado para traduzir os valores sem gênio que você e eu colocamos dentro de
+
+65
+00:05:00,060 --> 00:05:07,250
+nossos diferentes programas, como um booleano ou uma função ou um objeto e traduzi-lo em seus equivalentes em C ++.
+
+66
+00:05:07,260 --> 00:05:13,560
+Agora Livi lib U. V. também é usado dentro deste arquivo, embora sua presença seja
+
+67
+00:05:13,560 --> 00:05:14,910
+um pouco mais difícil de ser detectada.
+
+68
+00:05:15,240 --> 00:05:22,350
+Então, dentro desse arquivo eu vou fazer uma busca e vou procurar por U-V agora quando
+
+69
+00:05:22,350 --> 00:05:28,100
+eu procurar por U. V. você realmente começa a ver coisas como o U-V thread começar a aparecer.
+
+70
+00:05:28,240 --> 00:05:33,720
+Você sabe que se eu continuar pesquisando, também verei outras coisas como o U-V.
+
+71
+00:05:33,730 --> 00:05:40,660
+Então dentro desse arquivo lady U. V. é usado para muitas construções de concorrência e
+
+72
+00:05:40,680 --> 00:05:45,460
+processamento no lado do C ++ e esse é realmente o tópico de uma grande discussão que
+
+73
+00:05:45,460 --> 00:05:46,580
+vamos discutir um pouco também.
+
+74
+00:05:47,140 --> 00:05:47,500
+ESTÁ BEM.
+
+75
+00:05:47,530 --> 00:05:54,140
+Então eu sei que este foi um mergulho muito profundo e você pode não conhecer nenhum C ++,
+
+76
+00:05:54,140 --> 00:06:00,730
+mas espero que agora você tenha uma noção melhor de quando você e eu escrevemos código javascript e
+
+77
+00:06:01,150 --> 00:06:08,380
+requeremos módulos de nó ou bibliotecas de nós dependendo de algum javascript definição que eventualmente meio que mapeia até a
+
+78
+00:06:08,410 --> 00:06:10,150
+implementação real de C ++.
+
+79
+00:06:10,150 --> 00:06:12,240
+Do outro lado, nenhum projeto também.
+
+80
+00:06:12,670 --> 00:06:19,760
+E, no lado do C ++, há muita interoperabilidade entre o projeto do V-8 no live U-V também.
+
+81
+00:06:20,260 --> 00:06:25,300
+Portanto, agora que temos uma ideia melhor de como os módulos de nó são realmente implementados Vamos dar uma pausa rápida.
+
+82
+00:06:25,320 --> 00:06:28,900
+Nós vamos voltar na próxima seção e vamos começar a mergulhar um
+
+83
+00:06:28,900 --> 00:06:30,930
+pouco mais nesse material U-V ao vivo.
+
+84
+00:06:30,940 --> 00:06:33,290
+Tão rápido e eu te vejo daqui a pouco.

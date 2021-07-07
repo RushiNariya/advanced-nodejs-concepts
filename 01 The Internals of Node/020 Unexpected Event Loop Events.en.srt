@@ -1,0 +1,659 @@
+1
+00:00:00,720 --> 00:00:05,250
+In the last section we put together a big mega example with a couple of different pieces of code from
+
+2
+00:00:05,250 --> 00:00:08,780
+several different files we've worked on before when we ran this file.
+
+3
+00:00:08,790 --> 00:00:10,760
+We saw some really interesting behavior.
+
+4
+00:00:10,770 --> 00:00:12,920
+So I'm going run it one more time over here.
+
+5
+00:00:13,500 --> 00:00:17,360
+So in the result we see the HDTV request come back first.
+
+6
+00:00:17,490 --> 00:00:23,740
+We then see exactly one hash then the file system callback and then the remaining three hashes as well.
+
+7
+00:00:24,060 --> 00:00:28,020
+So there's a couple of elements here that seem to be very very interesting to me.
+
+8
+00:00:28,020 --> 00:00:34,590
+First off why do we always see exactly one hash console log before the result of the file system.
+
+9
+00:00:34,740 --> 00:00:39,740
+And then secondly why do we always see the HTP request complete first.
+
+10
+00:00:39,770 --> 00:00:46,710
+You know both the h c h TTP requests right here in the file system are both asynchronous calls it takes
+
+11
+00:00:46,710 --> 00:00:49,250
+some amount of time to them for them to complete.
+
+12
+00:00:49,260 --> 00:00:53,300
+So why do we see always the age GTP one finished almost right away.
+
+13
+00:00:53,310 --> 00:00:54,770
+We're relatively right away.
+
+14
+00:00:54,960 --> 00:01:01,030
+But then the FS module call right here always seems to be finished after the first hash.
+
+15
+00:01:01,410 --> 00:01:04,470
+Well in this section we're going to take a look at a couple of different diagrams and try to figure
+
+16
+00:01:04,470 --> 00:01:09,790
+out exactly why this is occurring based on the knowledge we've now picked up on the event loop.
+
+17
+00:01:09,960 --> 00:01:12,150
+So let's get to it.
+
+18
+00:01:12,360 --> 00:01:14,670
+Now this is the real crux of the issue right here.
+
+19
+00:01:14,670 --> 00:01:18,790
+This is like the entire grounding to understand why we're seeing this behavior.
+
+20
+00:01:19,110 --> 00:01:24,510
+Remember in the last couple of videos when we were talking about the event loop we had said that internally
+
+21
+00:01:24,570 --> 00:01:31,030
+node makes use of a thread pool for some very specific function calls in particular.
+
+22
+00:01:31,080 --> 00:01:37,350
+Almost everything inside of the first module or the file system module makes use of this thread pool.
+
+23
+00:01:37,710 --> 00:01:43,920
+And as you and I very well know that crypto module function PBK DFI to also makes use of the thread
+
+24
+00:01:43,920 --> 00:01:45,300
+pool as well.
+
+25
+00:01:46,050 --> 00:01:52,280
+However the OS or some of the apps module that we're using does not make use of that thread pool and
+
+26
+00:01:52,280 --> 00:01:57,930
+instead it reaches out directly to the operating system and leverages the operating system to do all
+
+27
+00:01:57,930 --> 00:02:00,060
+that networking work for us.
+
+28
+00:02:00,060 --> 00:02:05,790
+So while the FS module makes use a thread pool the H.C. cheap module does not.
+
+29
+00:02:05,790 --> 00:02:10,650
+So then mind let's now take a look at the kind of timeline of what we just saw.
+
+30
+00:02:10,650 --> 00:02:13,340
+So I think this right here will look at this diagram for a second.
+
+31
+00:02:13,350 --> 00:02:17,680
+This is just kind of clarifying the time that we saw on all the console logs.
+
+32
+00:02:17,880 --> 00:02:24,180
+So the HDD HTP called resolved right away but we had to wait a really long time for all the other function
+
+33
+00:02:24,180 --> 00:02:24,710
+calls.
+
+34
+00:02:24,720 --> 00:02:26,240
+For some reason.
+
+35
+00:02:26,730 --> 00:02:30,510
+Let's take a look at what this read file function call right here is doing.
+
+36
+00:02:30,510 --> 00:02:34,470
+And then maybe some of the pieces are going to come together and you're going to start to understand
+
+37
+00:02:34,740 --> 00:02:40,540
+why we are always waiting for the reed file call to take so long to complete.
+
+38
+00:02:40,560 --> 00:02:45,090
+So this is more or less what that Reed file call is doing internally.
+
+39
+00:02:45,270 --> 00:02:48,840
+You don't have to really understand exactly every step that's going on here.
+
+40
+00:02:48,840 --> 00:02:53,860
+There's just one thing I want to point out distinctly about what happens when we call read file.
+
+41
+00:02:54,110 --> 00:02:59,730
+So when we first call read file No it does not just go directly to the hard drive and immediately start
+
+42
+00:02:59,730 --> 00:03:00,810
+reading the file.
+
+43
+00:03:01,110 --> 00:03:06,780
+Instead it looks at the file on the harddrive and it tries to gather some statistics about it like how
+
+44
+00:03:06,780 --> 00:03:08,960
+large the file is.
+
+45
+00:03:09,000 --> 00:03:13,250
+That entire process revolt includes one round trip to the hard drive.
+
+46
+00:03:13,470 --> 00:03:14,960
+So we go to the hard drive.
+
+47
+00:03:15,060 --> 00:03:21,120
+We get some statistics about the file and then the result comes back to our program after node has those
+
+48
+00:03:21,120 --> 00:03:25,200
+statistics and now knows how large it can expect that file to be.
+
+49
+00:03:25,290 --> 00:03:28,570
+And then it is now ready to actually go and read the file.
+
+50
+00:03:28,590 --> 00:03:34,380
+So then node actually goes back to the hard drive gets the file contents and returns them to our application
+
+51
+00:03:34,950 --> 00:03:38,570
+and then eventually calls our callback and that's when we saw our console lock.
+
+52
+00:03:39,060 --> 00:03:45,740
+So the really key thing to keep in mind here is that there were two distinct pauses that occurred.
+
+53
+00:03:45,840 --> 00:03:51,800
+We had one pause in this entire read file call where we were just waiting on the harddrive to return
+
+54
+00:03:51,810 --> 00:03:58,170
+some statistics about this file and then we had a second big pause as node went back to the hard drive
+
+55
+00:03:58,230 --> 00:04:01,400
+and started to actually read the contents out.
+
+56
+00:04:01,410 --> 00:04:07,650
+So at this minute let's now look at the final diagram that really explains what was going on.
+
+57
+00:04:08,090 --> 00:04:08,390
+OK.
+
+58
+00:04:08,400 --> 00:04:12,600
+So you can see we've got a couple of different elements here in this diagram on the bottom we've got
+
+59
+00:04:12,600 --> 00:04:17,880
+that same thread pool that we were talking about previously with it's for default threads.
+
+60
+00:04:17,880 --> 00:04:19,620
+Now the first thing to realize here.
+
+61
+00:04:19,620 --> 00:04:23,970
+So this is why this is such a good interview question is because it really makes you understand a lot
+
+62
+00:04:23,970 --> 00:04:25,270
+of different pieces of note.
+
+63
+00:04:25,350 --> 00:04:32,430
+The first thing to realize is that the H T H S modular call it's really it's Keep Yes that does not
+
+64
+00:04:32,430 --> 00:04:33,780
+involve the thread pool at all.
+
+65
+00:04:33,780 --> 00:04:38,880
+It completely skips the thread pool and makes use of the underlying operating system.
+
+66
+00:04:38,880 --> 00:04:43,590
+So when we make that request it doesn't care about what else is going on inside of our program.
+
+67
+00:04:43,590 --> 00:04:44,720
+It doesn't matter.
+
+68
+00:04:44,760 --> 00:04:50,400
+It makes the request and as soon as we get a response back the response is returned to our our code
+
+69
+00:04:50,490 --> 00:04:54,810
+inside event loop and then we get see that console log appear immediately.
+
+70
+00:04:54,840 --> 00:05:00,980
+So the HTP HTP Reclast I just kind of threw in there so that other reminder of it happens outside the
+
+71
+00:05:00,980 --> 00:05:02,390
+thread pool.
+
+72
+00:05:02,390 --> 00:05:07,890
+Now the reason that the FS module call got delayed so long is specifically because of the way that the
+
+73
+00:05:07,900 --> 00:05:09,600
+thread pool works.
+
+74
+00:05:09,620 --> 00:05:15,830
+So the instant that we made all those function calls like these calls right here you can kind of imagine
+
+75
+00:05:16,040 --> 00:05:21,170
+that it's set up five different tasks to be executed inside of our thread pool.
+
+76
+00:05:21,170 --> 00:05:26,540
+First it said OK we need to go read the file and then also said OK also in this thread pool we need
+
+77
+00:05:26,540 --> 00:05:28,490
+to do four hashes.
+
+78
+00:05:28,910 --> 00:05:35,480
+So once those five tasks all got loaded up the first four each got assigned to some thread.
+
+79
+00:05:35,840 --> 00:05:42,840
+So the file system colleague got assigned to thread 1 then PBK due to the first call went to 3 2 2 2
+
+80
+00:05:42,860 --> 00:05:45,460
+3 and 3 1 to 4 and so on.
+
+81
+00:05:45,620 --> 00:05:51,890
+Now threads 2 3 and 4 right here are going to immediately start turning away at these hash calls and
+
+82
+00:05:51,890 --> 00:05:55,580
+it's going to try to calculate those hashes as fast as they possibly can.
+
+83
+00:05:55,970 --> 00:06:00,290
+And meanwhile thread one over here is going to start working on the file system call.
+
+84
+00:06:00,410 --> 00:06:02,350
+And here's the really critical point.
+
+85
+00:06:02,600 --> 00:06:10,140
+The instant that the FS module got loaded into thread 1 thread one started to go through this process
+
+86
+00:06:10,140 --> 00:06:11,010
+right here.
+
+87
+00:06:11,070 --> 00:06:15,630
+So it said OK let's see I have to do everything revolved around reading some file whatever.
+
+88
+00:06:15,750 --> 00:06:21,480
+Well I guess I can go get some stats about that file and then it went to go get some hard drive or access
+
+89
+00:06:21,480 --> 00:06:24,770
+to hard drive and get some information about that file.
+
+90
+00:06:24,780 --> 00:06:31,230
+Now during that phase thread one starts to reach out to the hard drive and as soon as one puts that
+
+91
+00:06:31,230 --> 00:06:32,870
+request into the harddrive.
+
+92
+00:06:33,210 --> 00:06:38,940
+This thread right here then realizes hey you know what I'm going to be waiting for quite a while I won't
+
+93
+00:06:38,940 --> 00:06:43,640
+be waiting like forever on this harddrive to get me some information back.
+
+94
+00:06:43,800 --> 00:06:50,170
+So I think that while I'm waiting for that information I don't care about this task anymore.
+
+95
+00:06:50,190 --> 00:06:51,590
+You know what that has task.
+
+96
+00:06:51,600 --> 00:06:57,450
+It can just sit around and it can wait because I have to wait literally forever to get some information
+
+97
+00:06:57,450 --> 00:06:59,690
+back from the harddrive.
+
+98
+00:06:59,700 --> 00:07:05,190
+So as soon as that reaches out to the drive thread number one then says Hey everybody I'm available
+
+99
+00:07:05,190 --> 00:07:06,390
+to do something else.
+
+100
+00:07:06,540 --> 00:07:08,760
+Oh I need to calculate some hash.
+
+101
+00:07:08,780 --> 00:07:11,720
+For PBK do you have to call number four over here.
+
+102
+00:07:11,730 --> 00:07:12,230
+Great.
+
+103
+00:07:12,240 --> 00:07:13,940
+I'm gonna start working on that.
+
+104
+00:07:14,340 --> 00:07:20,610
+And so thread number one temporarily forgets about that file system call and it starts calculating hashed
+
+105
+00:07:20,610 --> 00:07:22,980
+number four over here.
+
+106
+00:07:22,980 --> 00:07:26,120
+Then eventually out of thread two three and four.
+
+107
+00:07:26,160 --> 00:07:27,780
+One of these is going to finish.
+
+108
+00:07:27,780 --> 00:07:28,950
+So one of these is going to finish.
+
+109
+00:07:28,950 --> 00:07:32,790
+Maybe it's the thread to working on Call 1 right here.
+
+110
+00:07:32,790 --> 00:07:39,930
+So this call gets completed and now Thread 2 has now been opened up thread 2 finishes that first hash
+
+111
+00:07:40,220 --> 00:07:41,210
+hashing function.
+
+112
+00:07:41,280 --> 00:07:49,860
+It does the console log which is what we saw right here and then thread 2 says OK I'm now ready to pick
+
+113
+00:07:49,860 --> 00:07:55,860
+some work back up so thread number two sees that there's still a pending file system call that needs
+
+114
+00:07:55,860 --> 00:07:57,530
+to be worked on right here.
+
+115
+00:07:57,540 --> 00:08:02,700
+Thread number two then looks to see if it has gotten any information back from the hard drive like those
+
+116
+00:08:02,700 --> 00:08:04,460
+statistics that we're just talking about.
+
+117
+00:08:04,470 --> 00:08:06,530
+And in this case yes it has.
+
+118
+00:08:06,540 --> 00:08:11,940
+So then those statistics I know this diagram certainly a crazy but you can imagine that these statistics
+
+119
+00:08:11,940 --> 00:08:17,510
+come back in a thread to and then thread two starts continue to work on the file system call.
+
+120
+00:08:17,760 --> 00:08:21,800
+It then makes another follow up requests to the hard drive to get the actual file contents.
+
+121
+00:08:21,930 --> 00:08:27,420
+But this time when it makes that followup request to actually get the file contents like this step right
+
+122
+00:08:27,420 --> 00:08:30,190
+here there's no other word for it to do.
+
+123
+00:08:30,330 --> 00:08:33,360
+So it just sits around and waits for it to come back.
+
+124
+00:08:33,420 --> 00:08:38,520
+And then as soon as those file contents come back then thread number two process processes them and
+
+125
+00:08:38,520 --> 00:08:40,770
+we then see that console log appear.
+
+126
+00:08:40,770 --> 00:08:49,470
+So that's why we saw over here we always saw one hash get completed before the file system module because
+
+127
+00:08:49,470 --> 00:08:55,460
+we queue up that file system call that thread does some initial work and makes request over the hard
+
+128
+00:08:55,460 --> 00:08:57,990
+drive that thread then says hey you know what.
+
+129
+00:08:57,990 --> 00:08:59,310
+The hard drives can take forever.
+
+130
+00:08:59,340 --> 00:09:00,590
+I'm going to do something else.
+
+131
+00:09:00,660 --> 00:09:06,240
+And so it picks up one of the other hash calls it starts working on that and then eventually it fit
+
+132
+00:09:06,450 --> 00:09:13,850
+another thread will finish some hashing call and it will go back and continue working on the file system.
+
+133
+00:09:14,100 --> 00:09:14,480
+All right.
+
+134
+00:09:14,490 --> 00:09:15,190
+So that's it.
+
+135
+00:09:15,240 --> 00:09:17,540
+That's what's going on behind the scenes here.
+
+136
+00:09:17,550 --> 00:09:23,280
+Like I said I think this would be like the most insane interview question ever because it really requires
+
+137
+00:09:23,280 --> 00:09:26,630
+you to understand exactly what knode is doing internally.
+
+138
+00:09:26,700 --> 00:09:32,650
+You have to understand first off that the TTP module does not work with the thread pool.
+
+139
+00:09:32,850 --> 00:09:38,450
+You have to understand that the FS module does along with the crypto module PBK you have to function
+
+140
+00:09:38,850 --> 00:09:44,430
+and you have to also understand that the thread pool by default has four threads available to it.
+
+141
+00:09:44,430 --> 00:09:49,680
+Now just one quick thing I want to throw in here as kind of a follow up tricky question.
+
+142
+00:09:49,680 --> 00:09:56,260
+Maybe not that tricky if we went in increased the thread pool size inside of multitasked us.
+
+143
+00:09:56,310 --> 00:10:00,030
+Remember we can do that at the very top by setting this environment variable.
+
+144
+00:10:00,090 --> 00:10:05,190
+So if we increased our thread pool size up to 5 and then ran this file again.
+
+145
+00:10:05,310 --> 00:10:06,920
+What do you think would happen.
+
+146
+00:10:06,930 --> 00:10:09,800
+Well I bet you could take a pretty good guess here.
+
+147
+00:10:09,810 --> 00:10:16,040
+So when I run this now we have an extra thread that can be 100 percent responsible for everything.
+
+148
+00:10:16,050 --> 00:10:21,690
+The file system called needs and so that fifth thread is now entirely dedicated to working with the
+
+149
+00:10:21,690 --> 00:10:24,030
+hard drive and doing whatever needs to occur.
+
+150
+00:10:24,210 --> 00:10:29,700
+And thats why now we see the result right here appear immediately and then likewise if we go all the
+
+151
+00:10:29,700 --> 00:10:30,750
+way down to 1.
+
+152
+00:10:30,840 --> 00:10:31,770
+So only one thread.
+
+153
+00:10:31,770 --> 00:10:36,570
+Now this one thread is going to do some initial work on the file system call.
+
+154
+00:10:36,690 --> 00:10:39,940
+Its then going to say okay file system we're waiting on the hard drive.
+
+155
+00:10:39,960 --> 00:10:41,210
+I'll catch you later.
+
+156
+00:10:41,250 --> 00:10:46,680
+It will then process all four hashes and then eventually once those are all done it will then resolve
+
+157
+00:10:46,770 --> 00:10:49,500
+or do the rest of the work for the file system call.
+
+158
+00:10:49,560 --> 00:10:56,760
+So if we now do this we'll see Housh 1 2 3 4 and then the result of the file system call and all the
+
+159
+00:10:56,760 --> 00:11:04,860
+while the actual HTP request is completely unchanged because it's not touching the thread pool at all.
+
+160
+00:11:04,860 --> 00:11:05,700
+All right.
+
+161
+00:11:05,700 --> 00:11:09,850
+Like I said I was super it about this because we finally got through all of you then loop stuff in now
+
+162
+00:11:09,870 --> 00:11:14,570
+you can start to really understand this crazy behavior that you start to see in code.
+
+163
+00:11:14,580 --> 00:11:17,170
+So there's been a lot of fun let's continue in the next section.
+
+164
+00:11:17,220 --> 00:11:20,190
+And we're going to start we're looking at some performance of note.
+
+165
+00:11:20,250 --> 00:11:22,240
+So quick break and I'll see you in just a minute.

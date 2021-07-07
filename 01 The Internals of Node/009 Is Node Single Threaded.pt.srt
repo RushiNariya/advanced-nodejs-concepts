@@ -1,0 +1,295 @@
+1
+00:00:00,710 --> 00:00:05,520
+Na última seção, terminamos passando pelas cinco etapas diferentes que ocorrem durante um ciclo
+
+2
+00:00:05,580 --> 00:00:07,880
+do loop de eventos nesta seção.
+
+3
+00:00:07,890 --> 00:00:13,090
+Agora vamos seguir em frente e começar a falar sobre algumas coisas muito interessantes sobre o loop de eventos.
+
+4
+00:00:13,140 --> 00:00:19,200
+A primeira coisa que vamos discutir é esclarecer um equívoco muito comum sobre o Noad.
+
+5
+00:00:19,500 --> 00:00:25,720
+Então aqui está o equívoco que você pode ter lido on-line de vez em quando que o nó é único encadeado.
+
+6
+00:00:25,860 --> 00:00:26,870
+É o que as pessoas dizem.
+
+7
+00:00:26,880 --> 00:00:29,650
+As pessoas dizem que não é single threaded.
+
+8
+00:00:29,670 --> 00:00:34,890
+Eu até mostrei um diagrama há alguns minutos que claramente declarava que o loop de eventos
+
+9
+00:00:34,890 --> 00:00:36,030
+usa apenas um thread.
+
+10
+00:00:36,030 --> 00:00:39,170
+No entanto, essa não é a história completa.
+
+11
+00:00:39,210 --> 00:00:41,660
+A verdade é muito mais complicada.
+
+12
+00:00:41,670 --> 00:00:48,900
+Então, nesta seção, vamos começar a investigar se o nó é verdadeiramente único thread.
+
+13
+00:00:48,900 --> 00:00:49,860
+Tudo bem.
+
+14
+00:00:50,050 --> 00:00:53,990
+Então, aqui está eu vou esclarecer o que está acontecendo aqui.
+
+15
+00:00:54,000 --> 00:00:56,100
+Nós vamos investigar muito essa afirmação.
+
+16
+00:00:56,130 --> 00:00:58,510
+Mas aqui está o primeiro gosto disso.
+
+17
+00:00:59,070 --> 00:01:04,020
+Então, o loop de eventos Noad que acabamos de passar é realmente único thread.
+
+18
+00:01:04,140 --> 00:01:10,110
+Quando iniciamos um programa com o Node, uma única instância do loop de eventos é criada e colocada
+
+19
+00:01:10,110 --> 00:01:11,160
+em um thread.
+
+20
+00:01:11,580 --> 00:01:18,000
+Agora isso é comumente visto como algo ruim, porque significa que nosso programa só pode ser executado em um núcleo de
+
+21
+00:01:18,000 --> 00:01:19,210
+nosso assento para você.
+
+22
+00:01:19,440 --> 00:01:24,990
+Portanto, se tivermos muitos núcleos dentro de nosso CPQ em nosso computador, o nó não tirará
+
+23
+00:01:24,990 --> 00:01:26,160
+automaticamente proveito deles.
+
+24
+00:01:26,160 --> 00:01:31,470
+Então, em outras palavras, nosso programa pode não ser executado tão rápido quanto poderia ser porque está limitado a
+
+25
+00:01:31,470 --> 00:01:32,460
+um único thread.
+
+26
+00:01:32,950 --> 00:01:41,930
+No entanto, algumas das funções incluídas dentro da biblioteca padrão do nó não são, na verdade, de
+
+27
+00:01:41,940 --> 00:01:43,160
+encadeamento único.
+
+28
+00:01:43,230 --> 00:01:49,800
+Em outras palavras, algumas das funções incluídas dentro do nó que executamos são executadas fora do
+
+29
+00:01:49,830 --> 00:01:53,370
+nosso loop de eventos e fora desse único encadeamento.
+
+30
+00:01:53,760 --> 00:01:58,890
+Portanto, simplesmente declarar que o nó é único encadeado não é absolutamente verdadeiro.
+
+31
+00:01:58,890 --> 00:02:05,540
+O loop de eventos usa um único thread, mas muito do código que você e eu gravamos
+
+32
+00:02:05,550 --> 00:02:08,270
+não é executado inteiramente dentro desse thread.
+
+33
+00:02:08,310 --> 00:02:12,410
+Então, neste vídeo, vamos começar a ver alguns exemplos disso.
+
+34
+00:02:12,420 --> 00:02:16,770
+Agora eu não vou mostrar nenhum diagrama e não vou lhe dar longos discursos para
+
+35
+00:02:16,770 --> 00:02:18,390
+convencê-lo de como isso funciona.
+
+36
+00:02:18,390 --> 00:02:20,980
+Em vez disso, você e eu vamos escrever algum código.
+
+37
+00:02:21,060 --> 00:02:26,640
+Em seguida, seremos executados na linha de comando e você obterá uma prova muito real de que
+
+38
+00:02:26,640 --> 00:02:29,530
+nem todo o nó é verdadeiramente de encadeamento único.
+
+39
+00:02:29,580 --> 00:02:35,970
+Então, vamos abrir o nosso editor de código e vamos escrever um pouco de código xe assim no meu editor de código vamos criar
+
+40
+00:02:35,970 --> 00:02:44,250
+um novo arquivo e eu vou chamá-lo de threads J. S. igual a.
+
+41
+00:02:44,670 --> 00:02:51,480
+Dentro deste arquivo, você e eu vamos exigir na função PBK DFT essa função de hashing que
+
+42
+00:02:51,510 --> 00:02:54,980
+analisamos no módulo de criptografia apenas um pouquinho atrás.
+
+43
+00:02:55,320 --> 00:03:00,720
+Em particular, vamos tentar executar essa função e vamos fazer o benchmark exatamente quanto
+
+44
+00:03:00,720 --> 00:03:03,190
+tempo leva para rodar em nosso computador.
+
+45
+00:03:03,210 --> 00:03:08,000
+Então, vamos primeiro começar exigindo criptografia no topo.
+
+46
+00:03:08,280 --> 00:03:12,220
+E lembre-se que esta é uma biblioteca padrão incluída no nó.
+
+47
+00:03:12,930 --> 00:03:18,120
+Em seguida, vamos retirar o PBK para funcionar e executá-lo dentro desse arquivo.
+
+48
+00:03:18,450 --> 00:03:23,770
+Então eu vou dizer crypto dot PBK D F 2.
+
+49
+00:03:24,210 --> 00:03:26,880
+E então vamos passar algumas discussões aqui.
+
+50
+00:03:26,880 --> 00:03:31,110
+Agora você realmente não precisa saber exatamente o que esta função está fazendo porque eu sei que
+
+51
+00:03:31,110 --> 00:03:33,060
+não lhe disse claramente o que está fazendo.
+
+52
+00:03:33,060 --> 00:03:37,920
+Tudo o que estamos fazendo é usar essa função para fazer algum trabalho caro dentro de um programa.
+
+53
+00:03:37,950 --> 00:03:42,600
+Portanto, essa função demorará algum tempo para ser executada e precisamos fazer um benchmark da quantidade de
+
+54
+00:03:42,600 --> 00:03:47,280
+tempo necessária para executar e usar isso para detectar se o nó é ou não verdadeiramente thread único.
+
+55
+00:03:47,700 --> 00:03:49,940
+Então eu não vou falar muito sobre os argumentos aqui.
+
+56
+00:03:49,980 --> 00:03:52,210
+Vai lançar os argumentos e seguir em frente.
+
+57
+00:03:52,530 --> 00:03:57,240
+Então, como um primeiro argumento, eu vou passar uma sequência de A para o segundo e passar a
+
+58
+00:03:57,240 --> 00:04:01,130
+eles uma string de B para o terceiro argumento, e este, na verdade, é importante.
+
+59
+00:04:01,170 --> 00:04:03,970
+Então, para este argumento, por favor, certifique-se de fazer a mesma coisa que eu.
+
+60
+00:04:04,220 --> 00:04:07,910
+Vou colocar em 100.000 mil assim.
+
+61
+00:04:07,960 --> 00:04:10,020
+Certifique-se de que você tenha 100.000
+
+62
+00:04:12,720 --> 00:04:19,620
+exatamente como o quarto argumento que eu vou colocar em cinco partes por quinto eu vou colocar em uma string
+
+63
+00:04:19,660 --> 00:04:25,430
+de Shaw cinco um dois e depois como último argumento eu vou fornecer uma função de callback.
+
+64
+00:04:25,480 --> 00:04:32,480
+Agora a função Kodak aqui é invocada depois que a função PBK DFT foi executada com sucesso, então essa função leva um bom
+
+65
+00:04:32,980 --> 00:04:38,080
+tempo para ser executada no total em minha máquina, provavelmente levará cerca de 1 segundo para
+
+66
+00:04:38,080 --> 00:04:43,300
+ser executada para lidar com essa duração ou a quantidade de tempo que é preciso para executar.
+
+67
+00:04:43,330 --> 00:04:48,820
+Recebemos essa função de retorno de chamada que é chamada após esse hash ter sido calculado com êxito.
+
+68
+00:04:48,850 --> 00:04:51,540
+Novamente, não precisamos realmente saber o que a função em si faz.
+
+69
+00:04:51,550 --> 00:04:56,450
+Basicamente, chamamos a função e, eventualmente, os retornos de chamada serão executados.
+
+70
+00:04:56,480 --> 00:04:56,760
+ESTÁ BEM.
+
+71
+00:04:56,770 --> 00:04:58,380
+Então, vamos dar um pulso rápido aqui.
+
+72
+00:04:58,420 --> 00:05:02,710
+Quando voltarmos na próxima seção, adicionaremos um pouco de código para avaliar quanto tempo
+
+73
+00:05:02,710 --> 00:05:04,060
+isso leva a ser executado.
+
+74
+00:05:04,060 --> 00:05:06,020
+Tão rápido e eu te vejo daqui a pouco.

@@ -1,0 +1,203 @@
+1
+00:00:00,700 --> 00:00:04,800
+Now that we've got there is some administrative stuff we're going to immediately dive into our first
+
+2
+00:00:04,810 --> 00:00:07,050
+technical topic in this section.
+
+3
+00:00:07,060 --> 00:00:12,010
+We're going to start to look at some of the internals of no yes once we have a better idea of how Noad
+
+4
+00:00:12,010 --> 00:00:13,160
+works internally.
+
+5
+00:00:13,210 --> 00:00:18,170
+We'll then be able to leverage that knowledge to write some more performant code inside of our applications.
+
+6
+00:00:18,430 --> 00:00:20,570
+So let's get started right now.
+
+7
+00:00:20,710 --> 00:00:23,970
+We're going to start off by taking a look at a very simple diagram.
+
+8
+00:00:24,190 --> 00:00:29,020
+And then over time we're going to come back to this diagram right here and add on a lot more detail
+
+9
+00:00:29,020 --> 00:00:32,130
+to it to show you how a node is internally structured.
+
+10
+00:00:32,620 --> 00:00:35,130
+So here's our first iteration at the very top.
+
+11
+00:00:35,140 --> 00:00:38,630
+We've got a box that represents the javascript code that you and I write.
+
+12
+00:00:38,650 --> 00:00:44,230
+So this is the actual code that we place into javascript files and then eventually execute at the command
+
+13
+00:00:44,230 --> 00:00:44,760
+line.
+
+14
+00:00:45,640 --> 00:00:52,530
+When we run node and then index not just at the command line we are invoking the no J us project.
+
+15
+00:00:52,660 --> 00:00:58,810
+Now just like any other javascript project out there no chaos internally has a collection of dependencies
+
+16
+00:00:58,990 --> 00:01:01,760
+that it uses to actually execute your code.
+
+17
+00:01:02,230 --> 00:01:06,250
+Two of the most important dependencies and these are two dependencies that we're going to focus on quite
+
+18
+00:01:06,250 --> 00:01:12,670
+a bit throughout this course are the V8 project and the live U.V. project.
+
+19
+00:01:12,670 --> 00:01:18,410
+The V8 project is an open source javascript engine created by Google.
+
+20
+00:01:18,430 --> 00:01:23,920
+The purpose of this project is to be able to execute javascript code outside of the browser and that's
+
+21
+00:01:23,920 --> 00:01:27,620
+what we do when we run our javascript code from the terminal.
+
+22
+00:01:27,850 --> 00:01:35,410
+The lib U-V project over here is a C++ open source project that gives node access to the operating systems
+
+23
+00:01:35,680 --> 00:01:37,550
+underlying file system.
+
+24
+00:01:37,570 --> 00:01:42,650
+It gives us access to networking and it also handles some aspects of concurrency as well.
+
+25
+00:01:44,090 --> 00:01:48,640
+So any time that you show this diagram to someone their first question might be OK.
+
+26
+00:01:48,680 --> 00:01:55,040
+So we got one module right here that gives us access to the file system and networking and other stuff.
+
+27
+00:01:55,040 --> 00:01:58,550
+And then we've got this one right here that actually executes our Javascript code.
+
+28
+00:01:58,760 --> 00:02:02,070
+So what is the purpose of no genius.
+
+29
+00:02:02,330 --> 00:02:03,680
+And that's a very good question.
+
+30
+00:02:03,830 --> 00:02:11,820
+So I want to give you an idea of why we use note at all and why we don't directly use V8 or live U-V.
+
+31
+00:02:12,080 --> 00:02:17,390
+The first thing to understand is that internally some of these other libraries are not javascript code
+
+32
+00:02:17,450 --> 00:02:18,990
+at all.
+
+33
+00:02:19,070 --> 00:02:27,010
+The V8 project is like 70 percent C++ code and lib U-V over here is 100 percent C++.
+
+34
+00:02:27,140 --> 00:02:32,990
+So chances are that you as a javascript developer you probably don't want to be writing C++ code all
+
+35
+00:02:32,990 --> 00:02:33,530
+day.
+
+36
+00:02:33,590 --> 00:02:36,940
+You want to write javascript code and just have it work.
+
+37
+00:02:36,980 --> 00:02:44,120
+So that's one of the purposes of no G-S node gives us a nice interface to use to relate our javascript
+
+38
+00:02:44,120 --> 00:02:50,900
+side of our application to the actual C++ thats running on our computer to actually interpret and execute
+
+39
+00:02:50,900 --> 00:02:53,090
+our Javascript code.
+
+40
+00:02:53,090 --> 00:02:59,630
+The other thing that no does is provide a series of wrappers and a very unified inconsistent API for
+
+41
+00:02:59,630 --> 00:03:01,840
+us to use inside of our projects.
+
+42
+00:03:02,270 --> 00:03:10,190
+So for example node implements the HTP module and FS path crypto all these modules right here have very
+
+43
+00:03:10,190 --> 00:03:11,790
+consistent API.
+
+44
+00:03:12,140 --> 00:03:18,740
+And they all ultimately refer to a functionality that is mostly implemented inside of the lib project
+
+45
+00:03:18,740 --> 00:03:19,640
+over here.
+
+46
+00:03:20,000 --> 00:03:24,610
+So again you probably don't want to get access to direct C++ code.
+
+47
+00:03:24,710 --> 00:03:30,850
+You want to require in some javascript function and use a javascript function inside of your codebase.
+
+48
+00:03:30,920 --> 00:03:37,740
+So by making use of node you dont have to work with all the C++ that exists inside of Libya itself.
+
+49
+00:03:38,450 --> 00:03:41,780
+OK now weve got a better idea of why we use note at all.
+
+50
+00:03:41,780 --> 00:03:46,040
+Let's take a quick pause right here and we're going to continue the next section and continue fleshing
+
+51
+00:03:46,040 --> 00:03:47,150
+out this diagram.

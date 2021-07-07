@@ -1,0 +1,499 @@
+1
+00:00:00,470 --> 00:00:04,560
+Agora que temos um conhecimento mais básico do nosso loop de eventos, vamos
+
+2
+00:00:04,560 --> 00:00:08,140
+começar a olhar para um comportamento realmente interessante em torno de não.
+
+3
+00:00:08,190 --> 00:00:12,900
+Dentro da seção, em particular, vamos pegar alguns dos códigos que você e
+
+4
+00:00:12,900 --> 00:00:17,400
+eu escrevemos nos últimos vídeos e vamos mesclar tudo em um mega exemplo.
+
+5
+00:00:17,400 --> 00:00:23,250
+E quando colocarmos esse exemplo juntos, você verá um comportamento incompreensível que realmente une
+
+6
+00:00:23,340 --> 00:00:24,600
+todos esses tópicos.
+
+7
+00:00:24,930 --> 00:00:30,580
+Na minha opinião, esta pode ser a melhor pergunta genial que você jamais encontrará.
+
+8
+00:00:30,580 --> 00:00:33,110
+Tudo bem, então vamos montar um exemplo de código aqui.
+
+9
+00:00:33,150 --> 00:00:35,240
+Não vai se comportar da maneira que você espera.
+
+10
+00:00:35,340 --> 00:00:37,990
+E acho que seria uma boa pergunta para a entrevista.
+
+11
+00:00:38,040 --> 00:00:40,810
+Apenas na minha opinião de qualquer maneira, vamos começar.
+
+12
+00:00:40,890 --> 00:00:46,560
+Então, vamos tirar algum código do nosso arquivo DOM assíncrono em nosso arquivo Scott G-S
+
+13
+00:00:46,560 --> 00:00:49,160
+thread e vamos mesclá-lo em um exemplo.
+
+14
+00:00:49,230 --> 00:00:58,640
+Então eu vou fazer um novo arquivo dentro do meu diretório principal chamado multitask J. S. então dentro desse arquivo eu vou pegar tudo
+
+15
+00:00:58,650 --> 00:01:04,260
+de async G-S e iniciar de threads e apenas copiar e colar tudo aqui
+
+16
+00:01:04,260 --> 00:01:08,300
+e então vamos brincar um pouco com o código.
+
+17
+00:01:08,310 --> 00:01:16,170
+Então, primeiro vá para o async, vou copiar tudo aqui e vou
+
+18
+00:01:16,330 --> 00:01:17,920
+colá-lo em multitarefa.
+
+19
+00:01:18,320 --> 00:01:21,340
+Eu vou fazer um pouco de limpeza nesses pedidos aqui.
+
+20
+00:01:21,360 --> 00:01:23,930
+Então, vou deletar todas as declarações de pedidos.
+
+21
+00:01:23,940 --> 00:01:29,120
+Tudo o que quero ter agora é onde recebemos a data de início, a declaração require no topo e
+
+22
+00:01:29,130 --> 00:01:30,920
+a função do pedido como tal.
+
+23
+00:01:32,050 --> 00:01:33,540
+Em seguida vou entrar em tópicos.
+
+24
+00:01:33,570 --> 00:01:35,140
+Sim.
+
+25
+00:01:35,320 --> 00:01:41,080
+E então aqui eu vou pegar apenas uma daquelas funções de callback do P. B. KDAF duas chamadas de
+
+26
+00:01:41,080 --> 00:01:41,800
+função.
+
+27
+00:01:41,860 --> 00:01:46,330
+Eu não vou copiar e colar qualquer coisa fora daqui, porque se começarmos a copiar e colar
+
+28
+00:01:46,330 --> 00:01:48,410
+várias coisas, isso vai ficar um pouco confuso.
+
+29
+00:01:48,550 --> 00:01:53,570
+Então, vou copiar essa chamada de função ou voltar para a multitarefa.
+
+30
+00:01:53,690 --> 00:01:58,480
+Sim e eu vou criar uma nova função chamada Do hash.
+
+31
+00:01:58,510 --> 00:02:01,550
+Vou colocar nossa chamada de função de hash nessa coisa.
+
+32
+00:02:02,010 --> 00:02:10,010
+Então diga função fazer hash assim então eu vou colar no nosso PBK DFA para funcionar.
+
+33
+00:02:10,570 --> 00:02:16,100
+E eu também vou atualizar o log do console para dizer cache assim tão OK.
+
+34
+00:02:16,130 --> 00:02:20,530
+Vamos rapidamente garantir que também precisamos do módulo Criddle antes de esquecermos isso.
+
+35
+00:02:20,840 --> 00:02:29,290
+Então volte para o topo e eu vou exigir no módulo crypto assim.
+
+36
+00:02:30,050 --> 00:02:30,290
+Tudo bem.
+
+37
+00:02:30,290 --> 00:02:32,270
+Vamos agora para a nossa linha de comando.
+
+38
+00:02:32,270 --> 00:02:35,930
+Vamos rodar esse arquivo e vamos nos certificar de que tudo funciona e que não
+
+39
+00:02:35,930 --> 00:02:37,110
+temos nenhum erro de digitação.
+
+40
+00:02:37,130 --> 00:02:40,090
+No momento, não estamos ligando para solicitar ou fazer hash.
+
+41
+00:02:40,160 --> 00:02:42,650
+Eu só quero ter certeza de que não recebemos nenhum erro agora.
+
+42
+00:02:42,680 --> 00:02:43,940
+Isso é tudo.
+
+43
+00:02:43,940 --> 00:02:48,150
+Então eu tenho que voltar para o meu terminal e eu vou rodar multitarefa de nós.
+
+44
+00:02:48,340 --> 00:02:49,170
+Sim.
+
+45
+00:02:49,240 --> 00:02:50,950
+E quando faço isso, não vejo erros.
+
+46
+00:02:50,960 --> 00:02:52,950
+Então é exatamente isso que eu espero.
+
+47
+00:02:53,410 --> 00:02:53,680
+ESTÁ BEM.
+
+48
+00:02:53,690 --> 00:02:59,630
+Então, como está agora, esse arquivo é bem chato, mas vamos adicionar um módulo adicional a essa coisa
+
+49
+00:02:59,750 --> 00:03:03,470
+e então vamos chamar algumas funções diferentes e é aí que
+
+50
+00:03:03,470 --> 00:03:06,280
+vamos começar a ver algumas comportamento muito interessante.
+
+51
+00:03:06,290 --> 00:03:14,150
+Então, aqui está um terceiro módulo vai exigir que eu vou dizer Konst FS é exigir FS como um lembrete.
+
+52
+00:03:14,160 --> 00:03:16,690
+FS aqui é o módulo do sistema de arquivos.
+
+53
+00:03:16,820 --> 00:03:24,080
+Assim, podemos usar este módulo para ler arquivos do nosso disco rígido sob nossas duas chamadas de função ou duas
+
+54
+00:03:24,080 --> 00:03:26,090
+funções solicitar e fazer um hash.
+
+55
+00:03:26,090 --> 00:03:32,270
+Vou adicionar uma nova chamada de função para esse módulo FS e vamos usar o módulo FS para
+
+56
+00:03:32,270 --> 00:03:36,800
+tentar ler todo o código que acabamos de escrever nesse arquivo desonesto multitarefa.
+
+57
+00:03:37,100 --> 00:03:41,450
+Eu sei que isso pode parecer uma coisa estranha de se fazer, mas acredite em mim, estamos chegando
+
+58
+00:03:41,480 --> 00:03:45,620
+a um ponto aqui muito rapidamente e assim que montarmos este trecho de código, você começará a
+
+59
+00:03:45,620 --> 00:03:46,930
+ver algumas coisas bem interessantes.
+
+60
+00:03:46,940 --> 00:03:52,750
+Tudo bem, então vamos tentar ler tudo dentro do multi-tasked J. S. o arquivo que acabamos de criar.
+
+61
+00:03:52,940 --> 00:03:57,030
+Então, diga que o FS não lê o arquivo.
+
+62
+00:03:57,230 --> 00:03:59,500
+Coloque o nome do arquivo que acabamos de criar.
+
+63
+00:03:59,570 --> 00:04:05,660
+Multitarefa, assim como todo o colocado na codificação de arquivo que é UTF 8.
+
+64
+00:04:05,960 --> 00:04:08,190
+E então eu adicionarei um pequeno retorno de chamada.
+
+65
+00:04:08,420 --> 00:04:12,560
+E dentro desse retorno de chamada, vamos fazer o mesmo tipo de referência que
+
+66
+00:04:12,560 --> 00:04:14,030
+estamos fazendo o tempo todo.
+
+67
+00:04:14,030 --> 00:04:19,490
+Então, por dentro, se você está fora do Konst um log eu vou dar-lhe uma string de FS Então, sabemos que este
+
+68
+00:04:19,490 --> 00:04:22,150
+log do console está vindo do módulo do sistema de arquivos.
+
+69
+00:04:22,340 --> 00:04:23,920
+E depois faremos a nossa descida.
+
+70
+00:04:23,920 --> 00:04:27,520
+Agora Linus começa assim.
+
+71
+00:04:28,250 --> 00:04:28,490
+Tudo bem.
+
+72
+00:04:28,490 --> 00:04:35,630
+Então, agora temos uma função fazer pedido de hash e, em seguida, este último arquivo de leitura aqui vai
+
+73
+00:04:35,630 --> 00:04:38,780
+ser invocado imediatamente assim que executarmos este arquivo.
+
+74
+00:04:38,780 --> 00:04:42,040
+Então agora é aqui que as coisas começam a ficar realmente loucas.
+
+75
+00:04:42,130 --> 00:04:45,050
+OK aqui é onde as coisas ficam realmente muito interessantes.
+
+76
+00:04:45,110 --> 00:04:49,280
+Eu vou adicionar uma função chamada para fazer o pedido logo acima.
+
+77
+00:04:49,280 --> 00:04:56,090
+Então, lembre-se de que o pedido vai fazer um pedido de HTP para o Google e, em seguida, abaixo, é aqui que
+
+78
+00:04:56,090 --> 00:04:57,180
+as coisas ficam loucas.
+
+79
+00:04:57,380 --> 00:04:58,720
+Eu vou dizer fazer hash.
+
+80
+00:04:58,760 --> 00:05:01,290
+Então, vai calcular nosso hash com PBK.
+
+81
+00:05:01,360 --> 00:05:02,240
+Funcionar.
+
+82
+00:05:02,420 --> 00:05:06,920
+E eu vou ligar 4 vezes assim.
+
+83
+00:05:07,580 --> 00:05:07,930
+ESTÁ BEM.
+
+84
+00:05:07,940 --> 00:05:12,270
+Então vamos dar uma olhada neste código e realmente tentar descobrir o que está acontecendo.
+
+85
+00:05:12,290 --> 00:05:17,030
+Então, quando executarmos esse arquivo, tentaremos primeiro fazer uma solicitação ao Google.
+
+86
+00:05:17,030 --> 00:05:20,670
+Vamos então tentar ler todo o conteúdo do nosso arquivo atual.
+
+87
+00:05:21,260 --> 00:05:22,190
+Sim.
+
+88
+00:05:22,460 --> 00:05:26,600
+E depois também tentaremos calcular os hashes.
+
+89
+00:05:26,600 --> 00:05:30,170
+Agora a minha pergunta para você e esta é uma questão de entrevista.
+
+90
+00:05:30,170 --> 00:05:32,210
+Isto é como um dobrador total do cérebro.
+
+91
+00:05:32,210 --> 00:05:33,430
+Minha pergunta para você.
+
+92
+00:05:33,740 --> 00:05:38,790
+Que ordem vamos ver esses registros do console?
+
+93
+00:05:38,810 --> 00:05:42,110
+Nós temos um console para o pedido.
+
+94
+00:05:42,200 --> 00:05:48,470
+Nós temos alguns logs de console para a função hash e agora temos um log de console para o módulo
+
+95
+00:05:48,470 --> 00:05:50,540
+do sistema de arquivos aqui também.
+
+96
+00:05:50,570 --> 00:05:56,380
+Então, estamos claramente fazendo a solicitação HTP primeiro e, em seguida, o arquivo de leitura e, em seguida, os hashes.
+
+97
+00:05:56,390 --> 00:06:01,330
+Então, quero apenas sentar por um segundo e quero que você pense no que vai acontecer.
+
+98
+00:06:02,070 --> 00:06:06,680
+Tente adivinhar qual ordem veremos para que esses logs do console apareçam e, assim
+
+99
+00:06:06,680 --> 00:06:12,940
+que você tiver alguma ideia, vamos voltar ao nosso terminal e vamos executar esse arquivo e ver o que acontece.
+
+100
+00:06:12,950 --> 00:06:13,280
+Tudo bem.
+
+101
+00:06:13,280 --> 00:06:13,880
+Aqui vamos nós.
+
+102
+00:06:13,910 --> 00:06:16,050
+Algumas multitarefas Sim.
+
+103
+00:06:16,250 --> 00:06:20,310
+Nós vamos executar isso e aqui está o nosso resultado.
+
+104
+00:06:20,710 --> 00:06:21,460
+ESTÁ BEM.
+
+105
+00:06:21,730 --> 00:06:24,520
+Então eu tenho que te perguntar é isso que você esperava.
+
+106
+00:06:24,730 --> 00:06:29,240
+Aqui mesmo no topo este é o benchmark do módulo HTP.
+
+107
+00:06:29,290 --> 00:06:33,830
+Em seguida, vemos exatamente um log de console dessa função de hashing.
+
+108
+00:06:34,150 --> 00:06:40,010
+E então vemos a chamada do módulo do sistema de arquivos e depois vemos os três hashes restantes.
+
+109
+00:06:40,270 --> 00:06:43,450
+Vamos tentar executá-lo novamente e ver se conseguimos exatamente o mesmo comportamento.
+
+110
+00:06:45,460 --> 00:06:47,580
+E nós definitivamente temos o mesmo.
+
+111
+00:06:47,590 --> 00:06:50,480
+Então, o que no mundo está acontecendo aqui.
+
+112
+00:06:50,500 --> 00:06:56,080
+Lendo de nosso disco rígido com esse módulo FS, chame aqui, não há como a operação levar
+
+113
+00:06:56,080 --> 00:06:57,810
+dois segundos quando é executada.
+
+114
+00:06:57,820 --> 00:07:02,550
+Não há nenhuma maneira de que a leitura de um arquivo em um disco rígido possa levar dois segundos.
+
+115
+00:07:02,770 --> 00:07:08,440
+Vamos tentar comentar todos estes fazer chamadas hash aqui e só vendo quanto tempo normalmente leva
+
+116
+00:07:08,610 --> 00:07:10,680
+são função refiled aqui para executar.
+
+117
+00:07:11,020 --> 00:07:13,030
+Então eu vou salvar isso ou correr de novo.
+
+118
+00:07:13,060 --> 00:07:18,100
+E agora você verá que a leitura do meu disco rígido demora cerca de 26 milissegundos.
+
+119
+00:07:18,430 --> 00:07:20,380
+Extremamente extremamente rápido.
+
+120
+00:07:20,500 --> 00:07:24,570
+E não há como normalmente levar dois segundos como você vê aqui.
+
+121
+00:07:24,610 --> 00:07:27,820
+Então, claramente, temos alguns comportamentos super interessantes aqui.
+
+122
+00:07:27,820 --> 00:07:28,860
+Vamos dar uma pausa rápida.
+
+123
+00:07:28,900 --> 00:07:32,860
+Vamos voltar para o próximo vídeo e vamos examinar alguns diagramas diferentes para
+
+124
+00:07:32,860 --> 00:07:36,170
+descobrir exatamente por que estamos vendo esse comportamento bem aqui.
+
+125
+00:07:36,370 --> 00:07:38,950
+Tão rápido e eu te vejo daqui a pouco.

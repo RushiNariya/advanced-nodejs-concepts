@@ -1,0 +1,343 @@
+1
+00:00:00,750 --> 00:00:05,490
+En la última sección terminamos nuestra función debe continuar, que decide si nuestro ciclo de
+
+2
+00:00:05,490 --> 00:00:08,310
+eventos se ejecutará o no para un tic adicional.
+
+3
+00:00:08,850 --> 00:00:12,050
+Ahora vamos a pasar al cuerpo de nuestro ciclo de eventos.
+
+4
+00:00:12,180 --> 00:00:17,160
+Vamos a escribir una serie de comentarios que explican lo que ocurre durante cada tic.
+
+5
+00:00:17,220 --> 00:00:21,630
+Entonces estos pasos están ocurriendo muy muy rápido una y otra vez.
+
+6
+00:00:22,080 --> 00:00:25,070
+Escribamos el primer paso que ocurre dentro del ciclo de eventos.
+
+7
+00:00:25,170 --> 00:00:31,540
+Entonces, lo primero que sucede aquí es mirar nodo en temporizador pendiente.
+
+8
+00:00:31,610 --> 00:00:32,880
+Eso es lo que llamamos ese derecho.
+
+9
+00:00:32,890 --> 00:00:42,870
+Habló sobre este arreglo hasta aquí pendiente del temporizador y ve si alguna función está lista para ser llamada.
+
+10
+00:00:42,880 --> 00:00:48,810
+Entonces, lo primero que ocurre es que node mira esa matriz de temporizadores pendientes y observa todas las diferentes funciones que
+
+11
+00:00:48,810 --> 00:00:52,630
+se han pasado para establecer el tiempo de espera y establecer el intervalo.
+
+12
+00:00:52,950 --> 00:00:58,980
+Si alguno de esos temporizadores ha expirado, el nodo llama a las devoluciones de llamada asociadas a cada uno.
+
+13
+00:00:58,980 --> 00:01:00,390
+Entonces ese es el paso número uno.
+
+14
+00:01:00,390 --> 00:01:05,040
+Agreguemos también un pequeño aquí solo para hacer un seguimiento.
+
+15
+00:01:05,040 --> 00:01:07,980
+Lo siguiente que sucede es muy similar al primer paso.
+
+16
+00:01:07,980 --> 00:01:19,080
+Entonces, para el segundo paso, aquí no se analizan las tareas pendientes del sistema operativo y las operaciones pendientes, y se llaman
+
+17
+00:01:19,680 --> 00:01:21,420
+devoluciones de llamada relevantes.
+
+18
+00:01:21,440 --> 00:01:27,530
+Entonces, en la nota del segundo paso veremos esa colección de todas las diferentes tareas y operaciones, y si
+
+19
+00:01:27,530 --> 00:01:32,540
+alguna de estas cosas se ha completado o si se han desencadenado nuevos eventos, el nodo
+
+20
+00:01:32,540 --> 00:01:34,420
+ejecuta las devoluciones de llamada relevantes.
+
+21
+00:01:34,460 --> 00:01:38,100
+Ejemplos de estos serían como los mismos ejemplos que presentamos anteriormente.
+
+22
+00:01:38,150 --> 00:01:44,630
+Entonces, por ejemplo, si alguna solicitud ingresa en un puerto que escucha un servidor o si algún archivo se
+
+23
+00:01:44,630 --> 00:01:50,810
+recupera exitosamente del disco duro de nuestra computadora, entonces durante esta etapa notará que esas cosas se han
+
+24
+00:01:50,810 --> 00:01:56,000
+completado y llamaremos a las devoluciones de llamada relevantes como devolución de llamada para recibir
+
+25
+00:01:56,000 --> 00:02:01,420
+un archivo que se ha recuperado o una devolución de llamada para manejar una solicitud entrante.
+
+26
+00:02:01,710 --> 00:02:04,400
+Entonces, realmente puedes considerar estos dos primeros pasos aquí mismo.
+
+27
+00:02:04,470 --> 00:02:10,240
+Como sabemos, hace la mayor parte de su trabajo y maneja todas las devoluciones de llamada relevantes.
+
+28
+00:02:10,410 --> 00:02:15,660
+Ahora pasar al tercer paso es donde las cosas comienzan a ponerse un poco
+
+29
+00:02:15,660 --> 00:02:20,020
+más interesantes durante el paso 3, el nodo detiene la ejecución temporalmente.
+
+30
+00:02:20,290 --> 00:02:28,100
+Entonces decimos pausa de ejecución y durante esta pausa No solo se queda sentado y espera que ocurran nuevos eventos.
+
+31
+00:02:28,140 --> 00:02:35,380
+Así que no solo se queda aquí, hace una pausa y dice que continuaré cada vez que ocurra una serie de eventos.
+
+32
+00:02:35,490 --> 00:02:47,670
+Y eso ocurre cada vez que se realiza una nueva tarea de sistema operativo pendiente cada vez que se realiza una nueva operación
+
+33
+00:02:47,910 --> 00:02:51,910
+pendiente o cuando un temporizador está por completarse.
+
+34
+00:02:51,930 --> 00:02:57,090
+Por lo tanto, durante esta fase de pausa, no decide que no se ejecutará solo a través del bucle de
+
+35
+00:02:57,120 --> 00:02:58,610
+evento tan rápido como sea posible.
+
+36
+00:02:58,620 --> 00:03:04,410
+Recuerde que si usted y yo escribimos un bucle while dentro del código javascript y escribimos como decir, mientras
+
+37
+00:03:04,500 --> 00:03:05,550
+que es cierto.
+
+38
+00:03:05,610 --> 00:03:10,580
+Sabes algo así que while loop se ejecutará tan rápido como sea posible.
+
+39
+00:03:10,800 --> 00:03:15,060
+Y eso no es realmente lo que ocurre dentro del ciclo de eventos dentro del ciclo de eventos.
+
+40
+00:03:15,060 --> 00:03:20,310
+Esta pausa durante el paso 3 simplemente se sienta y dice que sabes lo que no tengo otro trabajo que hacer.
+
+41
+00:03:20,490 --> 00:03:24,160
+Voy a esperar hasta que vea que se ha completado una nueva tarea pendiente.
+
+42
+00:03:24,390 --> 00:03:29,760
+Al igual que ha llegado una nueva solicitud en algún puerto que estamos escuchando, se completa una nueva operación
+
+43
+00:03:29,880 --> 00:03:36,420
+pendiente, como cuando extraemos algún archivo del disco duro, o un temporizador para uno de los tiempos de espera establecidos en intervalos establecidos
+
+44
+00:03:36,420 --> 00:03:39,870
+está a punto de caducar y el relevante la función necesita ser llamada.
+
+45
+00:03:40,290 --> 00:03:43,890
+Así que nos quedamos sentados y esperamos que eso ocurra.
+
+46
+00:03:44,070 --> 00:03:48,810
+Entonces, una vez que la pausa se completa porque supuestamente vemos que algo está a punto de
+
+47
+00:03:48,810 --> 00:03:52,360
+ocurrir, entonces continuamos con los dos últimos pasos dentro del ciclo de evento.
+
+48
+00:03:52,890 --> 00:03:58,320
+El paso número cuatro es muy similar al paso número uno que está dentro del paso número uno.
+
+49
+00:03:58,320 --> 00:04:04,360
+Notarás que dije que estamos verificando si se llama a alguna función relacionada con los temporizadores pendientes y utilizo las
+
+50
+00:04:04,920 --> 00:04:10,230
+palabras que realmente no escribí, pero dije que establecí el tiempo de espera y establecí el intervalo.
+
+51
+00:04:10,560 --> 00:04:17,890
+Así que este primer paso aquí es acerca de establecer el intervalo de tiempo de espera establecido durante el paso número cuatro aquí
+
+52
+00:04:17,970 --> 00:04:20,330
+abajo. El nodo nuevamente mira los temporizadores Pendientes.
+
+53
+00:04:20,520 --> 00:04:24,280
+Así que mira de nuevo el temporizador pendiente.
+
+54
+00:04:25,200 --> 00:04:30,030
+Pero en este caso, no importa el tiempo de espera configurado en las llamadas a funciones de intervalo establecidas.
+
+55
+00:04:30,120 --> 00:04:35,790
+Solo busca funciones que se hayan registrado con el conjunto inmediato y recuerde que el conjunto inmediato es muy similar
+
+56
+00:04:35,790 --> 00:04:38,490
+al tiempo de espera establecido y al intervalo establecido.
+
+57
+00:04:38,520 --> 00:04:41,160
+Por si acaso nunca lo has usado antes.
+
+58
+00:04:41,160 --> 00:04:46,110
+Así que mira Temporizadores pendientes, llama a cualquier conjunto de inmediato.
+
+59
+00:04:46,470 --> 00:04:50,370
+Y finalmente, para el paso 5, y este podría ser un poco sorprendente.
+
+60
+00:04:50,370 --> 00:05:00,690
+El quinto paso es manejar cualquier evento cercano ahora este es un poco más difícil de explicar.
+
+61
+00:05:00,820 --> 00:05:02,810
+Déjame mostrarte un ejemplo muy rápido.
+
+62
+00:05:02,820 --> 00:05:08,840
+Ya sabes, abre un archivo separado aquí y escribiré un ejemplo muy rápido para que veas.
+
+63
+00:05:08,870 --> 00:05:15,260
+Entonces, un ejemplo de esto sería si usamos algo así como un objeto estándar en la biblioteca de
+
+64
+00:05:15,320 --> 00:05:17,270
+notas que eventos un evento cercano.
+
+65
+00:05:17,270 --> 00:05:21,990
+Ahora, un evento en particular o un objeto particular que hace esto es una secuencia de lectura.
+
+66
+00:05:22,040 --> 00:05:24,670
+Si nunca has trabajado con una cadena de lectura antes, está totalmente bien.
+
+67
+00:05:24,710 --> 00:05:29,110
+Déjame escribir el ejemplo y creo que entenderás muy rápidamente de lo que estamos hablando.
+
+68
+00:05:29,180 --> 00:05:37,120
+Entonces, si tuviéramos una secuencia de lectura, podemos registrar un evento para que se ejecute cuando esta cosa esté a punto de cerrarse.
+
+69
+00:05:37,370 --> 00:05:40,430
+Y durante ese evento, podríamos hacer un trabajo de limpieza.
+
+70
+00:05:40,430 --> 00:05:43,520
+Entonces podríamos hacer un registro de la consola de código de
+
+71
+00:05:46,320 --> 00:05:48,410
+limpieza similar para poder escuchar este evento Cerrar.
+
+72
+00:05:48,450 --> 00:05:54,210
+Y cada vez que el ciclo de eventos está a punto de finalizar, podemos ejecutar una cierta cantidad de código de
+
+73
+00:05:54,210 --> 00:05:59,660
+limpieza que puede terminar cualquier servidor en ejecución o terminar cualquier archivo abierto que tengamos abierto o algo así.
+
+74
+00:05:59,730 --> 00:06:05,250
+Esencialmente, este último paso dentro del ciclo de eventos consiste simplemente en manejar el código de
+
+75
+00:06:05,280 --> 00:06:10,370
+limpieza y limpiarnos y asegurarnos de que no tengamos cabos sueltos dentro de nuestro programa.
+
+76
+00:06:10,950 --> 00:06:11,290
+DE ACUERDO.
+
+77
+00:06:11,310 --> 00:06:11,900
+Eso es todo.
+
+78
+00:06:11,910 --> 00:06:18,570
+Los cinco pasos que se ejecutan durante cada ejecución del ciclo de eventos se producen durante cada tic
+
+79
+00:06:18,570 --> 00:06:19,870
+que se produce.
+
+80
+00:06:19,920 --> 00:06:23,770
+Y probablemente lo más importante para entender aquí es el paso número tres.
+
+81
+00:06:23,790 --> 00:06:29,970
+El hecho de que esperemos y esperemos que se produzca una cierta cantidad o algún evento en lugar de pasar
+
+82
+00:06:29,970 --> 00:06:33,240
+por el ciclo de evento tan rápido como sea posible.
+
+83
+00:06:33,250 --> 00:06:37,860
+Ahora que hemos visto estos cinco eventos que ocurrieron durante el ciclo del evento Continuemos en la
+
+84
+00:06:37,860 --> 00:06:42,780
+próxima sección y comenzaremos a discutir algunas probabilidades y extremos alrededor del ciclo del evento y también a
+
+85
+00:06:42,780 --> 00:06:43,980
+jugar con algún código real.
+
+86
+00:06:44,130 --> 00:06:46,490
+Así que un descanso rápido y te veré en solo un minuto.

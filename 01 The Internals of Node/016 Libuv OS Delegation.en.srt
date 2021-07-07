@@ -1,0 +1,179 @@
+1
+00:00:00,620 --> 00:00:06,120
+In the last section we wrote a small file to make some H TGP a request for us then ran it and saw that
+
+2
+00:00:06,120 --> 00:00:10,770
+it took about 240 milliseconds to make a single request over to Google.
+
+3
+00:00:10,770 --> 00:00:13,250
+We're now going to add in some more requests to this file.
+
+4
+00:00:13,410 --> 00:00:18,120
+And when we do so we're going to see some evidence that some of the functions in the notes in a library
+
+5
+00:00:18,390 --> 00:00:24,140
+don't seem to use the same kind of thread pool that are hashing function did previously.
+
+6
+00:00:24,150 --> 00:00:29,950
+So inside my async function back over here I don't really want to copy paste this entire code blocks
+
+7
+00:00:30,030 --> 00:00:31,830
+down like six times.
+
+8
+00:00:31,830 --> 00:00:38,910
+So I get to wrap this request inside of a little helper function that I'm going to call simply do request
+
+9
+00:00:39,150 --> 00:00:41,580
+like so.
+
+10
+00:00:41,730 --> 00:00:46,830
+So now rather than doing a whole bunch of copy pasting at the bottom of the file I will instead call
+
+11
+00:00:46,950 --> 00:00:53,180
+do request a couple of times in a row and maybe that's good like so.
+
+12
+00:00:53,760 --> 00:00:55,050
+OK so let's save the file.
+
+13
+00:00:55,080 --> 00:00:59,080
+And now we're going to go run this file again at our terminal.
+
+14
+00:00:59,130 --> 00:01:06,750
+So back over at the terminal again do node A Cincom Yes and now we see some very interesting behavior.
+
+15
+00:01:06,750 --> 00:01:12,580
+Notice how it appears that all six calls appear to be completed at the same exact time.
+
+16
+00:01:12,660 --> 00:01:17,150
+This is distinctly different behavior than what we saw previously with our thread pool.
+
+17
+00:01:17,400 --> 00:01:23,280
+So remember by default the thread pool has four threads which means only four task can be processed
+
+18
+00:01:23,310 --> 00:01:24,580
+at a time.
+
+19
+00:01:24,660 --> 00:01:29,440
+But in this case we had six tasks all completed simultaneously.
+
+20
+00:01:29,460 --> 00:01:32,860
+So what's up what's going on here.
+
+21
+00:01:32,920 --> 00:01:35,960
+Let's take a look at a quick diagram.
+
+22
+00:01:36,180 --> 00:01:38,100
+Let me move this thing around.
+
+23
+00:01:38,100 --> 00:01:39,410
+There we go.
+
+24
+00:01:40,000 --> 00:01:41,650
+All right much better.
+
+25
+00:01:41,670 --> 00:01:46,070
+So what we're seeing here is more evidence of lib U.V. in play.
+
+26
+00:01:46,200 --> 00:01:48,790
+But it's not related to our thread pool.
+
+27
+00:01:48,870 --> 00:01:54,660
+So just as the node standard library has some functions that make use of live Uvas thread pool it also
+
+28
+00:01:54,660 --> 00:02:00,690
+has some functions that make use of code that is built into the underlying operating system through
+
+29
+00:02:00,990 --> 00:02:02,540
+live U-V.
+
+30
+00:02:02,580 --> 00:02:07,950
+So in this case live U-V sees that we are attempting to make an HTP request.
+
+31
+00:02:08,400 --> 00:02:17,340
+Neither lib U.V. nor code or C nor node has any code to handle all of this super low level operations
+
+32
+00:02:17,550 --> 00:02:19,870
+that are involved with a network request.
+
+33
+00:02:20,070 --> 00:02:25,910
+Instead live U-V delegates the request making to the underlying operating system.
+
+34
+00:02:26,250 --> 00:02:34,260
+So it's actually our operating system that does the real HTP request Libby is used to issue the request
+
+35
+00:02:34,620 --> 00:02:39,840
+and then it just waits on the operating system to emit a signal that some response has come back to
+
+36
+00:02:39,840 --> 00:02:40,980
+the request.
+
+37
+00:02:41,430 --> 00:02:47,490
+So because Libby is delegating the work done to the operating system the operating system itself decides
+
+38
+00:02:47,490 --> 00:02:49,150
+whether to make a new threat or not.
+
+39
+00:02:49,290 --> 00:02:53,220
+Or just generally how to handle the entire process of making the request.
+
+40
+00:02:53,580 --> 00:02:59,190
+So because the operating system is making the request there is no blocking of our javascript code inside
+
+41
+00:02:59,190 --> 00:03:03,360
+of our event loop or anything else inside of our application.
+
+42
+00:03:03,360 --> 00:03:08,520
+Everything or all the work is being done by the operating system itself and we're not touching a thread
+
+43
+00:03:08,520 --> 00:03:10,520
+pool at all in this case.
+
+44
+00:03:11,000 --> 00:03:15,870
+OK so let's pause right here and we're going to continue the next section and talk about how this relates
+
+45
+00:03:16,080 --> 00:03:18,120
+back to our event loop in the next video.

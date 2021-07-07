@@ -1,0 +1,347 @@
+1
+00:00:00,910 --> 00:00:05,720
+Na última seção, começamos a escrever alguns pseudocódigo para modelar como o loop de eventos do nó funciona.
+
+2
+00:00:05,760 --> 00:00:11,520
+Estamos agora trabalhando na função should continue, que decide se o loop de eventos deve ou não
+
+3
+00:00:11,520 --> 00:00:13,540
+continuar sendo executado por outro tick.
+
+4
+00:00:13,800 --> 00:00:15,660
+Por isso, deve continuar retornando verdadeiro.
+
+5
+00:00:15,790 --> 00:00:17,970
+Nosso loop de eventos irá funcionar para outro tick.
+
+6
+00:00:17,970 --> 00:00:24,420
+Caso contrário, se retornar false, o loop de eventos não será mais executado e nosso
+
+7
+00:00:24,420 --> 00:00:26,330
+programa sairá do terminal.
+
+8
+00:00:26,340 --> 00:00:32,730
+Então, dentro de tudo isso deve continuar a funcionar bem aqui, não, sim, três verificações separadas fazem três
+
+9
+00:00:32,730 --> 00:00:38,080
+verificações para decidir se o loop de eventos deve continuar ou não para outra iteração.
+
+10
+00:00:38,130 --> 00:00:43,170
+Vamos começar escrevendo um comentário que resuma o que cada uma dessas três verificações é
+
+11
+00:00:43,170 --> 00:00:47,690
+e depois escreveremos um pequeno pseudocódigo para simular a verificação que realmente ocorre.
+
+12
+00:00:48,210 --> 00:00:52,530
+Portanto, a primeira verificação que não faz quando está decidindo se deve ou não
+
+13
+00:00:52,890 --> 00:00:59,370
+continuar executando nosso programa é verificar se ainda há alguma função que tenha sido registrada com intervalo de conjunto de timeout
+
+14
+00:00:59,460 --> 00:01:02,610
+definido ou definida como imediata e que ainda precisa ser executada.
+
+15
+00:01:03,060 --> 00:01:11,390
+Assim, podemos escrever check 1 em qualquer intervalo de timeout set time pendente ou set immediate.
+
+16
+00:01:12,000 --> 00:01:16,620
+Portanto, se houver alguma função que ainda tenha que ser executada através de intervalos de tempo
+
+17
+00:01:16,620 --> 00:01:19,240
+definidos ou definidos imediatamente, nosso programa não será encerrado.
+
+18
+00:01:19,260 --> 00:01:22,400
+Continua correndo por outro carrapato.
+
+19
+00:01:22,500 --> 00:01:26,700
+Suponho que você esteja familiarizado com o tempo limite definido e o intervalo definido.
+
+20
+00:01:26,700 --> 00:01:31,770
+Você pode nunca ter visto antes, mas basicamente funciona de maneira semelhante a esses outros
+
+21
+00:01:31,770 --> 00:01:32,260
+dois.
+
+22
+00:01:32,280 --> 00:01:37,470
+Basicamente, passamos uma função para ela e ela será executada automaticamente em algum momento no futuro.
+
+23
+00:01:38,190 --> 00:01:41,830
+A segunda verificação que não faz para decidir se deve sair ou não.
+
+24
+00:01:41,940 --> 00:01:49,050
+É assim que olha para ver se há alguma tarefa pendente do sistema operacional uma caneta, um exemplo de
+
+25
+00:01:49,050 --> 00:01:55,340
+uma tarefa do sistema operacional é algo como um servidor HTP ouvir solicitações em alguma porta.
+
+26
+00:01:55,350 --> 00:01:59,330
+Falaremos mais sobre exatamente o que uma tarefa do sistema operacional significa um pouco.
+
+27
+00:01:59,460 --> 00:02:03,870
+Mas basicamente, por enquanto, vamos dizer que a segunda verificação feita pelo nó é
+
+28
+00:02:03,870 --> 00:02:06,990
+verificar se algum servidor ainda está atendendo a solicitações recebidas.
+
+29
+00:02:07,170 --> 00:02:19,570
+Portanto, verifique em qualquer tarefa pendente do sistema operacional, como talvez um servidor que esteja ouvindo alguma porta, a terceira verificação que ocorre é para ver se
+
+30
+00:02:19,570 --> 00:02:24,670
+há operações de execução longa que ainda estão sendo executadas dentro
+
+31
+00:02:24,670 --> 00:02:25,870
+de nosso programa.
+
+32
+00:02:25,870 --> 00:02:30,490
+Então, isso será muito semelhante ao número dois, mas há uma diferença distinta entre
+
+33
+00:02:30,490 --> 00:02:33,630
+os dois que entrará em detalhes ao longo do tempo.
+
+34
+00:02:33,760 --> 00:02:40,660
+Um exemplo de operação longa seria algo como uma chamada de função dentro do módulo FS para
+
+35
+00:02:40,690 --> 00:02:42,880
+ler algum arquivo do disco rígido.
+
+36
+00:02:42,880 --> 00:02:48,220
+Então eu sei que provavelmente parece muito semelhante quase idêntico ao segundo cheque aqui,
+
+37
+00:02:48,220 --> 00:02:50,380
+mas realmente é uma operação diferente.
+
+38
+00:02:50,380 --> 00:02:54,590
+Então, vamos entrar em muitos detalhes sobre a diferença entre essas duas verificações em apenas um minuto.
+
+39
+00:02:54,700 --> 00:03:04,030
+Mas agora vou adicionar um comentário que diz que 6:03 todas as operações pendentes de longa duração, como o módulo FS e o módulo
+
+40
+00:03:04,030 --> 00:03:07,850
+FS, estão se referindo ao módulo do sistema de arquivos.
+
+41
+00:03:07,860 --> 00:03:11,760
+Inclua com o nó que é usado para ler informações do nosso disco rígido.
+
+42
+00:03:11,800 --> 00:03:13,640
+Todas as informações corretas também.
+
+43
+00:03:14,290 --> 00:03:14,610
+ESTÁ BEM.
+
+44
+00:03:14,620 --> 00:03:20,230
+Portanto, agora escrevemos comentários para as três verificações que ocorrem a qualquer momento, sem decidir se o loop de eventos
+
+45
+00:03:20,230 --> 00:03:22,570
+precisa ou não ser executado para outra passagem.
+
+46
+00:03:22,870 --> 00:03:27,580
+Mas agora só temos comentários que não temos nenhum código real que represente o que
+
+47
+00:03:27,580 --> 00:03:28,130
+está acontecendo.
+
+48
+00:03:28,450 --> 00:03:34,200
+Então, o que realmente significa dizer que gostamos de verificar tarefas pendentes ou algo assim?
+
+49
+00:03:34,660 --> 00:03:40,810
+Bem, eu acho que em todos esses três casos, podemos imaginar que pode haver
+
+50
+00:03:40,870 --> 00:03:49,390
+um tipo de array interno dentro do nosso programa que rastreia qualquer uma dessas tarefas pendentes que possam ser criadas.
+
+51
+00:03:49,420 --> 00:03:56,930
+Então, talvez a qualquer momento que nosso código javascript crie um novo tempo limite definido ou faça uma nova chamada
+
+52
+00:03:56,950 --> 00:04:04,840
+para o módulo FS, talvez uma entrada seja adicionada a uma matriz para rastrear a tarefa que está sendo executada no momento.
+
+53
+00:04:04,930 --> 00:04:11,950
+Então, vamos criar três arrays acima, meu arquivo não roda a chamada do conteúdo aqui e
+
+54
+00:04:12,070 --> 00:04:17,800
+simula algo como coisas de escrituração que nos permitirão verificar muito facilmente no
+
+55
+00:04:17,800 --> 00:04:21,880
+futuro para ver se ainda temos alguma operação pendente acontecendo.
+
+56
+00:04:21,880 --> 00:04:30,420
+Então eu vou escrever três matrizes e uma chamada a primeira pendente de tarefas do SO pendentes do cronômetro.
+
+57
+00:04:31,210 --> 00:04:33,840
+E então, finalmente, as operações pendentes, em
+
+58
+00:04:36,650 --> 00:04:42,740
+seguida, voltem para dentro dessas funções devem continuar, podemos adicionar em algum código imaginário que iria olhar
+
+59
+00:04:43,010 --> 00:04:48,450
+para essas três matrizes aqui e verificar se ainda há quaisquer operações pendentes qualquer delas.
+
+60
+00:04:48,820 --> 00:04:54,410
+E se ainda houver operações pendentes, então, retornará False deve continuar ou então
+
+61
+00:04:54,410 --> 00:04:55,100
+retornará true.
+
+62
+00:04:55,100 --> 00:04:59,420
+Caso contrário, se não houver mais operações para nós esperarmos, elas retornarão false
+
+63
+00:04:59,420 --> 00:05:00,460
+em nosso programa.
+
+64
+00:05:00,980 --> 00:05:05,900
+Portanto, é muito fácil verificar se ainda há tarefas restantes dentro desses três arrays.
+
+65
+00:05:05,900 --> 00:05:20,390
+Podemos fazer algo como retornar a duração do cronômetro ou a duração pendente de tarefas do SO ou operações pendentes.
+
+66
+00:05:20,810 --> 00:05:29,030
+Length lifeso Então, agora, se qualquer um desses três arrays ainda tiver alguma operação pendente ou qualquer tarefa
+
+67
+00:05:29,030 --> 00:05:32,840
+pendente dentro deles, a função continue deverá retornar true.
+
+68
+00:05:32,840 --> 00:05:37,880
+Caso contrário, se não houver mais nada para nós esperarmos, deve-se continuar com o funk
+
+69
+00:05:37,880 --> 00:05:39,060
+aqui e retornar falso.
+
+70
+00:05:39,380 --> 00:05:47,510
+E o nosso loop while irá sair e, eventualmente, seremos expulsos para o nosso terminal agora internamente.
+
+71
+00:05:47,500 --> 00:05:53,540
+Não, ele detectará automaticamente quando nosso código javascript que você e eu gravamos configura algo como uma
+
+72
+00:05:53,540 --> 00:05:58,260
+chamada de tempo limite definido ou emite uma nova chamada para o módulo FS.
+
+73
+00:05:58,550 --> 00:06:05,190
+Essas detecções automáticas ocorrem mesmo durante a execução inicial do nosso arquivo aqui.
+
+74
+00:06:05,810 --> 00:06:11,450
+Assim, com esses arrays criados assim que criamos nosso programa ou começamos nosso programa no terminal, esses arrays
+
+75
+00:06:12,170 --> 00:06:18,230
+recebem registros adicionados a eles assim que eu e eu começamos a chamar o timeout de set ou iniciar servidores
+
+76
+00:06:18,260 --> 00:06:23,510
+ou trabalhar com o módulo do sistema de arquivos dentro do código que você e eu escrevemos.
+
+77
+00:06:23,930 --> 00:06:26,040
+Então eu adiciono um comentário logo acima dessa linha.
+
+78
+00:06:26,050 --> 00:06:38,660
+Apenas para me lembrar de que todos dizem que as operações de novas temporizações são registradas a partir do meu arquivo em execução.
+
+79
+00:06:38,770 --> 00:06:44,840
+Então, isso realmente faz muito sentido quando você e eu rodamos um programa de nós a partir
+
+80
+00:06:44,870 --> 00:06:52,160
+da linha de comando e dizemos para configurar um servidor HTP que nenhum programa fecha instantaneamente e volta para o
+
+81
+00:06:52,160 --> 00:06:55,640
+terminal porque configuramos uma tarefa do sistema operacional pendente.
+
+82
+00:06:55,640 --> 00:07:00,800
+Dizemos que contamos ao nosso servidor ou dissemos ao nosso programa para escutar alguma porta em nossa máquina
+
+83
+00:07:00,860 --> 00:07:05,830
+e que adiciona uma nova tarefa a esse tipo de array imaginário que existe dentro do nosso programa.
+
+84
+00:07:06,540 --> 00:07:06,840
+ESTÁ BEM.
+
+85
+00:07:06,860 --> 00:07:12,840
+Portanto, agora estabelecemos o que faz com que o loop de eventos comece e continue a execução.
+
+86
+00:07:12,890 --> 00:07:18,140
+Então, vamos pausar aqui e depois vamos continuar explorando os componentes internos do loop de eventos real ou o
+
+87
+00:07:18,200 --> 00:07:21,180
+que acontece dentro dele enquanto o intervalo ocorre no próximo vídeo.

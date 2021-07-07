@@ -1,0 +1,467 @@
+1
+00:00:00,900 --> 00:00:05,520
+En la última sección, comenzamos a hablar sobre los aspectos internos de no J. S. y dijimos que el
+
+2
+00:00:05,520 --> 00:00:12,150
+objetivo del nodo es darnos una buena API coherente para obtener acceso a la funcionalidad que finalmente se implementa
+
+3
+00:00:12,180 --> 00:00:14,830
+dentro de un V8 en U-V en vivo.
+
+4
+00:00:15,150 --> 00:00:20,690
+Quiero darte un ejemplo muy concreto y práctico de cómo esto realmente funciona detrás de escena.
+
+5
+00:00:20,940 --> 00:00:24,410
+Entonces en esta sección vamos a hacer un poco de ejercicio.
+
+6
+00:00:24,570 --> 00:00:29,100
+Esto va a ser muy divertido, pero va a girar en torno a un
+
+7
+00:00:29,100 --> 00:00:31,710
+montón de páginas diferentes dentro de nuestro navegador.
+
+8
+00:00:31,710 --> 00:00:35,910
+Así que vamos a ver algunos documentos diferentes y algunos códigos fuente, pero a lo largo del
+
+9
+00:00:35,910 --> 00:00:40,220
+camino obtendrás una mejor idea de lo que ningún genio realmente está haciendo por ti y por mí.
+
+10
+00:00:40,710 --> 00:00:44,810
+Entonces este ejercicio que vamos a pasar es esto aquí mismo.
+
+11
+00:00:44,820 --> 00:00:46,540
+Esto es lo que vamos a hacer.
+
+12
+00:00:46,590 --> 00:00:52,230
+Entonces, la parte superior Empezaremos por seleccionar alguna función aleatoria dentro de la
+
+13
+00:00:52,320 --> 00:00:53,970
+biblioteca estándar del nodo.
+
+14
+00:00:53,970 --> 00:00:59,430
+Luego vamos a tratar de encontrar dónde se implementa esa función en el nodo J. S. código fuente.
+
+15
+00:00:59,430 --> 00:01:06,180
+Así como el código fuente real que comprende el proyecto de nodo y luego, una vez que encontramos el código fuente,
+
+16
+00:01:06,450 --> 00:01:12,450
+vamos a descubrir cómo el apalancamiento de nodo es en cierto modo la funcionalidad de Raf que se implementa
+
+17
+00:01:12,450 --> 00:01:18,720
+dentro de Lyd V8 en lib U. V. Así que este será un ejercicio realmente divertido
+
+18
+00:01:18,990 --> 00:01:22,890
+y te dará una mejor idea de cómo el nodo está estructurado internamente y cómo funciona.
+
+19
+00:01:22,890 --> 00:01:26,450
+El primer paso es elegir una función en la biblioteca estándar del nodo.
+
+20
+00:01:26,460 --> 00:01:31,380
+Ahora había dicho que vamos a tomar uno al azar, pero en realidad ya elegí una función en
+
+21
+00:01:31,380 --> 00:01:35,160
+particular y esta va a ser una función que vamos a usar un poco
+
+22
+00:01:35,160 --> 00:01:37,260
+más adelante dentro del curso también .
+
+23
+00:01:37,260 --> 00:01:44,520
+Entonces, la función que vamos a investigar tú y yo se llama Vamos a ver un ejemplo
+
+24
+00:01:44,520 --> 00:01:44,830
+aquí.
+
+25
+00:01:44,830 --> 00:01:46,090
+Aquí vamos.
+
+26
+00:01:46,170 --> 00:01:49,240
+Va a ser una función llamada PBK DFI también.
+
+27
+00:01:49,380 --> 00:01:51,700
+Así que ese es el nombre de la función real allí mismo.
+
+28
+00:01:51,750 --> 00:01:54,200
+Y sé que es un nombre de función realmente extraño.
+
+29
+00:01:54,210 --> 00:01:58,720
+Es el nombre de un algoritmo que se utiliza para hash algunos datos arbitrarios.
+
+30
+00:01:58,740 --> 00:02:02,270
+Entonces esta es una función dentro de la biblioteca de cifrado de nodos.
+
+31
+00:02:02,400 --> 00:02:08,040
+Y generalmente se usa para cifrar una contraseña para el almacenamiento dentro de una base de datos.
+
+32
+00:02:08,040 --> 00:02:12,720
+Así que de nuevo sé que es una función extrañamente nombrada, pero es solo el nombre de un
+
+33
+00:02:12,720 --> 00:02:14,040
+algoritmo hash, eso es todo.
+
+34
+00:02:14,040 --> 00:02:20,950
+Así que echemos un vistazo a la implementación real de PBK DFA dentro de la base del código del nodo.
+
+35
+00:02:21,060 --> 00:02:25,650
+Y a medida que avancemos en este proceso, veremos muy rápidamente cómo un nodo hace uso
+
+36
+00:02:25,650 --> 00:02:28,590
+interno de U-V en vivo y también del proyecto ocho.
+
+37
+00:02:29,280 --> 00:02:29,670
+Todo bien.
+
+38
+00:02:29,680 --> 00:02:35,660
+Así que vamos a levantar el nodo j J. S. código fuente en get dot com si quieres seguirlo.
+
+39
+00:02:35,700 --> 00:02:41,820
+Puede abrir su propio navegador e ir a buscar cómo no se ha recortado ninguna nota de EE.UU.
+
+40
+00:02:42,870 --> 00:02:43,110
+Todo bien.
+
+41
+00:02:43,110 --> 00:02:44,230
+Aquí vamos.
+
+42
+00:02:45,030 --> 00:02:46,670
+Así que aquí está el notory positivamente Tory.
+
+43
+00:02:46,710 --> 00:02:50,160
+Este es todo el código fuente que ya ha instalado en su computadora.
+
+44
+00:02:50,190 --> 00:02:56,400
+Cuando instaló el nodo dentro de este repositorio, encontrará una gran cantidad de archivos y carpetas diferentes, pero hay dos carpetas
+
+45
+00:02:56,700 --> 00:03:00,630
+que son muy relevantes para lo que estamos tratando de hacer en este momento.
+
+46
+00:03:01,020 --> 00:03:08,460
+Aquí está el directorio lib y el directorio sarcy, aquí la carpeta en vivo contiene todas las
+
+47
+00:03:08,460 --> 00:03:14,940
+definiciones de JavaScript de funciones y módulos que usted y yo necesitamos en nuestros proyectos.
+
+48
+00:03:15,060 --> 00:03:20,550
+Así que puedes pensar que esto en vivo aquí es como javascript world o el lado de
+
+49
+00:03:20,550 --> 00:03:22,020
+javascript del proyecto de nodo.
+
+50
+00:03:22,770 --> 00:03:28,860
+Luego, dentro del directorio SIRC está la implementación en C ++ de todas esas funciones.
+
+51
+00:03:28,860 --> 00:03:33,590
+Entonces, como el directorio sarcy aquí es donde el nodo realmente se conecta en vivo.
+
+52
+00:03:33,780 --> 00:03:39,420
+Y que el proyecto en realidad elimina la implementación de todos los modelos a los
+
+53
+00:03:39,420 --> 00:03:44,670
+que usted y yo estamos acostumbrados, como el módulo FS, el módulo HTP, etc.
+
+54
+00:03:44,670 --> 00:03:50,880
+Empecemos por buscar esa función PBK DFT dentro de esta carpeta en vivo y
+
+55
+00:03:50,880 --> 00:03:55,040
+vamos a encontrar la definición de javascript de esa función.
+
+56
+00:03:55,080 --> 00:04:02,760
+Entonces, dentro de Lyd, vamos a encontrar el directorio interno que está aquí.
+
+57
+00:04:02,790 --> 00:04:06,810
+Luego encontraremos el directorio de cifrado aquí.
+
+58
+00:04:06,810 --> 00:04:11,680
+Y finalmente, encontraremos el PBK DFI para dotar al archivo JS.
+
+59
+00:04:11,680 --> 00:04:12,580
+Aquí está, aquí mismo.
+
+60
+00:04:16,400 --> 00:04:17,440
+Todo aquí vamos.
+
+61
+00:04:18,250 --> 00:04:24,590
+Este es un archivo javascript que contiene la definición javascript de la función PBK DFT.
+
+62
+00:04:24,590 --> 00:04:30,860
+Ahora recuerde que esta es una función normal que solo se incluye dentro de la biblioteca estándar de Node.
+
+63
+00:04:31,390 --> 00:04:36,130
+Descubrirá que el contenido de este archivo se parece mucho a un archivo javascript que usted
+
+64
+00:04:36,130 --> 00:04:37,480
+y yo podríamos escribir.
+
+65
+00:04:37,510 --> 00:04:41,620
+Entonces en la parte superior encontrarás un montón de declaraciones requeridas en el cuerpo.
+
+66
+00:04:41,620 --> 00:04:47,050
+Encontrarás un montón de declaraciones de plataformas de funciones y luego, en la
+
+67
+00:04:47,050 --> 00:04:50,210
+parte inferior, verás también una declaración de exportación.
+
+68
+00:04:50,230 --> 00:04:55,430
+Así que aquí es donde se exporta el PBK real debido a la función de este archivo.
+
+69
+00:04:56,020 --> 00:05:01,180
+Vamos a subir un poco y vamos a encontrar dónde se declara realmente esta función.
+
+70
+00:05:01,240 --> 00:05:01,570
+Todo bien.
+
+71
+00:05:01,570 --> 00:05:07,500
+Así que aquí en la línea 16 encontrará la definición de PBK.
+
+72
+00:05:07,510 --> 00:05:13,390
+Entonces, si tu y yo tuviéramos que solicitar esta función y luego ejecutarla desde el interior de nuestra
+
+73
+00:05:13,390 --> 00:05:16,490
+base de código, esta es la función que se ejecutará.
+
+74
+00:05:16,490 --> 00:05:20,010
+Ahora la siguiente parte que vamos a pasar va a ser un
+
+75
+00:05:20,020 --> 00:05:25,160
+poco complicada porque rápidamente corro un poco del código fuente que se ejecuta cada vez que llamamos a
+
+76
+00:05:25,160 --> 00:05:26,150
+esta función aquí mismo.
+
+77
+00:05:26,420 --> 00:05:30,710
+Pero eventualmente vamos a terminar en otra parte de la base de código que comienza a llevarnos
+
+78
+00:05:31,010 --> 00:05:34,270
+al lado C ++ de no J. S. Entonces, cada vez que ejecutas este PBK, tienes que funcionar.
+
+79
+00:05:34,310 --> 00:05:37,330
+Hace un poco de comprobación de errores.
+
+80
+00:05:37,490 --> 00:05:39,540
+Hace un poco más de comprobación de errores y eventualmente llama a PBK DFA.
+
+81
+00:05:39,770 --> 00:05:48,360
+Así que vamos a encontrar la definición para subrayar PBK DFT y ver qué sucede dentro de allí.
+
+82
+00:05:48,500 --> 00:05:53,990
+Así que desplácese hacia abajo.
+
+83
+00:05:54,500 --> 00:05:55,490
+Y luego, alrededor
+
+84
+00:05:55,580 --> 00:06:03,530
+de 32 o más, encontrarás la definición de subrayado PBK DFA dentro de aquí verás de nuevo un montón de error al verificar
+
+85
+00:06:03,540 --> 00:06:08,330
+la comprobación de errores, comprobación de errores, solo un montón de errores al verificar
+
+86
+00:06:08,330 --> 00:06:15,280
+cosas, sabes que todo esto está ahí. revisando y eventualmente verás este bloque de código en 72 o más.
+
+87
+00:06:15,410 --> 00:06:17,360
+Entonces, aquí verá una llamada a otra función llamada PBK D-Nev. dos y toma en cuenta
+
+88
+00:06:17,860 --> 00:06:26,380
+todos los argumentos que pasan a nuestra función actual y los
+
+89
+00:06:26,380 --> 00:06:32,500
+pasa a este PBK. ¿Tiene que decir que aquí es donde realmente se calcula el hash?
+
+90
+00:06:32,530 --> 00:06:35,950
+Esencialmente, ningún J us toma todas las entradas que
+
+91
+00:06:35,950 --> 00:06:42,010
+usted proporciona a esta función y las reenvía a la implementación en C ++ de esta función.
+
+92
+00:06:42,010 --> 00:06:45,540
+Entonces este PBK DFT está aquí en todas las capitales.
+
+93
+00:06:45,580 --> 00:06:49,290
+Esta es una función C ++.
+
+94
+00:06:49,420 --> 00:06:52,510
+Veamos de dónde se necesita esto en su archivo.
+
+95
+00:06:52,600 --> 00:06:56,130
+Si se desplaza hacia atrás hasta
+
+96
+00:06:56,230 --> 00:07:04,500
+la parte superior, verá la Línea 9 o más donde necesitemos un PBK DFA.
+
+97
+00:07:04,560 --> 00:07:05,140
+Y eso proviene de una declaración de requisito de búsqueda muy poco familiar.
+
+98
+00:07:05,280 --> 00:07:09,660
+Entonces esto dice que el proceso detiene el enlace y luego el cifrado.
+
+99
+00:07:09,660 --> 00:07:14,250
+Esta línea de código aquí es cómo ningún G-S se une al lado de C + + de su proyecto con el sitio javascript.
+
+100
+00:07:14,250 --> 00:07:21,420
+Así que puedo mostrarte otro diagrama que ayudará a desarrollar el proceso de todo
+
+101
+00:07:21,780 --> 00:07:25,490
+el código que hemos analizado hasta ahora.
+
+102
+00:07:25,500 --> 00:07:26,760
+Todo aquí vamos.
+
+103
+00:07:27,930 --> 00:07:30,220
+Entonces, la parte superior es nuestro código Javascript.
+
+104
+00:07:31,170 --> 00:07:34,640
+Luego entramos en el lado del nodo
+
+105
+00:07:34,740 --> 00:07:42,270
+javascript del repositorio de nodos para buscar cómo esa función PBK DFT realmente se define.
+
+106
+00:07:42,270 --> 00:07:44,600
+Buscamos un archivo dentro de la carpeta
+
+107
+00:07:45,300 --> 00:07:50,280
+en vivo que es el código de JavaScript real y encontramos que eventualmente parece
+
+108
+00:07:50,280 --> 00:07:56,550
+que la idea PBK de dos funciones se define a partir de algo llamado proceso de enlace.
+
+109
+00:07:56,750 --> 00:07:57,660
+Ese proceso de vinculación es lo que conecta el mundo javascript al mundo C ++ del nodo J. S.
+
+110
+00:07:58,020 --> 00:08:04,980
+proyecto.
+
+111
+00:08:04,980 --> 00:08:06,900
+Hagamos una pausa aquí.
+
+112
+00:08:06,910 --> 00:08:08,150
+Sé que estamos en el medio de las cosas, pero hagamos una pausa aquí.
+
+113
+00:08:08,170 --> 00:08:10,850
+Vamos a volver en el próximo video.
+
+114
+00:08:10,870 --> 00:08:12,490
+Vamos a comenzar a explorar qué
+
+115
+00:08:12,580 --> 00:08:17,920
+hace ese proceso con lo que hace la planificación y cómo se une al lado C plus del proyecto del nodo.
+
+116
+00:08:17,920 --> 00:08:20,470
+Así que toma un descanso rápido y te veré en solo un minuto.
+
+117
+00:08:20,470 --> 00:08:22,570
+&nbsp;

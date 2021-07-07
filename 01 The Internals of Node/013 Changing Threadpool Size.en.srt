@@ -1,0 +1,327 @@
+1
+00:00:00,600 --> 00:00:06,540
+You know the last section we spoke about what happened when we lined up five calls to PBK to the first
+
+2
+00:00:06,540 --> 00:00:12,000
+four calls were each allocated to their own individual to read in the thread pool and then groups of
+
+3
+00:00:12,000 --> 00:00:15,710
+two threads where each assigned to each of our course.
+
+4
+00:00:15,780 --> 00:00:21,300
+Now remember these threats can technically run at the same time but they still have to do just as much
+
+5
+00:00:21,300 --> 00:00:26,880
+work as they did previously and that's why we saw it took twice as long for all the hashes to complete
+
+6
+00:00:27,360 --> 00:00:31,340
+because it always takes one second to calculate one hash.
+
+7
+00:00:31,350 --> 00:00:38,040
+So if we have four houses but each core is taking twice as long to do that work it's going to take two
+
+8
+00:00:38,040 --> 00:00:40,110
+seconds total.
+
+9
+00:00:40,110 --> 00:00:44,310
+We're now going to move on a little bit and figure out how we can work with and customize the thread
+
+10
+00:00:44,310 --> 00:00:45,930
+pool that we see right here.
+
+11
+00:00:45,960 --> 00:00:50,880
+So going to go back over to my code editor and we're going to add in a little bit of code to play around
+
+12
+00:00:50,880 --> 00:00:55,630
+with a number of threads that get created and each time we start up our program.
+
+13
+00:00:55,660 --> 00:01:01,780
+So back inside of my code editor I'm going to go up to the very top line and above that require statement
+
+14
+00:01:02,020 --> 00:01:04,600
+I'm going to update a environment variable.
+
+15
+00:01:04,960 --> 00:01:06,790
+So I'm going to say process.
+
+16
+00:01:06,840 --> 00:01:16,730
+Ian envy dot U-V thread pool sites and I'm going to set the value that to be equal to 2.
+
+17
+00:01:16,780 --> 00:01:22,510
+So this is going to tell Liv U-V that whenever creates thread pool it should only create two threads
+
+18
+00:01:22,570 --> 00:01:27,000
+inside they're not going to save this file and I'll rerun it at the terminal.
+
+19
+00:01:27,160 --> 00:01:30,660
+But before I do I want to ask you just pause a video for a second.
+
+20
+00:01:30,660 --> 00:01:34,650
+I want you to guess as to what effect this is going to have on our benchmark.
+
+21
+00:01:34,780 --> 00:01:36,300
+So just think about it for a second.
+
+22
+00:01:37,460 --> 00:01:37,750
+OK.
+
+23
+00:01:37,760 --> 00:01:39,090
+Hopefully you've got an idea.
+
+24
+00:01:39,550 --> 00:01:41,600
+So let's run this code and see what happens.
+
+25
+00:01:42,600 --> 00:01:45,490
+So now we see it there being completed in groups of two.
+
+26
+00:01:45,780 --> 00:01:46,700
+Well that's interesting.
+
+27
+00:01:46,740 --> 00:01:49,280
+Take a look at a diagram that summarizes what's going on.
+
+28
+00:01:49,530 --> 00:01:50,970
+So here's our diagram.
+
+29
+00:01:51,270 --> 00:01:58,350
+So now we have two of these functions or two hash calls being executed at a time because we only have
+
+30
+00:01:58,350 --> 00:02:00,010
+two separate thread pools.
+
+31
+00:02:00,330 --> 00:02:02,920
+So the first call gets assigned to Thread 1.
+
+32
+00:02:02,970 --> 00:02:08,460
+The second call gets assigned to the right number to thread number one probably gets allocated to core
+
+33
+00:02:08,460 --> 00:02:09,880
+number 1 thread.
+
+34
+00:02:09,930 --> 00:02:12,530
+Number two probably gets al Qaeda core number two.
+
+35
+00:02:12,630 --> 00:02:18,350
+And now we're back to the situation where each core only has to do one hash at a time.
+
+36
+00:02:18,360 --> 00:02:24,890
+So we're back to the hashing only taking one second after the first two hashes are complete.
+
+37
+00:02:25,560 --> 00:02:30,260
+The next two calls are loaded into thread number one and thread number two.
+
+38
+00:02:30,270 --> 00:02:35,640
+Again that takes one second and then finally after that is done finally the fifth call can be loaded
+
+39
+00:02:35,670 --> 00:02:37,040
+in as well.
+
+40
+00:02:37,920 --> 00:02:42,840
+So that gives you a better idea of how we can customize a thread pool and see what happens when we decrease
+
+41
+00:02:42,900 --> 00:02:44,510
+the number of threads that are available.
+
+42
+00:02:44,790 --> 00:02:46,680
+Now let's do the opposite just for fun.
+
+43
+00:02:46,710 --> 00:02:47,930
+Let's reverse.
+
+44
+00:02:48,030 --> 00:02:50,840
+Let's try increasing the number of threads that we have available.
+
+45
+00:02:50,850 --> 00:02:54,250
+Let's try going up to like 5 like so.
+
+46
+00:02:54,270 --> 00:02:56,120
+So again I'm going to save this file.
+
+47
+00:02:56,150 --> 00:03:01,380
+We'll go back over the terminal and save this and run this again and again I want you to kind of guess
+
+48
+00:03:01,380 --> 00:03:02,710
+as to what's going to happen.
+
+49
+00:03:03,730 --> 00:03:06,770
+OK let's run this again and let's see.
+
+50
+00:03:06,840 --> 00:03:12,290
+So now this time it looks like it took quite a while but when it eventually resolved it took a total
+
+51
+00:03:12,290 --> 00:03:17,230
+of about three seconds and everything completed at the exact same time.
+
+52
+00:03:17,240 --> 00:03:19,880
+So let's again look at a diagram.
+
+53
+00:03:19,880 --> 00:03:22,190
+All right so now here's the situation we're in now.
+
+54
+00:03:22,490 --> 00:03:24,850
+So we've got Thread 1 through 5.
+
+55
+00:03:24,950 --> 00:03:29,640
+We have an equal number of threads to the number of hashing function calls.
+
+56
+00:03:29,720 --> 00:03:33,850
+So each hashing function call instantly gets their own thread assigned.
+
+57
+00:03:33,950 --> 00:03:43,260
+And now this time we see that threat number one to and maybe 4 and 5 go to core number 2.
+
+58
+00:03:43,360 --> 00:03:47,290
+So I know you can barely see these arrows but I think you get the idea and then you might have thought
+
+59
+00:03:47,290 --> 00:03:52,300
+that like maybe one core was going to take slightly longer because it had to get the third threat right
+
+60
+00:03:52,310 --> 00:03:55,700
+so maybe a corner or two also had to do thread number three over here.
+
+61
+00:03:55,690 --> 00:04:02,800
+And so you might have expected core number two to take slightly longer but in reality RCP you can use
+
+62
+00:04:02,830 --> 00:04:06,960
+all the cores inside of it to juggle work between multiple threats.
+
+63
+00:04:07,030 --> 00:04:11,280
+So when I say that oh yeah core Dourdan number one gets assigned to core number one.
+
+64
+00:04:11,470 --> 00:04:13,290
+That's not entirely accurate.
+
+65
+00:04:13,390 --> 00:04:18,790
+This arrest schedule right here kind of decides how to juggle all the work in total behind all the cars
+
+66
+00:04:18,790 --> 00:04:19,500
+that are available.
+
+67
+00:04:19,630 --> 00:04:25,210
+So in the end the day all five threads get roughly equal amounts of sleep you time at the same time
+
+68
+00:04:25,240 --> 00:04:28,040
+and that's why we saw everything complete at the same time.
+
+69
+00:04:28,270 --> 00:04:34,300
+But this time it took about 2.5 seconds or Rindy right above that a little bit longer than 2.5.
+
+70
+00:04:34,300 --> 00:04:39,940
+Again if I wasn't running my video recording software this should have taken about 2.5 seconds because
+
+71
+00:04:39,940 --> 00:04:47,620
+just as before we have only two cores available by default it takes one core one second to process one
+
+72
+00:04:47,620 --> 00:04:48,340
+hash.
+
+73
+00:04:48,520 --> 00:04:55,120
+So when we have five hashes at the same time it's going to take two cores five divided by two 2.5 seconds
+
+74
+00:04:55,120 --> 00:04:56,200
+to calculate.
+
+75
+00:04:56,200 --> 00:05:01,660
+So again my times didn't quite line up with that but if I wasn't recording my screen right now it would
+
+76
+00:05:01,660 --> 00:05:04,700
+have taken just about exactly 2.5 seconds.
+
+77
+00:05:05,140 --> 00:05:05,590
+OK.
+
+78
+00:05:05,620 --> 00:05:10,810
+So in this section we spoke about the existence of the live U-V thread pool that is used for expensive
+
+79
+00:05:10,810 --> 00:05:11,910
+calculations.
+
+80
+00:05:12,130 --> 00:05:17,140
+So you're probably really curious about what functions in the NO JUST library actually make use of this
+
+81
+00:05:17,140 --> 00:05:21,660
+thread pool and about how you can use the thread pool for your own personal code.
+
+82
+00:05:21,670 --> 00:05:24,040
+So let's start to answer those questions in the next section.

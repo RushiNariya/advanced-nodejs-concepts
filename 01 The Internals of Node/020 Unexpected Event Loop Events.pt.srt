@@ -1,0 +1,659 @@
+1
+00:00:00,720 --> 00:00:05,250
+Na última seção, reunimos um grande exemplo de mega-exemplo com alguns pedaços diferentes de código
+
+2
+00:00:05,250 --> 00:00:08,780
+de vários arquivos diferentes nos quais trabalhamos antes, quando executamos esse arquivo.
+
+3
+00:00:08,790 --> 00:00:10,760
+Nós vimos um comportamento realmente interessante.
+
+4
+00:00:10,770 --> 00:00:12,920
+Então eu vou correr mais uma vez aqui.
+
+5
+00:00:13,500 --> 00:00:17,360
+Assim, no resultado, vemos a solicitação de HDTV voltar primeiro.
+
+6
+00:00:17,490 --> 00:00:23,740
+Em seguida, vemos exatamente um hash, em seguida, o callback do sistema de arquivos e, em seguida, os três hashes restantes.
+
+7
+00:00:24,060 --> 00:00:28,020
+Portanto, há alguns elementos aqui que parecem ser muito interessantes para mim.
+
+8
+00:00:28,020 --> 00:00:34,590
+Primeiro, por que sempre vemos exatamente um log de console de hash antes do resultado do sistema de arquivos.
+
+9
+00:00:34,740 --> 00:00:39,740
+E, em segundo lugar, por que sempre vemos a solicitação do HTP concluída em primeiro lugar.
+
+10
+00:00:39,770 --> 00:00:46,710
+Você sabe que ambas as solicitações TTP h c h aqui no sistema de arquivos são ambas chamadas assíncronas que
+
+11
+00:00:46,710 --> 00:00:49,250
+leva algum tempo para que elas sejam concluídas.
+
+12
+00:00:49,260 --> 00:00:53,300
+Então, por que vemos sempre a idade GTP que terminou quase imediatamente.
+
+13
+00:00:53,310 --> 00:00:54,770
+Estamos relativamente bem agora.
+
+14
+00:00:54,960 --> 00:01:01,030
+Mas então a chamada do módulo FS aqui parece estar terminada após o primeiro hash.
+
+15
+00:01:01,410 --> 00:01:04,470
+Bem, nesta seção, vamos dar uma olhada em alguns diagramas diferentes
+
+16
+00:01:04,470 --> 00:01:09,790
+e tentar descobrir exatamente por que isso está ocorrendo com base no conhecimento que adquirimos agora no ciclo de eventos.
+
+17
+00:01:09,960 --> 00:01:12,150
+Então vamos fazer isso.
+
+18
+00:01:12,360 --> 00:01:14,670
+Agora este é o verdadeiro ponto crucial da questão aqui.
+
+19
+00:01:14,670 --> 00:01:18,790
+Isso é como todo o fundamento para entender por que estamos vendo esse comportamento.
+
+20
+00:01:19,110 --> 00:01:24,510
+Lembre-se que nos últimos vídeos, quando estávamos falando sobre o loop de eventos, dissemos que
+
+21
+00:01:24,570 --> 00:01:31,030
+o nó internamente faz uso de um conjunto de threads para algumas chamadas de função muito específicas em particular.
+
+22
+00:01:31,080 --> 00:01:37,350
+Quase tudo dentro do primeiro módulo ou do módulo do sistema de arquivos faz uso desse pool de threads.
+
+23
+00:01:37,710 --> 00:01:43,920
+E como você e eu sabemos muito bem que a função do módulo de criptografia PBK DFI também faz uso
+
+24
+00:01:43,920 --> 00:01:45,300
+do pool de threads também.
+
+25
+00:01:46,050 --> 00:01:52,280
+No entanto, o sistema operacional ou alguns dos módulos de aplicativos que estamos usando não fazem uso desse pool de
+
+26
+00:01:52,280 --> 00:01:57,930
+threads e, ao invés disso, ele chega diretamente ao sistema operacional e aproveita o sistema operacional para fazer
+
+27
+00:01:57,930 --> 00:02:00,060
+toda essa rede funcionar para nós.
+
+28
+00:02:00,060 --> 00:02:05,790
+Então, enquanto o módulo FS faz uso de um pool de threads o H. C. Módulo barato não.
+
+29
+00:02:05,790 --> 00:02:10,650
+Então, vamos agora dar uma olhada no tipo de linha do tempo que acabamos de ver.
+
+30
+00:02:10,650 --> 00:02:13,340
+Então eu acho que isso aqui vai olhar para este diagrama por um segundo.
+
+31
+00:02:13,350 --> 00:02:17,680
+Isso é apenas uma espécie de esclarecimento do tempo que vimos em todos os logs do console.
+
+32
+00:02:17,880 --> 00:02:24,180
+Então, o HDD HTP chamado resolvido imediatamente, mas tivemos que esperar um tempo muito longo para todas as outras chamadas
+
+33
+00:02:24,180 --> 00:02:24,710
+de função.
+
+34
+00:02:24,720 --> 00:02:26,240
+Por algum motivo.
+
+35
+00:02:26,730 --> 00:02:30,510
+Vamos dar uma olhada no que esta chamada de função de arquivo de leitura está fazendo aqui.
+
+36
+00:02:30,510 --> 00:02:34,470
+E então, talvez algumas das peças se unam e você começará a
+
+37
+00:02:34,740 --> 00:02:40,540
+entender por que estamos sempre esperando que a chamada do arquivo Reed demore tanto para ser concluída.
+
+38
+00:02:40,560 --> 00:02:45,090
+Então, isso é mais ou menos o que essa chamada de arquivo Reed está fazendo internamente.
+
+39
+00:02:45,270 --> 00:02:48,840
+Você não precisa entender exatamente cada passo que está acontecendo aqui.
+
+40
+00:02:48,840 --> 00:02:53,860
+Há apenas uma coisa que quero salientar distintamente sobre o que acontece quando chamamos ler arquivo.
+
+41
+00:02:54,110 --> 00:02:59,730
+Então, quando nós primeiro chamamos o arquivo de leitura Não, ele não vai diretamente para o disco rígido e imediatamente começa
+
+42
+00:02:59,730 --> 00:03:00,810
+a ler o arquivo.
+
+43
+00:03:01,110 --> 00:03:06,780
+Em vez disso, ele verifica o arquivo no disco rígido e tenta reunir algumas estatísticas sobre
+
+44
+00:03:06,780 --> 00:03:08,960
+ele, como o tamanho do arquivo.
+
+45
+00:03:09,000 --> 00:03:13,250
+Toda essa revolta do processo inclui uma viagem de ida e volta ao disco rígido.
+
+46
+00:03:13,470 --> 00:03:14,960
+Então vamos ao disco rígido.
+
+47
+00:03:15,060 --> 00:03:21,120
+Obtemos algumas estatísticas sobre o arquivo e, em seguida, o resultado volta ao nosso programa após o nó ter
+
+48
+00:03:21,120 --> 00:03:25,200
+essas estatísticas e agora sabe o tamanho que pode esperar desse arquivo.
+
+49
+00:03:25,290 --> 00:03:28,570
+E agora está pronto para realmente ler o arquivo.
+
+50
+00:03:28,590 --> 00:03:34,380
+Então, o nó, na verdade, volta para o disco rígido, obtém o conteúdo do arquivo e os retorna para o nosso aplicativo e,
+
+51
+00:03:34,950 --> 00:03:38,570
+eventualmente, chama nosso retorno de chamada e foi quando vimos o bloqueio do console.
+
+52
+00:03:39,060 --> 00:03:45,740
+Portanto, a principal coisa a ter em mente aqui é que houve duas pausas distintas que ocorreram.
+
+53
+00:03:45,840 --> 00:03:51,800
+Nós tivemos uma pausa em toda esta chamada de arquivo de leitura onde estávamos apenas esperando no disco
+
+54
+00:03:51,810 --> 00:03:58,170
+rígido para retornar algumas estatísticas sobre este arquivo e, em seguida, tivemos uma segunda grande pausa como nó voltou para
+
+55
+00:03:58,230 --> 00:04:01,400
+o disco rígido e começou a realmente ler o conteúdo.
+
+56
+00:04:01,410 --> 00:04:07,650
+Então, neste momento, vamos agora olhar para o diagrama final que realmente explica o que estava acontecendo.
+
+57
+00:04:08,090 --> 00:04:08,390
+ESTÁ BEM.
+
+58
+00:04:08,400 --> 00:04:12,600
+Então você pode ver que temos alguns elementos diferentes aqui neste diagrama na
+
+59
+00:04:12,600 --> 00:04:17,880
+parte inferior, temos o mesmo conjunto de encadeamentos sobre o qual estávamos falando anteriormente, para encadeamentos padrão.
+
+60
+00:04:17,880 --> 00:04:19,620
+Agora a primeira coisa a perceber aqui.
+
+61
+00:04:19,620 --> 00:04:23,970
+Então é por isso que essa é uma pergunta de entrevista muito boa porque ela realmente faz com
+
+62
+00:04:23,970 --> 00:04:25,270
+que você entenda muitas notas diferentes.
+
+63
+00:04:25,350 --> 00:04:32,430
+A primeira coisa a perceber é que a chamada modular H T H S é realmente Keep Yes, que não envolve
+
+64
+00:04:32,430 --> 00:04:33,780
+o pool de threads.
+
+65
+00:04:33,780 --> 00:04:38,880
+Ele ignora completamente o pool de threads e faz uso do sistema operacional subjacente.
+
+66
+00:04:38,880 --> 00:04:43,590
+Então, quando fazemos esse pedido, não se importa com o que mais está acontecendo dentro do nosso programa.
+
+67
+00:04:43,590 --> 00:04:44,720
+Não importa.
+
+68
+00:04:44,760 --> 00:04:50,400
+Ele faz a solicitação e assim que obtivermos uma resposta de volta, a resposta é retornada ao nosso código
+
+69
+00:04:50,490 --> 00:04:54,810
+dentro do loop de eventos e, em seguida, veremos esse log do console aparecer imediatamente.
+
+70
+00:04:54,840 --> 00:05:00,980
+Então o HTP HTP Reclast eu meio que joguei lá para que outro lembrete disso acontecesse fora
+
+71
+00:05:00,980 --> 00:05:02,390
+do pool de threads.
+
+72
+00:05:02,390 --> 00:05:07,890
+Agora, o motivo pelo qual a chamada do módulo FS ficou atrasada por tanto tempo é especificamente devido ao modo
+
+73
+00:05:07,900 --> 00:05:09,600
+como o pool de threads funciona.
+
+74
+00:05:09,620 --> 00:05:15,830
+Então, no instante em que fizemos todas essas chamadas de função como essas chamadas aqui, você pode imaginar
+
+75
+00:05:16,040 --> 00:05:21,170
+que são configuradas cinco tarefas diferentes para serem executadas dentro do nosso conjunto de threads.
+
+76
+00:05:21,170 --> 00:05:26,540
+Primeiro, disse OK, precisamos ir ler o arquivo e, em seguida, também disse OK também neste pool
+
+77
+00:05:26,540 --> 00:05:28,490
+de discussão, precisamos fazer quatro hashes.
+
+78
+00:05:28,910 --> 00:05:35,480
+Então, uma vez que todas essas cinco tarefas foram carregadas, as quatro primeiras foram atribuídas a algum segmento.
+
+79
+00:05:35,840 --> 00:05:42,840
+Então o colega do sistema de arquivos foi designado para o thread 1 e o PBK devido à primeira chamada foi para 3 2 2 2
+
+80
+00:05:42,860 --> 00:05:45,460
+3 e 3 1 para 4 e assim por diante.
+
+81
+00:05:45,620 --> 00:05:51,890
+Agora, os tópicos 2 3 e 4 aqui vão começar imediatamente a se desviar dessas chamadas de hash
+
+82
+00:05:51,890 --> 00:05:55,580
+e ele tentará calcular esses hashes o mais rápido possível.
+
+83
+00:05:55,970 --> 00:06:00,290
+E enquanto isso, um tópico aqui vai começar a trabalhar na chamada do sistema de arquivos.
+
+84
+00:06:00,410 --> 00:06:02,350
+E aqui está o ponto realmente crítico.
+
+85
+00:06:02,600 --> 00:06:10,140
+O instante em que o módulo FS foi carregado no thread 1 thread one começou a passar por este processo
+
+86
+00:06:10,140 --> 00:06:11,010
+bem aqui.
+
+87
+00:06:11,070 --> 00:06:15,630
+Então disse OK, vamos ver que eu tenho que fazer tudo girando em torno de ler algum arquivo.
+
+88
+00:06:15,750 --> 00:06:21,480
+Bem, eu acho que posso obter algumas estatísticas sobre esse arquivo e, em seguida, ele foi para obter algum disco rígido
+
+89
+00:06:21,480 --> 00:06:24,770
+ou acesso ao disco rígido e obter algumas informações sobre esse arquivo.
+
+90
+00:06:24,780 --> 00:06:31,230
+Agora, durante esse segmento de fase, um começa a chegar ao disco rígido e assim que alguém coloca
+
+91
+00:06:31,230 --> 00:06:32,870
+esse pedido no disco rígido.
+
+92
+00:06:33,210 --> 00:06:38,940
+Esta discussão aqui e então percebe que você sabe o que eu vou estar esperando por um tempo Eu
+
+93
+00:06:38,940 --> 00:06:43,640
+não estarei esperando como sempre neste disco rígido para me trazer algumas informações de volta.
+
+94
+00:06:43,800 --> 00:06:50,170
+Então eu acho que enquanto espero por essa informação eu não me importo mais com essa tarefa.
+
+95
+00:06:50,190 --> 00:06:51,590
+Você sabe o que tem tarefa.
+
+96
+00:06:51,600 --> 00:06:57,450
+Ele pode apenas sentar e pode esperar porque eu tenho que esperar literalmente para sempre para obter
+
+97
+00:06:57,450 --> 00:06:59,690
+algumas informações de volta do disco rígido.
+
+98
+00:06:59,700 --> 00:07:05,190
+Então, assim que chegar ao número do tópico da unidade, ele diz: "Ei, pessoal, estou disponível
+
+99
+00:07:05,190 --> 00:07:06,390
+para fazer outra coisa".
+
+100
+00:07:06,540 --> 00:07:08,760
+Eu preciso calcular um pouco de hash.
+
+101
+00:07:08,780 --> 00:07:11,720
+Para o PBK, você precisa ligar para o número quatro aqui.
+
+102
+00:07:11,730 --> 00:07:12,230
+Ótimo.
+
+103
+00:07:12,240 --> 00:07:13,940
+Eu vou começar a trabalhar nisso.
+
+104
+00:07:14,340 --> 00:07:20,610
+E assim, o número um do thread esquece temporariamente essa chamada do sistema de arquivos e começa a
+
+105
+00:07:20,610 --> 00:07:22,980
+calcular o número de hash quatro aqui.
+
+106
+00:07:22,980 --> 00:07:26,120
+Então, eventualmente, fora do fio dois três e quatro.
+
+107
+00:07:26,160 --> 00:07:27,780
+Um deles vai terminar.
+
+108
+00:07:27,780 --> 00:07:28,950
+Então, um deles vai terminar.
+
+109
+00:07:28,950 --> 00:07:32,790
+Talvez seja o tópico para trabalhar na chamada 1 aqui.
+
+110
+00:07:32,790 --> 00:07:39,930
+Portanto, essa chamada é concluída e agora o Thread 2 foi aberto agora. O thread 2 termina essa primeira função
+
+111
+00:07:40,220 --> 00:07:41,210
+de hash hash.
+
+112
+00:07:41,280 --> 00:07:49,860
+Ele faz o log do console, que é o que vimos aqui mesmo e, em seguida, o thread 2 diz OK Agora estou pronto para pegar algum
+
+113
+00:07:49,860 --> 00:07:55,860
+trabalho de backup, então o número dois vê que ainda há uma chamada de sistema de arquivos pendente que
+
+114
+00:07:55,860 --> 00:07:57,530
+precisa ser trabalhada aqui .
+
+115
+00:07:57,540 --> 00:08:02,700
+O segundo número dois, em seguida, olha para ver se obteve alguma informação do disco rígido
+
+116
+00:08:02,700 --> 00:08:04,460
+como as estatísticas que estamos falando.
+
+117
+00:08:04,470 --> 00:08:06,530
+E neste caso sim tem.
+
+118
+00:08:06,540 --> 00:08:11,940
+Então, essas estatísticas eu conheço este diagrama certamente uma loucura, mas você pode imaginar que essas estatísticas voltam
+
+119
+00:08:11,940 --> 00:08:17,510
+em um segmento e, em seguida, thread duas iniciações continuam a trabalhar na chamada do sistema de arquivos.
+
+120
+00:08:17,760 --> 00:08:21,800
+Em seguida, ele faz outras solicitações de acompanhamento para o disco rígido para obter o conteúdo real do arquivo.
+
+121
+00:08:21,930 --> 00:08:27,420
+Mas desta vez, quando ele faz esse pedido de acompanhamento para realmente obter o conteúdo do arquivo como
+
+122
+00:08:27,420 --> 00:08:30,190
+este passo aqui não há outra palavra para fazer.
+
+123
+00:08:30,330 --> 00:08:33,360
+Então ele apenas senta e espera que ele volte.
+
+124
+00:08:33,420 --> 00:08:38,520
+E então, assim que o conteúdo do arquivo voltar, o processo número dois do thread os processa e,
+
+125
+00:08:38,520 --> 00:08:40,770
+em seguida, vemos esse log do console aparecer.
+
+126
+00:08:40,770 --> 00:08:49,470
+Então é por isso que nós vimos aqui nós sempre vimos um hash ser completado antes do módulo do sistema de arquivos porque nós colocamos uma fila
+
+127
+00:08:49,470 --> 00:08:55,460
+no sistema de arquivos chamada esse thread faz algum trabalho inicial e faz pedido sobre o disco rígido que
+
+128
+00:08:55,460 --> 00:08:57,990
+o thread diz ei você sabe o quê.
+
+129
+00:08:57,990 --> 00:08:59,310
+Os discos rígidos podem demorar uma eternidade.
+
+130
+00:08:59,340 --> 00:09:00,590
+Eu vou fazer outra coisa.
+
+131
+00:09:00,660 --> 00:09:06,240
+E assim, ele pega uma das outras chamadas de hash que começam a trabalhar nisso e então, eventualmente,
+
+132
+00:09:06,450 --> 00:09:13,850
+ele se ajusta a outro thread que irá terminar alguma chamada de hash e ele voltará e continuará trabalhando no sistema de arquivos.
+
+133
+00:09:14,100 --> 00:09:14,480
+Tudo bem.
+
+134
+00:09:14,490 --> 00:09:15,190
+Então é isso.
+
+135
+00:09:15,240 --> 00:09:17,540
+Isso é o que está acontecendo nos bastidores aqui.
+
+136
+00:09:17,550 --> 00:09:23,280
+Como eu disse, acho que essa seria a questão da entrevista mais insana de todos os tempos, porque realmente exige
+
+137
+00:09:23,280 --> 00:09:26,630
+que você entenda exatamente o que o knode está fazendo internamente.
+
+138
+00:09:26,700 --> 00:09:32,650
+Você precisa entender primeiro que o módulo TTP não funciona com o pool de threads.
+
+139
+00:09:32,850 --> 00:09:38,450
+Você tem que entender que o módulo FS faz junto com o módulo de criptografia PBK você tem que funcionar
+
+140
+00:09:38,850 --> 00:09:44,430
+e você também tem que entender que o conjunto de threads por padrão tem quatro threads disponíveis para ele.
+
+141
+00:09:44,430 --> 00:09:49,680
+Agora, apenas uma coisa rápida que quero jogar aqui como uma espécie de pergunta complicada.
+
+142
+00:09:49,680 --> 00:09:56,260
+Talvez não tão complicado se formos aumentou o tamanho do pool de threads dentro de nós multitarefa.
+
+143
+00:09:56,310 --> 00:10:00,030
+Lembre-se que podemos fazer isso no topo definindo esta variável de ambiente.
+
+144
+00:10:00,090 --> 00:10:05,190
+Portanto, se aumentamos o tamanho do nosso conjunto de encadeamentos até 5 e, em seguida, executamos esse arquivo novamente.
+
+145
+00:10:05,310 --> 00:10:06,920
+O que você acha que teria acontecido.
+
+146
+00:10:06,930 --> 00:10:09,800
+Bem, eu aposto que você poderia adivinhar bem aqui.
+
+147
+00:10:09,810 --> 00:10:16,040
+Então, quando eu executo isso agora, temos um segmento extra que pode ser 100% responsável por tudo.
+
+148
+00:10:16,050 --> 00:10:21,690
+O sistema de arquivos chamado needs e, assim, o quinto thread agora é inteiramente dedicado a trabalhar com o
+
+149
+00:10:21,690 --> 00:10:24,030
+disco rígido e fazer o que for necessário.
+
+150
+00:10:24,210 --> 00:10:29,700
+E é por isso que agora vemos o resultado aqui aparecer imediatamente e, da mesma forma, se
+
+151
+00:10:29,700 --> 00:10:30,750
+formos até 1.
+
+152
+00:10:30,840 --> 00:10:31,770
+Então, apenas um segmento.
+
+153
+00:10:31,770 --> 00:10:36,570
+Agora, esse thread vai fazer algum trabalho inicial na chamada do sistema de arquivos.
+
+154
+00:10:36,690 --> 00:10:39,940
+Então ele vai dizer que o sistema de arquivos está esperando no disco rígido.
+
+155
+00:10:39,960 --> 00:10:41,210
+Eu vou pegá-lo mais tarde.
+
+156
+00:10:41,250 --> 00:10:46,680
+Em seguida, ele processará todos os quatro hashes e, em seguida, quando todos forem concluídos, resolverá ou fará o
+
+157
+00:10:46,770 --> 00:10:49,500
+restante do trabalho para a chamada do sistema de arquivos.
+
+158
+00:10:49,560 --> 00:10:56,760
+Portanto, se fizermos isso, veremos Housh 1 2 3 4 e, em seguida, o resultado da chamada do
+
+159
+00:10:56,760 --> 00:11:04,860
+sistema de arquivos e enquanto a solicitação HTP real estiver completamente inalterada, porque ela não está tocando o conjunto de encadeamentos.
+
+160
+00:11:04,860 --> 00:11:05,700
+Tudo bem.
+
+161
+00:11:05,700 --> 00:11:09,850
+Como eu disse, eu era super sobre isso porque nós finalmente passamos por todos vocês, em seguida,
+
+162
+00:11:09,870 --> 00:11:14,570
+loop coisas em agora você pode começar a entender realmente esse comportamento louco que você começa a ver no código.
+
+163
+00:11:14,580 --> 00:11:17,170
+Então tem havido muita diversão, vamos continuar na próxima seção.
+
+164
+00:11:17,220 --> 00:11:20,190
+E vamos começar, estamos olhando para algum desempenho de nota.
+
+165
+00:11:20,250 --> 00:11:22,240
+Tão rápido e eu te vejo daqui a pouco.

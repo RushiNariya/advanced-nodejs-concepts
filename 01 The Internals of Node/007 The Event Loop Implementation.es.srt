@@ -1,0 +1,347 @@
+1
+00:00:00,910 --> 00:00:05,720
+En la última sección, comenzamos a escribir un pseudo código para modelar cómo funciona el ciclo de eventos del nodo.
+
+2
+00:00:05,760 --> 00:00:11,520
+Ahora estamos trabajando en la función debe continuar, que decide si nuestro ciclo de eventos debe
+
+3
+00:00:11,520 --> 00:00:13,540
+continuar o no para otro tic.
+
+4
+00:00:13,800 --> 00:00:15,660
+Por lo tanto, debe continuar devuelve verdadero.
+
+5
+00:00:15,790 --> 00:00:17,970
+Nuestro ciclo de eventos se ejecutará por otro tic.
+
+6
+00:00:17,970 --> 00:00:24,420
+De lo contrario, si devuelve falso, el bucle de eventos ya no se ejecutará y nuestro
+
+7
+00:00:24,420 --> 00:00:26,330
+programa volverá a la terminal.
+
+8
+00:00:26,340 --> 00:00:32,730
+Entonces, dentro de todo esto, debe continuar funcionando aquí. No, sí, tres controles separados
+
+9
+00:00:32,730 --> 00:00:38,080
+comprueban si el ciclo de eventos debe continuar para otra iteración.
+
+10
+00:00:38,130 --> 00:00:43,170
+Comenzaremos por escribir un comentario que resuma lo que son estos tres controles y
+
+11
+00:00:43,170 --> 00:00:47,690
+luego escribiremos un pequeño pseudo código para simular el control que realmente ocurre.
+
+12
+00:00:48,210 --> 00:00:52,530
+Por lo tanto, la primera comprobación que no ocurre cuando se decide si
+
+13
+00:00:52,890 --> 00:00:59,370
+debe continuar o no ejecutando nuestro programa es ver si todavía hay funciones registradas con el intervalo establecido de tiempo
+
+14
+00:00:59,460 --> 00:01:02,610
+de espera o establecerlas inmediatamente, y aún así deben ejecutarse.
+
+15
+00:01:03,060 --> 00:01:11,390
+Por lo tanto, podemos escribir la verificación 1 cualquier intervalo de tiempo de espera configurado establecido o establecer inmediato.
+
+16
+00:01:12,000 --> 00:01:16,620
+Entonces, si hay alguna función que todavía tiene que ejecutarse a través de establecer tiempos de espera establecer el
+
+17
+00:01:16,620 --> 00:01:19,240
+intervalo o configurar inmediatamente, entonces nuestro programa no se cierra.
+
+18
+00:01:19,260 --> 00:01:22,400
+Continúa corriendo por otro tic.
+
+19
+00:01:22,500 --> 00:01:26,700
+Voy a suponer que está familiarizado con el tiempo de espera establecido y el intervalo establecido.
+
+20
+00:01:26,700 --> 00:01:31,770
+Puede que nunca hayas visto un set inmediato pero básicamente funciona de manera similar a estos
+
+21
+00:01:31,770 --> 00:01:32,260
+otros dos.
+
+22
+00:01:32,280 --> 00:01:37,470
+Básicamente le pasamos una función y se ejecutará automáticamente en algún momento en el futuro.
+
+23
+00:01:38,190 --> 00:01:41,830
+El segundo cheque que no hace para decidir si debe o no salir.
+
+24
+00:01:41,940 --> 00:01:49,050
+Es así para ver si hay alguna tarea pendiente del sistema operativo, un lápiz, un ejemplo de una tarea
+
+25
+00:01:49,050 --> 00:01:55,340
+del sistema operativo, es algo así como un servidor HTP que escucha las solicitudes en algún puerto.
+
+26
+00:01:55,350 --> 00:01:59,330
+Hablaremos más sobre exactamente lo que significa una tarea del sistema operativo un poco.
+
+27
+00:01:59,460 --> 00:02:03,870
+Pero, básicamente, por ahora vamos a decir que la segunda comprobación que hace el nodo
+
+28
+00:02:03,870 --> 00:02:06,990
+es observar si algún servidor todavía está escuchando solicitudes entrantes.
+
+29
+00:02:07,170 --> 00:02:19,570
+Por lo tanto, consulte cualquier tarea pendiente del sistema operativo, como por ejemplo, un servidor que esté escuchando un puerto determinado. La tercera comprobación que se realiza es ver
+
+30
+00:02:19,570 --> 00:02:24,670
+si hay operaciones de ejecución prolongada que aún se estén ejecutando dentro
+
+31
+00:02:24,670 --> 00:02:25,870
+de nuestro programa.
+
+32
+00:02:25,870 --> 00:02:30,490
+Así que esto va a ser muy similar a la verificación número dos, pero hay una clara
+
+33
+00:02:30,490 --> 00:02:33,630
+diferencia entre los dos que entrarán en gran detalle con el tiempo.
+
+34
+00:02:33,760 --> 00:02:40,660
+Un ejemplo de una operación de larga ejecución sería algo así como una llamada de función dentro del módulo FS
+
+35
+00:02:40,690 --> 00:02:42,880
+para leer algún archivo del disco duro.
+
+36
+00:02:42,880 --> 00:02:48,220
+Entonces sé que probablemente suena muy similar, casi idéntico al segundo control aquí mismo,
+
+37
+00:02:48,220 --> 00:02:50,380
+pero realmente es una operación diferente.
+
+38
+00:02:50,380 --> 00:02:54,590
+Así que vamos a entrar en muchos detalles sobre la diferencia entre estos dos controles en solo un minuto.
+
+39
+00:02:54,700 --> 00:03:04,030
+Pero en este momento voy a agregar un comentario que dice que 6:03 cualquier operación larga pendiente, como módulo FS y módulo FS,
+
+40
+00:03:04,030 --> 00:03:07,850
+aquí se refiere al módulo del sistema de archivos.
+
+41
+00:03:07,860 --> 00:03:11,760
+Incluya con el nodo que se utiliza para leer información de nuestro disco duro.
+
+42
+00:03:11,800 --> 00:03:13,640
+Toda la información correcta también.
+
+43
+00:03:14,290 --> 00:03:14,610
+DE ACUERDO.
+
+44
+00:03:14,620 --> 00:03:20,230
+Así que ahora hemos escrito los comentarios de las tres comprobaciones que se producen cada vez que no se decide si
+
+45
+00:03:20,230 --> 00:03:22,570
+el ciclo de eventos debe ejecutarse para otro pase.
+
+46
+00:03:22,870 --> 00:03:27,580
+Pero en este momento solo tenemos comentarios, no tenemos ningún código real que represente lo que
+
+47
+00:03:27,580 --> 00:03:28,130
+está sucediendo.
+
+48
+00:03:28,450 --> 00:03:34,200
+Entonces, ¿qué significa realmente decir que nos gusta comprobar las tareas pendientes o algo por el estilo?
+
+49
+00:03:34,660 --> 00:03:40,810
+Bueno, creo que en los tres casos podemos imaginar que podría haber una especie
+
+50
+00:03:40,870 --> 00:03:49,390
+de matriz interna dentro de nuestro programa que realiza un seguimiento de cualquiera de estas tareas pendientes que podrían crearse.
+
+51
+00:03:49,420 --> 00:03:56,930
+Entonces, tal vez, cada vez que nuestro código javascript crea un nuevo tiempo de espera configurado o realiza una nueva llamada al
+
+52
+00:03:56,950 --> 00:04:04,840
+módulo FS, tal vez se agregue una entrada a alguna matriz para hacer un seguimiento de la tarea que se está ejecutando actualmente.
+
+53
+00:04:04,930 --> 00:04:11,950
+Así que vamos a crear tres matrices arriba. Mi archivo no ejecuta la llamada de contenido aquí mismo
+
+54
+00:04:12,070 --> 00:04:17,800
+y va a simular algo así como cosas de contabilidad que nos permitirán verificar fácilmente
+
+55
+00:04:17,800 --> 00:04:21,880
+en el futuro para ver si aún tenemos operaciones pendientes.
+
+56
+00:04:21,880 --> 00:04:30,420
+Así que voy a escribir tres arreglos y una llamada la primera pendiente de las tareas pendientes del sistema operativo del temporizador.
+
+57
+00:04:31,210 --> 00:04:33,840
+Y luego, finalmente, operaciones pendientes y luego
+
+58
+00:04:36,650 --> 00:04:42,740
+retroceder dentro de esta función de continuación. Podemos agregar un código imaginario que examine estas tres
+
+59
+00:04:43,010 --> 00:04:48,450
+matrices aquí mismo y verifique si todavía hay alguna operación pendiente alguna de ellas.
+
+60
+00:04:48,820 --> 00:04:54,410
+Y si aún hay operaciones pendientes, se devolverá False debería continuar o
+
+61
+00:04:54,410 --> 00:04:55,100
+volverá verdadero.
+
+62
+00:04:55,100 --> 00:04:59,420
+De lo contrario, si no hay más operaciones para que nosotros las esperemos, se devolverá
+
+63
+00:04:59,420 --> 00:05:00,460
+falso; nuestro programa saldrá.
+
+64
+00:05:00,980 --> 00:05:05,900
+Por lo tanto, se verifica muy fácilmente para ver si todavía hay tareas restantes dentro de estas tres matrices.
+
+65
+00:05:05,900 --> 00:05:20,390
+Podemos hacer algo así como devolver la duración del temporizador pendiente o la duración pendiente de las tareas del SO o las operaciones pendientes.
+
+66
+00:05:20,810 --> 00:05:29,030
+Duración de la vida Por lo tanto, si cualquiera de estas tres matrices aún tiene alguna operación pendiente o cualquier tarea pendiente dentro de
+
+67
+00:05:29,030 --> 00:05:32,840
+ella, la función de continuación de la función continuará siendo verdadera.
+
+68
+00:05:32,840 --> 00:05:37,880
+De lo contrario, si no hay nada más que esperar, esto debería continuar Funk aquí mismo
+
+69
+00:05:37,880 --> 00:05:39,060
+va a devolver falso.
+
+70
+00:05:39,380 --> 00:05:47,510
+Y nuestro bucle while se cerrará y eventualmente nos devolverán a nuestra terminal ahora internamente.
+
+71
+00:05:47,500 --> 00:05:53,540
+No, detectará automáticamente cuándo nuestro código de JavaScript que usted y yo escribimos establece algo así como
+
+72
+00:05:53,540 --> 00:05:58,260
+un tiempo de espera establecido o emite una nueva llamada al módulo de FS.
+
+73
+00:05:58,550 --> 00:06:05,190
+Estas detecciones automáticas ocurren incluso durante la ejecución inicial de nuestro archivo aquí.
+
+74
+00:06:05,810 --> 00:06:11,450
+Entonces, con estos arreglos se crean tan pronto como creamos nuestro programa o cuando comenzamos nuestro programa en el terminal y
+
+75
+00:06:12,170 --> 00:06:18,230
+luego estos arreglos obtienen registros agregados tan pronto como usted y yo empezamos a llamar a establecer el tiempo de espera o
+
+76
+00:06:18,260 --> 00:06:23,510
+arrancar servidores o trabajar con el Módulo de sistema de archivos dentro del código que usted y yo escribimos.
+
+77
+00:06:23,930 --> 00:06:26,040
+Así que puedo agregar un comentario justo encima de esta línea.
+
+78
+00:06:26,050 --> 00:06:38,660
+Solo para recordarme a mí mismo que todas las operaciones de tareas de los nuevos temporizadores se registran desde mi archivo en ejecución.
+
+79
+00:06:38,770 --> 00:06:44,840
+Entonces eso tiene mucho sentido cuando usted y yo ejecutamos un programa de nodo desde la
+
+80
+00:06:44,870 --> 00:06:52,160
+línea de comando y decimos configurar un servidor HTP para que ningún programa no se cierre instantáneamente y regrese
+
+81
+00:06:52,160 --> 00:06:55,640
+al terminal porque configuramos una tarea pendiente del sistema operativo.
+
+82
+00:06:55,640 --> 00:07:00,800
+Dijimos que le dijimos a nuestro servidor o le dijimos a nuestro programa que escuchara algún puerto en nuestra
+
+83
+00:07:00,860 --> 00:07:05,830
+máquina y eso agrega una nueva tarea a este tipo de arreglo imaginario que existe dentro de nuestro programa.
+
+84
+00:07:06,540 --> 00:07:06,840
+DE ACUERDO.
+
+85
+00:07:06,860 --> 00:07:12,840
+Así que ahora hemos establecido qué causa que el ciclo de eventos comience y luego continúe ejecutándose.
+
+86
+00:07:12,890 --> 00:07:18,140
+Hagamos una pausa aquí y luego vamos a seguir explorando las partes internas del ciclo de eventos actual o lo
+
+87
+00:07:18,200 --> 00:07:21,180
+que sucede dentro de este mientras descansamos aquí en el próximo video.

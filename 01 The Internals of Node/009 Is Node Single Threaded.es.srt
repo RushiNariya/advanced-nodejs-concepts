@@ -1,0 +1,295 @@
+1
+00:00:00,710 --> 00:00:05,520
+En la última sección terminamos yendo a través de los cinco pasos diferentes que ocurren durante un
+
+2
+00:00:05,580 --> 00:00:07,880
+tick del ciclo de eventos en esta sección.
+
+3
+00:00:07,890 --> 00:00:13,090
+Ahora vamos a seguir adelante y comenzaremos a hablar de algunas cosas muy interesantes sobre el ciclo de eventos.
+
+4
+00:00:13,140 --> 00:00:19,200
+Lo primero que vamos a discutir es aclarar una idea errónea muy común sobre Noad.
+
+5
+00:00:19,500 --> 00:00:25,720
+Así que aquí está la idea errónea de que puede haber leído en línea de vez en cuando que el nodo tiene un solo hilo.
+
+6
+00:00:25,860 --> 00:00:26,870
+Eso es lo que dice la gente.
+
+7
+00:00:26,880 --> 00:00:29,650
+La gente dice que no tiene un solo hilo.
+
+8
+00:00:29,670 --> 00:00:34,890
+Incluso les mostré un diagrama hace unos minutos que claramente declaraba que el ciclo de eventos
+
+9
+00:00:34,890 --> 00:00:36,030
+usa solo un hilo.
+
+10
+00:00:36,030 --> 00:00:39,170
+Sin embargo, esa no es la historia completa.
+
+11
+00:00:39,210 --> 00:00:41,660
+La verdad es mucho más complicada.
+
+12
+00:00:41,670 --> 00:00:48,900
+Por lo tanto, en esta sección vamos a comenzar a investigar si el nodo es verdaderamente de un solo hilo.
+
+13
+00:00:48,900 --> 00:00:49,860
+Todo bien.
+
+14
+00:00:50,050 --> 00:00:53,990
+Así que aquí puedo aclarar qué está pasando aquí.
+
+15
+00:00:54,000 --> 00:00:56,100
+Vamos a investigar mucho esta afirmación.
+
+16
+00:00:56,130 --> 00:00:58,510
+Pero esta es la primera prueba de eso.
+
+17
+00:00:59,070 --> 00:01:04,020
+Entonces el ciclo de eventos Noad que acabamos de pasar es verdaderamente de un solo hilo.
+
+18
+00:01:04,140 --> 00:01:10,110
+Cuando iniciamos un programa con Node, se crea una sola instancia del ciclo de evento y se coloca
+
+19
+00:01:10,110 --> 00:01:11,160
+en un hilo.
+
+20
+00:01:11,580 --> 00:01:18,000
+Ahora eso se considera algo malo porque significa que nuestro programa solo puede ejecutarse en un solo núcleo de
+
+21
+00:01:18,000 --> 00:01:19,210
+nuestro asiento para usted.
+
+22
+00:01:19,440 --> 00:01:24,990
+Entonces, si tenemos muchos núcleos dentro de nuestro CPQ en nuestra computadora, entonces el nodo no los
+
+23
+00:01:24,990 --> 00:01:26,160
+va a aprovechar automáticamente.
+
+24
+00:01:26,160 --> 00:01:31,470
+En otras palabras, nuestro programa podría no ejecutarse tan rápido como podría ser porque está limitado a
+
+25
+00:01:31,470 --> 00:01:32,460
+un solo hilo.
+
+26
+00:01:32,950 --> 00:01:41,930
+Sin embargo, algunas de las funciones que se incluyen dentro de la biblioteca estándar de nodo no son en realidad de
+
+27
+00:01:41,940 --> 00:01:43,160
+un solo subproceso.
+
+28
+00:01:43,230 --> 00:01:49,800
+En otras palabras, algunas de las funciones que se incluyen dentro del nodo que ejecutamos se ejecutan fuera de
+
+29
+00:01:49,830 --> 00:01:53,370
+nuestro bucle de eventos y fuera de ese único hilo.
+
+30
+00:01:53,760 --> 00:01:58,890
+Entonces, simplemente declarar que el nodo tiene un solo hilo no es absolutamente cierto.
+
+31
+00:01:58,890 --> 00:02:05,540
+El bucle de evento utiliza un único hilo, pero una gran cantidad del código que usted y yo escribimos no se
+
+32
+00:02:05,550 --> 00:02:08,270
+ejecuta en realidad dentro de ese hilo por completo.
+
+33
+00:02:08,310 --> 00:02:12,410
+Entonces en este video vamos a empezar a ver algunos ejemplos de eso.
+
+34
+00:02:12,420 --> 00:02:16,770
+Ahora no voy a mostrarte ningún diagrama y no voy a darte largos discursos para
+
+35
+00:02:16,770 --> 00:02:18,390
+convencerte de cómo funciona esto.
+
+36
+00:02:18,390 --> 00:02:20,980
+En cambio, tú y yo vamos a escribir un código.
+
+37
+00:02:21,060 --> 00:02:26,640
+Luego vamos a ejecutar en la línea de comandos y obtendrás una prueba muy real de
+
+38
+00:02:26,640 --> 00:02:29,530
+que no todos los nodos tienen una sola hebra.
+
+39
+00:02:29,580 --> 00:02:35,970
+Así que abramos el respaldo de nuestro editor de código y vamos a escribir un poco de código x y así en mi editor de código
+
+40
+00:02:35,970 --> 00:02:44,250
+vamos a crear un nuevo archivo y lo llamaré hilos J. S. al igual que.
+
+41
+00:02:44,670 --> 00:02:51,480
+Dentro de este archivo, usted y yo vamos a necesitar en la función PBK DFT que es esa función de hashing
+
+42
+00:02:51,510 --> 00:02:54,980
+que analizamos en el módulo de cifrado hace un momento.
+
+43
+00:02:55,320 --> 00:03:00,720
+En particular, vamos a tratar de ejecutar esa función y vamos a comparar exactamente
+
+44
+00:03:00,720 --> 00:03:03,190
+cuánto tiempo lleva correr en nuestra computadora.
+
+45
+00:03:03,210 --> 00:03:08,000
+Comencemos primero pidiendo en crypto en la parte superior.
+
+46
+00:03:08,280 --> 00:03:12,220
+Y recuerde que esta es una biblioteca estándar que se incluye con el nodo.
+
+47
+00:03:12,930 --> 00:03:18,120
+Luego seleccionaremos el PBK para funcionar y ejecutarlo dentro de este archivo.
+
+48
+00:03:18,450 --> 00:03:23,770
+Entonces diré crypto dot PBK D F 2.
+
+49
+00:03:24,210 --> 00:03:26,880
+Y luego vamos a pasar un par de argumentos aquí.
+
+50
+00:03:26,880 --> 00:03:31,110
+Ahora realmente no necesita saber exactamente qué está haciendo esta función porque sé que realmente no
+
+51
+00:03:31,110 --> 00:03:33,060
+le he dicho claramente lo que está haciendo.
+
+52
+00:03:33,060 --> 00:03:37,920
+Todo lo que hacemos es usar esta función para hacer un poco de trabajo costoso dentro de un programa.
+
+53
+00:03:37,950 --> 00:03:42,600
+Por lo tanto, va a tomar esta función un tiempo en ejecutarse y necesitamos comparar el
+
+54
+00:03:42,600 --> 00:03:47,280
+tiempo que lleva correr y usar eso para detectar si un nodo es o no único.
+
+55
+00:03:47,700 --> 00:03:49,940
+Así que no voy a contar demasiado sobre los argumentos aquí.
+
+56
+00:03:49,980 --> 00:03:52,210
+Va a arrojar los argumentos y seguir adelante.
+
+57
+00:03:52,530 --> 00:03:57,240
+Entonces, como primer argumento voy a pasar una cadena de A para el segundo, les pasaré
+
+58
+00:03:57,240 --> 00:04:01,130
+una cadena de B para el tercer argumento y este realmente es importante.
+
+59
+00:04:01,170 --> 00:04:03,970
+Entonces, para esta discusión, por favor asegúrate de hacer lo mismo que yo.
+
+60
+00:04:04,220 --> 00:04:07,910
+Voy a poner en 100000 mil como tal.
+
+61
+00:04:07,960 --> 00:04:10,020
+Asegúrate de tener 100000 exactamente
+
+62
+00:04:12,720 --> 00:04:19,620
+como el cuarto argumento que pondré en cinco quintos para el quinto. Pondré una cadena de Shaw
+
+63
+00:04:19,660 --> 00:04:25,430
+cinco uno dos y luego, como último argumento, proporcionaré una función de devolución de llamada.
+
+64
+00:04:25,480 --> 00:04:32,480
+Ahora la función Kodak aquí se invoca después de que la función PBK DFT se haya ejecutado con éxito, por lo que
+
+65
+00:04:32,980 --> 00:04:38,080
+esta función tarda bastante en ejecutarse en total en mi máquina, probablemente demore alrededor de 1
+
+66
+00:04:38,080 --> 00:04:43,300
+segundo en ejecutarse para manejar esa duración o esa cantidad de tiempo que se necesita para ejecutar.
+
+67
+00:04:43,330 --> 00:04:48,820
+Obtenemos esta función de devolución de llamada que recibe una llamada después de que este hash ha sido calculado con éxito.
+
+68
+00:04:48,850 --> 00:04:51,540
+Nuevamente, realmente no necesitamos saber qué hace la función en sí misma.
+
+69
+00:04:51,550 --> 00:04:56,450
+Básicamente llamamos a la función y luego, eventualmente, se ejecutarán las devoluciones de llamada.
+
+70
+00:04:56,480 --> 00:04:56,760
+DE ACUERDO.
+
+71
+00:04:56,770 --> 00:04:58,380
+Así que tomemos un pulso rápido aquí mismo.
+
+72
+00:04:58,420 --> 00:05:02,710
+Cuando volvamos a la siguiente sección, agregaremos un poco de código para comparar cuánto
+
+73
+00:05:02,710 --> 00:05:04,060
+tardará esto en ejecutarse.
+
+74
+00:05:04,060 --> 00:05:06,020
+Así que toma un descanso rápido y te veré en solo un minuto.

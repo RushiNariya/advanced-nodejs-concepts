@@ -1,0 +1,347 @@
+1
+00:00:00,910 --> 00:00:05,720
+In the last section we started writing out some pseudo code to model how node's event loop works.
+
+2
+00:00:05,760 --> 00:00:11,520
+We are now working on the should continue function which decides whether or not our event loop should
+
+3
+00:00:11,520 --> 00:00:13,540
+continue running for another tick.
+
+4
+00:00:13,800 --> 00:00:15,660
+So it should continue returns true.
+
+5
+00:00:15,790 --> 00:00:17,970
+Our event loop is going to run for another tick.
+
+6
+00:00:17,970 --> 00:00:24,420
+Otherwise if it returns false then the event loop will not run anymore and our program will exit back
+
+7
+00:00:24,420 --> 00:00:26,330
+to the terminal.
+
+8
+00:00:26,340 --> 00:00:32,730
+So inside all these should continue function right here no yes does three separate checks three checks
+
+9
+00:00:32,730 --> 00:00:38,080
+to decide whether or not the event loop should continue for another iteration.
+
+10
+00:00:38,130 --> 00:00:43,170
+We're going to start out by writing a comment that summarizes what each of these three checks are and
+
+11
+00:00:43,170 --> 00:00:47,690
+then we'll write out a little pseudo code to kind of simulate the check that really occurs.
+
+12
+00:00:48,210 --> 00:00:52,530
+So the first check that no does when it's deciding whether or not it should continue running our program
+
+13
+00:00:52,890 --> 00:00:59,370
+is to look to see if there are still any functions that have been registered with set timeout set interval
+
+14
+00:00:59,460 --> 00:01:02,610
+or set immediate and still need to be executed.
+
+15
+00:01:03,060 --> 00:01:11,390
+So we can write out check 1 any pending set timeout set interval or set immediate.
+
+16
+00:01:12,000 --> 00:01:16,620
+So if there's any functions that still have to be executed through set time outs set interval or set
+
+17
+00:01:16,620 --> 00:01:19,240
+immediate then our program does not exit.
+
+18
+00:01:19,260 --> 00:01:22,400
+It continues running for another tick.
+
+19
+00:01:22,500 --> 00:01:26,700
+I'm going to assume that you are familiar with set time out and set interval.
+
+20
+00:01:26,700 --> 00:01:31,770
+You may have never seen set immediate before but it basically works in a similar fashion to these other
+
+21
+00:01:31,770 --> 00:01:32,260
+two.
+
+22
+00:01:32,280 --> 00:01:37,470
+We basically pass a function to it and it will be executed automatically at some point in the future.
+
+23
+00:01:38,190 --> 00:01:41,830
+The second check that no does to decide whether or not it should exit.
+
+24
+00:01:41,940 --> 00:01:49,050
+It's so look to see if there are any pending operating system tasks a pen an example of an operating
+
+25
+00:01:49,050 --> 00:01:55,340
+system task is something like an HTP server listening to requests on some port.
+
+26
+00:01:55,350 --> 00:01:59,330
+We'll talk more about exactly what an operating system task means a little bit.
+
+27
+00:01:59,460 --> 00:02:03,870
+But basically for right now we're going to say that the second check that node makes is to look if any
+
+28
+00:02:03,870 --> 00:02:06,990
+servers are still listening for incoming requests.
+
+29
+00:02:07,170 --> 00:02:19,570
+So check to any pending OS tasks like maybe a server listening to some given port the third check that
+
+30
+00:02:19,570 --> 00:02:24,670
+occurs is to see if there are any long running operations that are still being executed inside of our
+
+31
+00:02:24,670 --> 00:02:25,870
+program.
+
+32
+00:02:25,870 --> 00:02:30,490
+So this is going to be very similar to check number two but there is a distinct difference between the
+
+33
+00:02:30,490 --> 00:02:33,630
+two that will go into great detail over time.
+
+34
+00:02:33,760 --> 00:02:40,660
+An example of a long running operation would be something like a function call inside the FS module
+
+35
+00:02:40,690 --> 00:02:42,880
+to read some file off the hard drive.
+
+36
+00:02:42,880 --> 00:02:48,220
+So I know that probably sounds very similar almost identical to the second check right here but it really
+
+37
+00:02:48,220 --> 00:02:50,380
+truly is a different operation.
+
+38
+00:02:50,380 --> 00:02:54,590
+So we'll go into a lot of detail on the difference between these two checks in just a minute.
+
+39
+00:02:54,700 --> 00:03:04,030
+But right now I'm going to add a comment that says 6:03 any pending long running operations like FS
+
+40
+00:03:04,030 --> 00:03:07,850
+module and FS module here is referring to the file system module.
+
+41
+00:03:07,860 --> 00:03:11,760
+Include with node which is used to read information off of our hard drive.
+
+42
+00:03:11,800 --> 00:03:13,640
+All right information as well.
+
+43
+00:03:14,290 --> 00:03:14,610
+OK.
+
+44
+00:03:14,620 --> 00:03:20,230
+So we've now wrote out comments for the three checks that occur any time no decides whether or not the
+
+45
+00:03:20,230 --> 00:03:22,570
+event loop needs to run for another pass.
+
+46
+00:03:22,870 --> 00:03:27,580
+But right now we only have comments we don't have any actual code that kind of represents what's going
+
+47
+00:03:27,580 --> 00:03:28,130
+on.
+
+48
+00:03:28,450 --> 00:03:34,200
+So what does it really mean to say that we like check for pending tasks or something like that.
+
+49
+00:03:34,660 --> 00:03:40,810
+Well I think that in all three of these cases we can kind of imagine that there might be like an internal
+
+50
+00:03:40,870 --> 00:03:49,390
+array of sorts inside of our program that keeps track of any of these pending tasks that might be created.
+
+51
+00:03:49,420 --> 00:03:56,930
+So maybe any time that our javascript code creates a new set time out or makes a new call to the FS
+
+52
+00:03:56,950 --> 00:04:04,840
+module maybe an entry is added to some array to keep track of that task that is currently being executed.
+
+53
+00:04:04,930 --> 00:04:11,950
+So let's create three arrays above are my file not run content's call right here and it's going to simulate
+
+54
+00:04:12,070 --> 00:04:17,800
+kind of like bookkeeping stuff that's going to allow us to very easily checked in the future to see
+
+55
+00:04:17,800 --> 00:04:21,880
+if we still have any pending operations going on.
+
+56
+00:04:21,880 --> 00:04:30,420
+So I going to write out three arrays and a call the first one pending timer's then pending OS tasks.
+
+57
+00:04:31,210 --> 00:04:33,840
+And then finally pending operations
+
+58
+00:04:36,650 --> 00:04:42,740
+then back down inside these should continue function we can add in some imaginary code that would look
+
+59
+00:04:43,010 --> 00:04:48,450
+at these three arrays right here and check to see if there are still any pending operations any of them.
+
+60
+00:04:48,820 --> 00:04:54,410
+And if there are still any pending operations then will return False should continue or so will return
+
+61
+00:04:54,410 --> 00:04:55,100
+true.
+
+62
+00:04:55,100 --> 00:04:59,420
+Otherwise if there are no more operations for us to wait on them will return false in our program will
+
+63
+00:04:59,420 --> 00:05:00,460
+exit.
+
+64
+00:05:00,980 --> 00:05:05,900
+So it's very easily checked to see if there are still any remaining tasks inside these three arrays.
+
+65
+00:05:05,900 --> 00:05:20,390
+We can do something like return pending timer's length or pending OS tasks length or pending operations.
+
+66
+00:05:20,810 --> 00:05:29,030
+Length lifeso So now if any of these three arrays still have any pending operations or any pending tasks
+
+67
+00:05:29,030 --> 00:05:32,840
+inside them are should continue function is going to return true.
+
+68
+00:05:32,840 --> 00:05:37,880
+Otherwise if there's nothing else for us to wait on these should continue Funk's right here is going
+
+69
+00:05:37,880 --> 00:05:39,060
+to return false.
+
+70
+00:05:39,380 --> 00:05:47,510
+And our while loop will exit and we'll eventually get kicked back over to our terminal now internally.
+
+71
+00:05:47,500 --> 00:05:53,540
+No it is going to automatically detect when our javascript code that you and I write sets up something
+
+72
+00:05:53,540 --> 00:05:58,260
+like a set time out call or issues a new call to the FS module.
+
+73
+00:05:58,550 --> 00:06:05,190
+These automatic detections occur even during that initial run of our my file right here.
+
+74
+00:06:05,810 --> 00:06:11,450
+So with these arrays are created as soon as we create our program or we started our program at the terminal
+
+75
+00:06:12,170 --> 00:06:18,230
+and then these arrays get records added to them as soon as you and I start to actually call set timeout
+
+76
+00:06:18,260 --> 00:06:23,510
+or start up servers or work with the file system module inside of the code that you and I write.
+
+77
+00:06:23,930 --> 00:06:26,040
+So I get to add a comment right above this line.
+
+78
+00:06:26,050 --> 00:06:38,660
+Just to remind myself of that all say new timers tasks operations are recorded from my file running.
+
+79
+00:06:38,770 --> 00:06:44,840
+So that actually makes a lot of sense when you and I run a node program from the command line and say
+
+80
+00:06:44,870 --> 00:06:52,160
+set up a HTP server that no program does not instantly close and go back to the terminal because we
+
+81
+00:06:52,160 --> 00:06:55,640
+set up a pending OS task.
+
+82
+00:06:55,640 --> 00:07:00,800
+We tell we told our server or we told our program to listen to some port on our machine and that adds
+
+83
+00:07:00,860 --> 00:07:05,830
+a new task to this kind of imaginary array that exists inside of our program.
+
+84
+00:07:06,540 --> 00:07:06,840
+OK.
+
+85
+00:07:06,860 --> 00:07:12,840
+So we've now established what causes the event loop to begin and then continue running.
+
+86
+00:07:12,890 --> 00:07:18,140
+So let's pause here and then we're going to continue exploring the internals of the actual event loop
+
+87
+00:07:18,200 --> 00:07:21,180
+or what goes on inside this while the break here in the next video.

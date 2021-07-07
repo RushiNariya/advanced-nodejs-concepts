@@ -1,0 +1,171 @@
+1
+00:00:00,610 --> 00:00:05,830
+In the last dozen videos or so we've tackled some pretty complicated topics in this video we're going
+
+2
+00:00:05,830 --> 00:00:09,560
+to take a quick pause and review everything we've covered so far.
+
+3
+00:00:09,580 --> 00:00:14,950
+I've got a summary diagram that's going to summarize exactly what happens when you start up a node program
+
+4
+00:00:15,010 --> 00:00:16,290
+on your local computer.
+
+5
+00:00:16,600 --> 00:00:18,430
+So everything starts off appear at the top.
+
+6
+00:00:18,430 --> 00:00:23,980
+When you run the command node index dot J.S. or whatever file you might be running when you run that
+
+7
+00:00:23,980 --> 00:00:29,740
+command node immediately executes and processes all the code inside of that file.
+
+8
+00:00:29,740 --> 00:00:34,090
+Now one thing you might be curious about during this phase as well is require statements that you have
+
+9
+00:00:34,090 --> 00:00:35,190
+inside that file.
+
+10
+00:00:35,410 --> 00:00:42,990
+The instant you boot up Node all the code inside that file and any required files as well are all executed.
+
+11
+00:00:43,120 --> 00:00:48,910
+So if your index start JSE file has them require statements those are instantly required in and executed
+
+12
+00:00:48,940 --> 00:00:50,280
+as well.
+
+13
+00:00:50,630 --> 00:00:56,030
+Note then enters our event loop the event loop has one overarching big question.
+
+14
+00:00:56,080 --> 00:00:58,390
+It says Do we still have any work to do.
+
+15
+00:00:58,390 --> 00:01:00,100
+Do we have any timers.
+
+16
+00:01:00,100 --> 00:01:04,070
+Do we have any operating system tasks for doing networking or similar tasks.
+
+17
+00:01:04,240 --> 00:01:07,440
+Or do we have anything still running inside of our thread pool.
+
+18
+00:01:07,780 --> 00:01:12,490
+If we don't then our program instantly exits and there's nothing else for us to do.
+
+19
+00:01:12,700 --> 00:01:17,140
+But if we do still have some amount of work to do then we go through a series of a couple of different
+
+20
+00:01:17,140 --> 00:01:18,260
+steps.
+
+21
+00:01:18,400 --> 00:01:24,080
+We first check to see if there are any set timeouts or set intervals that need to be executed.
+
+22
+00:01:24,960 --> 00:01:31,110
+Next we check to see if any callbacks are ready to be called tied to anything related to operating system
+
+23
+00:01:31,110 --> 00:01:34,690
+tasks like networking or anything related to our thread pool.
+
+24
+00:01:35,010 --> 00:01:39,710
+And this is probably the vast majority of code that you and I write inside of node applications.
+
+25
+00:01:41,250 --> 00:01:45,780
+Next the event loop just pauses and sits around waiting for stuff to happen.
+
+26
+00:01:46,110 --> 00:01:51,450
+So it waits for some task to complete where it waits for some time or to come up or whatever else it
+
+27
+00:01:51,450 --> 00:01:52,500
+might be waiting for.
+
+28
+00:01:53,980 --> 00:01:59,770
+After that we then run any set immediate functions that have been defined inside of our code.
+
+29
+00:02:00,010 --> 00:02:05,200
+And then finally we handle any close events which allow us to do some amount of cleanup inside of our
+
+30
+00:02:05,200 --> 00:02:06,550
+application.
+
+31
+00:02:06,700 --> 00:02:12,070
+And then of course the last thing is to go back up to the top and repeat the entire process all over
+
+32
+00:02:12,070 --> 00:02:13,140
+again.
+
+33
+00:02:13,330 --> 00:02:18,010
+Remember that we refer to one execution of the event loop as a tick.
+
+34
+00:02:18,010 --> 00:02:22,780
+So you'll see that terminology quite frequently and a lot of no documentation.
+
+35
+00:02:22,780 --> 00:02:23,070
+All right.
+
+36
+00:02:23,080 --> 00:02:24,160
+So that's a quick review.
+
+37
+00:02:24,340 --> 00:02:29,320
+But we still have a lot of topics I want to now relate to you mostly talking about performance of our
+
+38
+00:02:29,320 --> 00:02:32,920
+application so we now have a really good idea of the internals of no.
+
+39
+00:02:32,980 --> 00:02:33,500
+Yes.
+
+40
+00:02:33,640 --> 00:02:37,180
+And what's really happening when we make use of the standard library.
+
+41
+00:02:37,240 --> 00:02:42,040
+So now we get to leverage all this knowledge and figure out how we can start writing some really performant
+
+42
+00:02:42,040 --> 00:02:44,300
+code inside of our applications.
+
+43
+00:02:44,320 --> 00:02:47,440
+So quick break and we'll dive into that in the next video.

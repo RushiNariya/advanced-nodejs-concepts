@@ -1,0 +1,391 @@
+1
+00:00:00,590 --> 00:00:06,290
+En la última sección, creamos un nuevo archivo que vamos a usar para comparar que PBK tiene que funcionar.
+
+2
+00:00:06,390 --> 00:00:11,290
+Y eventualmente usaremos esto para detectar si Knode realmente tiene o no un solo hilo.
+
+3
+00:00:11,700 --> 00:00:13,470
+Ahora tenemos nuestra llamada de función dentro de tu.
+
+4
+00:00:13,500 --> 00:00:16,710
+Lo siguiente que tenemos que hacer es agregar un poco de código al punto de referencia.
+
+5
+00:00:16,710 --> 00:00:20,610
+Cuánto tiempo le lleva correr a esto para compararlo.
+
+6
+00:00:20,670 --> 00:00:24,700
+Primero voy a declarar una nueva variable fuera de la llamada a la función.
+
+7
+00:00:24,840 --> 00:00:30,550
+Voy a declarar una nueva variable llamada Start y esta va a registrar la hora a la
+
+8
+00:00:30,550 --> 00:00:33,640
+que comenzamos nuestra llamada a la función PBK DFT.
+
+9
+00:00:33,880 --> 00:00:37,030
+Va a decir que start es igual a date dot.
+
+10
+00:00:37,050 --> 00:00:43,900
+Ahora, como tal, dentro de Colback voy a agregar un registro de consola y esto va a cerrar la sesión exactamente
+
+11
+00:00:43,950 --> 00:00:50,010
+cuánto tiempo tomó desde la grabación de la hora de inicio hasta entrar en el registro de la consola.
+
+12
+00:00:50,010 --> 00:00:52,380
+Entonces es un registro de la consola.
+
+13
+00:00:52,790 --> 00:00:58,080
+Voy a pasar un hilo con uno así porque vamos a tener varios registros de consola dentro
+
+14
+00:00:58,080 --> 00:01:03,450
+de este programa y al agregar y luego agregar al pequeño aquí todos sabemos qué registro de la
+
+15
+00:01:03,450 --> 00:01:05,490
+consola estamos viendo dentro de nuestro terminal.
+
+16
+00:01:05,910 --> 00:01:12,900
+Y luego, como segundo argumento, tomaré los nuevos tiempos como la hora actual con datos ahora
+
+17
+00:01:12,900 --> 00:01:15,780
+y luego restaré el comienzo de eso.
+
+18
+00:01:16,560 --> 00:01:22,110
+Así que tomamos la hora de inicio que llamamos a la función y luego, cuando se
+
+19
+00:01:22,170 --> 00:01:28,320
+activa la devolución de llamada, tomamos la nueva hora actual restamos el tiempo anterior y deberíamos ver cuánto
+
+20
+00:01:28,320 --> 00:01:31,620
+tarda en milisegundos en imprimir o calcular este valor hash.
+
+21
+00:01:31,620 --> 00:01:36,260
+Entonces, digamos que este archivo se ejecutará en la terminal y veremos cuánto tiempo se tarda
+
+22
+00:01:36,260 --> 00:01:37,600
+en calcular la eclosión.
+
+23
+00:01:37,620 --> 00:01:44,410
+Así que, de vuelta a mi terminal, me aseguraré de estar dentro de mi directorio con el archivo
+
+24
+00:01:44,410 --> 00:01:51,990
+de hilos y luego, ejecutaré los hilos de los nodos, y comenzaré así, y cuando lo haga, verán que imprimo
+
+25
+00:01:51,990 --> 00:01:53,760
+dos puntos. y luego 1073.
+
+26
+00:01:53,790 --> 00:01:59,530
+Eso significa que tomó 1000 milisegundos o solo 1 segundo para ejecutar ese PBK.
+
+27
+00:01:59,540 --> 00:02:00,870
+¿Tienes que funcionar?
+
+28
+00:02:01,230 --> 00:02:01,670
+DE ACUERDO.
+
+29
+00:02:01,740 --> 00:02:02,790
+Esa es una buena referencia.
+
+30
+00:02:02,790 --> 00:02:06,160
+Ahora sabemos cuánto tiempo lleva calcular exactamente.
+
+31
+00:02:06,780 --> 00:02:11,160
+No voy a volver a mi editor de código y voy a tomar esta llamada de
+
+32
+00:02:11,430 --> 00:02:14,090
+función completa aquí mismo y voy a duplicarla debajo.
+
+33
+00:02:14,370 --> 00:02:19,500
+Entonces voy a copiarlo y luego en la siguiente línea lo pegaré.
+
+34
+00:02:19,580 --> 00:02:21,140
+Ahora asegúrese de que actualicen el consulado.
+
+35
+00:02:21,150 --> 00:02:23,590
+Un gran año para ti también.
+
+36
+00:02:24,590 --> 00:02:31,250
+Ahora, antes de ejecutar esto de vuelta en la terminal, quiero dejar dos cosas extremadamente
+
+37
+00:02:31,250 --> 00:02:31,920
+claras aquí.
+
+38
+00:02:32,090 --> 00:02:37,730
+Dos cosas que son absolutamente críticas para entender sobre el código que hemos escrito dentro de este archivo.
+
+39
+00:02:37,730 --> 00:02:45,440
+Primero, cuando ejecutamos este archivo, ambas funciones, tanto esta llamada como esta llamada, se
+
+40
+00:02:45,560 --> 00:02:49,350
+invocarán más o menos al mismo tiempo.
+
+41
+00:02:49,400 --> 00:02:55,070
+Por lo tanto, este código no va a esperar a que la primera llamada finalice y llegue a este registro de la consola
+
+42
+00:02:55,070 --> 00:02:56,240
+antes de iniciar el segundo.
+
+43
+00:02:56,240 --> 00:02:57,750
+Eso no es lo que está pasando.
+
+44
+00:02:57,950 --> 00:03:03,460
+En el instante en que ejecutamos este archivo, ambos se ejecutan a la misma hora.
+
+45
+00:03:03,470 --> 00:03:08,760
+Ahora, lo segundo que hay que tener en cuenta aquí es que no estamos modificando la variable de inicio.
+
+46
+00:03:09,080 --> 00:03:14,540
+De modo que cada recuento del registro que vamos a ver finalmente como la consola que quiero aquí
+
+47
+00:03:14,540 --> 00:03:20,210
+será la cantidad exacta de tiempo que tomó desde que inició su programa hasta el tiempo que tardó en
+
+48
+00:03:20,210 --> 00:03:21,720
+finalizar cada llamada de función.
+
+49
+00:03:22,100 --> 00:03:27,310
+Entonces, entonces, volvamos a la terminal y vamos a ejecutar este archivo nuevamente y ver qué pasa.
+
+50
+00:03:28,040 --> 00:03:28,480
+DE ACUERDO.
+
+51
+00:03:28,520 --> 00:03:35,910
+De modo que de vuelta a la terminal o al hilo del nodo de ejecución, inicie G-S ahora, cuando ejecuto esto, notará que
+
+52
+00:03:35,910 --> 00:03:39,630
+mi tiempo está un poco por encima de lo que era antes.
+
+53
+00:03:39,780 --> 00:03:44,680
+Así que originalmente obtuve alrededor de 10 73 y ahora estoy recibiendo 11:15 11:59.
+
+54
+00:03:44,970 --> 00:03:50,750
+Pero es probable que esté viendo dos veces muy cercanas a su tiempo original.
+
+55
+00:03:50,790 --> 00:03:55,860
+Lo más probable es que no sea el caso, pero es probable que veas dos veces
+
+56
+00:03:55,860 --> 00:03:57,330
+muy cercanas a las originales.
+
+57
+00:03:57,360 --> 00:04:02,010
+La razón por la que mis dos veces aquí están un poco por encima o un poco
+
+58
+00:04:02,010 --> 00:04:07,280
+elevadas es solo porque ahora estoy usando un software de grabación de pantalla que consume mucho sonido en mi computadora.
+
+59
+00:04:07,290 --> 00:04:12,600
+Pero de todos modos el punto es que lo más probable es que veamos dos o
+
+60
+00:04:12,600 --> 00:04:16,120
+dos puntos de referencia que estén muy cerca del tiempo original.
+
+61
+00:04:16,140 --> 00:04:20,160
+Ahora solo para asegurarme de que realmente entiendes lo que está pasando aquí, quiero
+
+62
+00:04:20,160 --> 00:04:24,860
+mostrarte un par de diagramas que te ayudarán a comprender la importancia de estos resultados aquí.
+
+63
+00:04:24,960 --> 00:04:25,830
+DE ACUERDO.
+
+64
+00:04:26,400 --> 00:04:26,640
+Todo bien.
+
+65
+00:04:26,640 --> 00:04:27,820
+Entonces un par de diagramas.
+
+66
+00:04:27,840 --> 00:04:29,680
+Aquí vamos.
+
+67
+00:04:29,700 --> 00:04:30,260
+Todo bien.
+
+68
+00:04:30,420 --> 00:04:32,070
+Entonces, primero tenemos este diagrama.
+
+69
+00:04:32,070 --> 00:04:39,540
+Entonces, este es un diagrama de lo que esperaba ver si el nodo era verdaderamente de un solo hilo, recordó
+
+70
+00:04:39,540 --> 00:04:43,930
+que un hilo presenta una serie lineal de instrucciones para nuestro CPQ.
+
+71
+00:04:44,160 --> 00:04:49,950
+Entonces, el CPQ tiene que seguirlos a todos en orden del orden en que los presentamos.
+
+72
+00:04:49,950 --> 00:04:55,530
+Ahora sabemos que una llamada a BTK PBK de dos toma exactamente un segundo.
+
+73
+00:04:55,650 --> 00:04:57,970
+Entonces, como un segundo aquí.
+
+74
+00:04:58,020 --> 00:05:04,230
+Entonces, con dos llamadas a funciones si realmente se tratara de un sistema de subproceso único, hubiera esperado que
+
+75
+00:05:04,230 --> 00:05:06,660
+todo este proceso tardara dos segundos en total.
+
+76
+00:05:06,920 --> 00:05:11,790
+Tenemos un segundo para la primera llamada que finalice, deberíamos ver un registro de la consola.
+
+77
+00:05:12,090 --> 00:05:18,240
+Y luego, después de un segundo adicional, deberíamos ver aparecer un segundo registro de consola.
+
+78
+00:05:18,240 --> 00:05:22,280
+Echemos un vistazo a un diagrama que va a hacer esta expectativa aquí mucho más clara.
+
+79
+00:05:22,290 --> 00:05:27,750
+Y de nuevo, esto está hablando como si asumiéramos que la nota tiene un solo hilo y no es
+
+80
+00:05:28,360 --> 00:05:33,510
+exactamente porque el segundo diagrama solo aclara lo que esperaríamos si el nodo tuviera un solo hilo.
+
+81
+00:05:33,510 --> 00:05:38,790
+Así que habría esperado que hubiéramos comenzado nuestro programa en el momento de cero segundos aquí mismo.
+
+82
+00:05:39,240 --> 00:05:43,920
+La primera llamada a PBK debería haber tomado un segundo y luego, tan pronto como
+
+83
+00:05:44,160 --> 00:05:48,690
+estuviera completa, almacenaríamos la segunda llamada y luego, a los dos segundos, la segunda
+
+84
+00:05:48,690 --> 00:05:49,940
+llamada también estaría completa.
+
+85
+00:05:49,950 --> 00:05:56,350
+Sin embargo, estos dos diagramas que acabo de mostrarte claramente no fueron lo que ocurrió.
+
+86
+00:05:56,640 --> 00:06:00,440
+Esto no es lo que realmente sucedió cuando ejecutamos nuestro código.
+
+87
+00:06:00,660 --> 00:06:06,900
+Muy claramente vimos que ambos registros se producían básicamente al mismo tiempo y tardaba casi igual
+
+88
+00:06:06,960 --> 00:06:13,760
+a la ejecución original de nuestra función de subprocesos, en la que solo hacíamos un solo hash.
+
+89
+00:06:13,770 --> 00:06:17,740
+Así que echemos un vistazo a un diagrama de lo que realmente sucedió.
+
+90
+00:06:17,740 --> 00:06:19,230
+Así que aquí está la realidad.
+
+91
+00:06:19,230 --> 00:06:24,960
+La realidad es que pusimos en marcha nuestro programa en cero segundos aquí y luego tomó exactamente un
+
+92
+00:06:24,960 --> 00:06:29,190
+segundo para que ambas llamadas de función lleguen a la devolución de llamada.
+
+93
+00:06:29,190 --> 00:06:34,710
+Así que, claramente, esto indica que algo está sucediendo para indicar que estamos saliendo de
+
+94
+00:06:34,710 --> 00:06:37,110
+un único hilo configurado con un nodo.
+
+95
+00:06:37,350 --> 00:06:41,910
+Porque si solo tuviéramos un solo hilo, habríamos visto que la primera función lo llama
+
+96
+00:06:41,910 --> 00:06:43,670
+completo y luego el segundo inicio.
+
+97
+00:06:43,950 --> 00:06:48,030
+Hagamos una pausa aquí y comenzaremos a investigar por qué sucede esto en la siguiente
+
+98
+00:06:48,030 --> 00:06:48,440
+sección.

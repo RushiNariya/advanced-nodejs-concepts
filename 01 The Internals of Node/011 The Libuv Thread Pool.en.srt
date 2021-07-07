@@ -1,0 +1,167 @@
+1
+00:00:00,510 --> 00:00:06,210
+In the last section we saw some evidence that a function call to PBK do you have to is not actually
+
+2
+00:00:06,510 --> 00:00:08,900
+single threaded in this section.
+
+3
+00:00:08,910 --> 00:00:13,420
+We're going to expand on this example a little bit and figure out why we are seeing this behavior.
+
+4
+00:00:13,830 --> 00:00:18,660
+First let's look at a diagram of what's actually going on with it PBK D-Nev. to function behind the
+
+5
+00:00:18,660 --> 00:00:19,670
+scenes.
+
+6
+00:00:19,680 --> 00:00:25,370
+So remember we dove into the source code of this function a little bit ago and as we saw the PBK DFT
+
+7
+00:00:25,440 --> 00:00:32,070
+function has both the javascript implementation but it actually delegated all the work done to the C++
+
+8
+00:00:32,160 --> 00:00:33,020
+side.
+
+9
+00:00:33,480 --> 00:00:36,900
+So that's where the actual hashing process took place.
+
+10
+00:00:36,900 --> 00:00:44,400
+We also saw very briefly in that C++ file that there seemed to be some references to a lib library which
+
+11
+00:00:44,460 --> 00:00:49,460
+as you'll recall gives node's some better access to the underlying operating system.
+
+12
+00:00:49,830 --> 00:00:57,330
+The lib U.V. module has another responsibility that is relevant for some very particular functions in
+
+13
+00:00:57,330 --> 00:00:58,610
+the standard library.
+
+14
+00:00:58,950 --> 00:01:07,140
+So for some that's the key word here for some standard library function calls the node C++ side and
+
+15
+00:01:07,140 --> 00:01:12,840
+live U-V decide to do expensive calculations outside of the event loop entirely.
+
+16
+00:01:13,920 --> 00:01:21,000
+Instead they make use of something called a thread pool that thread pool is a series of four threads
+
+17
+00:01:21,060 --> 00:01:28,500
+that can be used for running computationally intensive tasks such as the PV KDAF to function by default
+
+18
+00:01:28,640 --> 00:01:32,070
+live U-V creates four threads in this thread pool.
+
+19
+00:01:32,070 --> 00:01:38,130
+So that means that in addition to that thread used for the event loop there are four other threads that
+
+20
+00:01:38,130 --> 00:01:44,460
+can be used to offload expensive calculations that need to occur inside of our application.
+
+21
+00:01:44,460 --> 00:01:48,990
+Many of the functions include in the node standard library will automatically make use of this thread
+
+22
+00:01:48,990 --> 00:01:49,490
+pool.
+
+23
+00:01:49,680 --> 00:01:53,400
+And as you might imagine the PBK DFT function is one of them.
+
+24
+00:01:53,790 --> 00:01:58,560
+Now the presence of this thread pool is very significant obviously from the standpoint of people always
+
+25
+00:01:58,560 --> 00:02:01,250
+saying oh yeah I noticed single threaded notice single threaded.
+
+26
+00:02:01,470 --> 00:02:07,020
+Well clearly it's not truly single threaded because there are other threads that node uses for doing
+
+27
+00:02:07,020 --> 00:02:10,410
+some computationally intensive tasks.
+
+28
+00:02:10,530 --> 00:02:15,840
+You see this thread pool here because if our event loop was responsible for doing this computationally
+
+29
+00:02:15,840 --> 00:02:21,840
+intensive task that means that our node application could do absolutely nothing else while we were running
+
+30
+00:02:21,840 --> 00:02:23,950
+the PBK T.F. to function.
+
+31
+00:02:24,090 --> 00:02:28,990
+Remember our CPQ runs all the instructions inside of a thread one by one.
+
+32
+00:02:29,070 --> 00:02:33,840
+So far thread had some line of instruction in side of it that said run this code.
+
+33
+00:02:33,860 --> 00:02:36,840
+That takes one second to run then that's pretty much it.
+
+34
+00:02:36,840 --> 00:02:39,560
+We have to wait one second for that code to run.
+
+35
+00:02:39,870 --> 00:02:45,540
+So by using this thread pool right here we don't have to wait that one second and we can do other things
+
+36
+00:02:45,600 --> 00:02:46,820
+inside of our event loop.
+
+37
+00:02:46,920 --> 00:02:48,850
+While that calculation is occurring.
+
+38
+00:02:49,520 --> 00:02:49,870
+OK.
+
+39
+00:02:49,920 --> 00:02:54,820
+So now that we have seen this thread pull right here let's take a quick pause.
+
+40
+00:02:54,840 --> 00:02:59,670
+We're going to come back in the next section and we're going to modify our file just a little bit and
+
+41
+00:02:59,670 --> 00:03:05,080
+it's going to allow us to actually detect the presence of these four threads inside the thread pool.
+
+42
+00:03:05,130 --> 00:03:07,410
+So quick break and I'll see you in just a minute.

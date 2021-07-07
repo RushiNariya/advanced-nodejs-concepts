@@ -1,0 +1,327 @@
+1
+00:00:00,540 --> 00:00:03,570
+Na última seção, temos uma visão geral muito rápida sobre ameaças.
+
+2
+00:00:03,660 --> 00:00:08,720
+Não vamos levar esse conhecimento e aplicá-lo ao mundo do não J. S. sempre que você e
+
+3
+00:00:08,720 --> 00:00:14,780
+eu iniciarmos um programa de nó em nosso nó de computador, criaremos automaticamente
+
+4
+00:00:14,780 --> 00:00:21,320
+um segmento e, em seguida, executaremos todo o nosso código dentro desse único segmento
+
+5
+00:00:21,320 --> 00:00:25,210
+dentro do único encadeamento representado pela caixa azul aqui.
+
+6
+00:00:25,340 --> 00:00:31,700
+Você pode pensar no loop de eventos como sendo uma estrutura de controle que decide o que nosso thread
+
+7
+00:00:31,700 --> 00:00:34,710
+deve estar fazendo em um determinado ponto no tempo.
+
+8
+00:00:34,820 --> 00:00:40,130
+Esse loop de eventos é o núcleo absoluto de cada programa que você e eu
+
+9
+00:00:40,130 --> 00:00:47,930
+executamos e todo programa que você e eu executamos tem exatamente um loop de evento, entendendo como o loop de eventos funciona é
+
+10
+00:00:47,930 --> 00:00:54,770
+extremamente importante, porque muitas preocupações de desempenho sobre o nó se resumem a como o loop de eventos se comporta.
+
+11
+00:00:54,770 --> 00:01:00,950
+Então, essencialmente, se você entender este loop de eventos, então você estará muito bem equipado para entender os
+
+12
+00:01:00,980 --> 00:01:02,900
+problemas de desempenho no nó também.
+
+13
+00:01:03,350 --> 00:01:09,800
+Mas há um pequeno problema em entender que entender o loop de eventos é difícil.
+
+14
+00:01:09,800 --> 00:01:11,210
+Não é fácil.
+
+15
+00:01:11,210 --> 00:01:18,320
+Há muitas palestras em muitos posts do blog muitos diagramas on-line para ajudá-lo a entender, mas é apenas
+
+16
+00:01:18,320 --> 00:01:20,760
+notoriamente difícil de quebrar a cabeça.
+
+17
+00:01:21,230 --> 00:01:23,540
+Felizmente eu tenho uma solução.
+
+18
+00:01:23,540 --> 00:01:27,470
+Eu tenho uma solução para ajudar você a entender como o loop de eventos funciona.
+
+19
+00:01:27,490 --> 00:01:33,620
+Então, ao invés de olhar para alguns diagramas realmente complicados, você e eu vamos escrever algum código falso
+
+20
+00:01:33,770 --> 00:01:39,950
+dentro do nosso editor de código, então vamos escrever um código completamente falso que não funcione com esse
+
+21
+00:01:39,950 --> 00:01:40,500
+código falso.
+
+22
+00:01:40,500 --> 00:01:47,300
+Nós meio que tipo o pseudo code vai emular o loop de evento e como ele funciona para fazer o
+
+23
+00:01:47,300 --> 00:01:47,820
+nó funcionar.
+
+24
+00:01:48,590 --> 00:01:49,930
+Então vamos dar uma chance.
+
+25
+00:01:49,970 --> 00:01:54,710
+Nós vamos criar um novo arquivo dentro do nosso editor de código e vamos adicionar
+
+26
+00:01:54,710 --> 00:02:00,250
+algum código falso para ele percorrer o que o loop de eventos faz dentro dos nossos novos programas.
+
+27
+00:02:00,290 --> 00:02:06,010
+Então eu preciso abrir meu editor de código e decidir se você vai criar um novo arquivo.
+
+28
+00:02:06,510 --> 00:02:08,940
+E eu chamaria isso simplesmente de loop.
+
+29
+00:02:09,120 --> 00:02:10,740
+Sim.
+
+30
+00:02:10,800 --> 00:02:16,860
+Então, novamente, este será um código totalmente falso dentro de seu código, e estamos indo
+
+31
+00:02:16,860 --> 00:02:24,310
+direto para você nesta série de operações que ocorrem sempre que iniciamos um novo programa em nossa máquina.
+
+32
+00:02:25,060 --> 00:02:28,000
+Então, vamos começar adicionando um comentário no topo.
+
+33
+00:02:28,110 --> 00:02:34,650
+É como fingir que estamos iniciando um aplicativo de nó para que possamos iniciar um aplicativo de
+
+34
+00:02:34,860 --> 00:02:40,090
+nó executando um comando em nosso terminal de algo como o nó meu arquivo.
+
+35
+00:02:40,160 --> 00:02:41,220
+Sim.
+
+36
+00:02:42,180 --> 00:02:44,270
+E então talvez algumas linhas depois disso.
+
+37
+00:02:44,310 --> 00:02:50,760
+Vamos adicionar outro comentário que diz sair de volta ao terminal.
+
+38
+00:02:50,820 --> 00:02:57,070
+Então, entre essas duas linhas aqui, vamos escrever todo o ciclo de vida de um aplicativo de nó.
+
+39
+00:02:57,330 --> 00:03:05,780
+Tudo, desde iniciá-lo até sair de volta para o terminal agora, sempre que você e eu iniciamos um arquivo de notas ou
+
+40
+00:03:05,780 --> 00:03:11,660
+executamos um nó e alimentamos algum arquivo como o que estamos fazendo aqui, o loop
+
+41
+00:03:11,660 --> 00:03:14,020
+de eventos não é imediatamente executado.
+
+42
+00:03:14,330 --> 00:03:20,720
+Em vez disso, logo no início, como quando invocamos o nó e alimentamos um nó de arquivo, ele pega
+
+43
+00:03:20,720 --> 00:03:26,640
+o conteúdo deste arquivo aqui, o conteúdo dos meus arquivos é G-S e executa todo o código dentro
+
+44
+00:03:26,640 --> 00:03:27,040
+dele.
+
+45
+00:03:27,050 --> 00:03:34,340
+Então, todo o código que você escreveu Vamos escrever uma linha de código sob o comentário que tipo
+
+46
+00:03:34,430 --> 00:03:38,570
+de pretensão ou simbolicamente indica que o conteúdo dos meus arquivos.
+
+47
+00:03:38,690 --> 00:03:40,930
+Nós somos executados pelo nó.
+
+48
+00:03:41,210 --> 00:03:48,330
+Então, talvez nós escrevamos algo como meus pontos de arquivo executem o conteúdo como tal.
+
+49
+00:03:48,740 --> 00:03:51,460
+Então, novamente, não há variável aqui chamado meu arquivo.
+
+50
+00:03:51,470 --> 00:03:53,800
+Não há função de conteúdo de execução.
+
+51
+00:03:53,900 --> 00:04:00,460
+Nós estamos apenas fingindo com pseudo código que isso é o que está acontecendo dentro de nós agora.
+
+52
+00:04:00,530 --> 00:04:07,200
+Depois que o conteúdo desse arquivo é executado, entramos imediatamente no loop de evento no G-S.
+
+53
+00:04:07,340 --> 00:04:11,340
+Você e eu vamos representar esse loop de eventos com um loop WHILE.
+
+54
+00:04:11,510 --> 00:04:12,620
+Então, embaixo dessa linha.
+
+55
+00:04:12,680 --> 00:04:23,570
+Vamos escrever um loop while típico para que este loop de evento aqui ou este loop while
+
+56
+00:04:23,810 --> 00:04:26,700
+seja executado novamente e novamente.
+
+57
+00:04:27,080 --> 00:04:32,630
+Portanto, o corpo do loop while será executado novamente e novamente no loop de eventos wrold.
+
+58
+00:04:32,630 --> 00:04:36,700
+Referimo-nos a esta execução do corpo como um carrapato.
+
+59
+00:04:36,710 --> 00:04:43,660
+Assim, toda vez que o loop de eventos é executado dentro do nosso aplicativo de nó, nos referimos a ele como um tick.
+
+60
+00:04:43,660 --> 00:04:47,910
+Vou adicionar um comentário logo acima do loop while apenas para me lembrar disso.
+
+61
+00:04:48,080 --> 00:04:57,190
+Então, eu vou dizer que o corpo inteiro é executado em uma espécie de escala agora, como você e eu sabemos muito bem que cada
+
+62
+00:04:57,250 --> 00:05:01,460
+ciclo que escrevemos precisa ter algum tipo de condição ligada a ele.
+
+63
+00:05:01,510 --> 00:05:06,910
+Colocamos essa condição dentro do conjunto de parênteses aqui e sempre que essa condição retornar falso.
+
+64
+00:05:06,910 --> 00:05:13,570
+O laço while não vai mais executar a mesma idéia que se aplica ao loop de eventos também.
+
+65
+00:05:13,570 --> 00:05:19,990
+Portanto, toda vez que o loop de eventos estiver prestes a executar o nó primeiro, será feita uma verificação rápida
+
+66
+00:05:19,990 --> 00:05:26,540
+para decidir se deve ou não permitir que o loop prossiga para outra iteração, se não decidir que o loop
+
+67
+00:05:26,540 --> 00:05:33,550
+não deve ser inserido ou não deve ser executado novamente do que o corpo de ou tem todo o loop de eventos
+
+68
+00:05:33,550 --> 00:05:34,360
+é ignorado.
+
+69
+00:05:34,360 --> 00:05:39,700
+Estamos em nosso programa, o corpo do loop while é mantido e o programa sai para o terminal, como
+
+70
+00:05:39,790 --> 00:05:41,360
+aqui embaixo, na parte inferior.
+
+71
+00:05:41,830 --> 00:05:48,370
+Então, para determinar se o loop while ou event loop será executado, vamos
+
+72
+00:05:48,430 --> 00:05:52,300
+criar uma pequena função auxiliar chamada continue.
+
+73
+00:05:52,670 --> 00:06:00,960
+Então eu posso escrever uma função auxiliar chamada deve continuar e, em seguida, vamos chamar isso
+
+74
+00:06:00,960 --> 00:06:05,680
+de dentro da área de condição do loop While.
+
+75
+00:06:05,690 --> 00:06:08,710
+Agora, contanto que continue aqui.
+
+76
+00:06:08,840 --> 00:06:10,950
+Retornar algo muito.
+
+77
+00:06:10,970 --> 00:06:16,820
+O loop de eventos continuará a ser executado, mas assim que ele retornar algo falso, nosso
+
+78
+00:06:16,820 --> 00:06:22,200
+loop irá parar e o programa irá para o final deste arquivo e, essencialmente, sairá.
+
+79
+00:06:22,670 --> 00:06:24,190
+Então vamos agora fazer uma pausa rápida.
+
+80
+00:06:24,200 --> 00:06:28,250
+Nós vamos voltar para o próximo vídeo e vamos começar a falar sobre exatamente
+
+81
+00:06:28,310 --> 00:06:30,770
+qual lógica deve ir dentro da função deve continuar.
+
+82
+00:06:31,100 --> 00:06:33,670
+Tão rápido e eu te vejo daqui a pouco.

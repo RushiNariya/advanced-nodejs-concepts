@@ -1,0 +1,155 @@
+1
+00:00:00,540 --> 00:00:05,820
+En la última sección hablamos sobre una avenida adicional utilizada por ningún G-S para ejecutar el código.
+
+2
+00:00:06,090 --> 00:00:11,400
+Por lo tanto, algunas llamadas a funciones en la biblioteca estándar se delegan en el sistema operativo
+
+3
+00:00:11,400 --> 00:00:14,460
+subyacente y se ejecutan completamente fuera del ciclo de eventos.
+
+4
+00:00:14,460 --> 00:00:19,410
+Ahora me imagino que tiene algunas preguntas de seguimiento sobre este proceso, así que veamos
+
+5
+00:00:19,410 --> 00:00:23,150
+dos posibles preguntas que podrían tener todos los derechos de inmediato.
+
+6
+00:00:23,260 --> 00:00:23,810
+Aquí vamos.
+
+7
+00:00:25,160 --> 00:00:28,300
+Entonces, hay dos preguntas posibles en las que podría estar pensando en este momento.
+
+8
+00:00:28,530 --> 00:00:33,520
+Por lo tanto, es posible que sienta curiosidad por las funciones de la biblioteca estándar de nodos que
+
+9
+00:00:33,520 --> 00:00:35,620
+utilizan las características asincrónicas de los sistemas operativos.
+
+10
+00:00:35,620 --> 00:00:39,850
+Esta es una respuesta muy similar a la que teníamos anteriormente para ese grupo de subprocesos.
+
+11
+00:00:40,060 --> 00:00:44,710
+Muchas de estas cosas son muy específicas del sistema operativo en el que se está ejecutando y no
+
+12
+00:00:44,710 --> 00:00:50,530
+se puede depender realmente de que una función siempre se ejecute a través del sistema operativo en una computadora o de una manera
+
+13
+00:00:50,530 --> 00:00:50,710
+diferente.
+
+14
+00:00:50,710 --> 00:00:51,640
+Por el otro.
+
+15
+00:00:51,700 --> 00:00:56,600
+En otras palabras, no intente detectar o planear las cosas a la vez.
+
+16
+00:00:56,680 --> 00:01:02,770
+Ahora, casi todo dentro de la biblioteca de red como, por ejemplo, hacer solicitudes o recibir solicitudes o
+
+17
+00:01:02,770 --> 00:01:08,530
+configurar un oyente en algún puerto, casi todo eso lo maneja el sistema operativo, independientemente del sistema
+
+18
+00:01:08,530 --> 00:01:10,240
+operativo que esté utilizando.
+
+19
+00:01:10,240 --> 00:01:13,330
+Esa es la única respuesta sólida que puedo darte.
+
+20
+00:01:13,850 --> 00:01:19,090
+La segunda pregunta podría estar bien, ya sabes, oye, ahora sabemos acerca de estas cosas sincronizadas vinculadas al sistema operativo,
+
+21
+00:01:19,090 --> 00:01:23,610
+pero ¿dónde encaja eso en todo el asunto del ciclo de eventos del que estábamos hablando antes?
+
+22
+00:01:23,800 --> 00:01:29,830
+Entonces, como pueden imaginar, todo está relacionado con la matriz pendiente de tareas del sistema operativo que habíamos
+
+23
+00:01:29,830 --> 00:01:32,370
+creado dentro de nuestro archivo de pseudo código.
+
+24
+00:01:32,380 --> 00:01:38,980
+Así que aquí está nuestro archivo de bucle aquí dentro de tu tenemos esa matriz pendiente de tareas del sistema operativo.
+
+25
+00:01:39,310 --> 00:01:44,680
+Así que podemos imaginar que cuando el nodo se ejecuta crea algún tipo de estructura de datos
+
+26
+00:01:44,860 --> 00:01:50,730
+que representa todas las solicitudes pendientes o redes o cualquier otra cosa relacionada con el sistema operativo subyacente.
+
+27
+00:01:51,190 --> 00:01:57,040
+Mientras haya alguna solicitud activa o alguna operación activa dentro de ese nodo de matriz, continuará ejecutándose y
+
+28
+00:01:57,040 --> 00:02:02,950
+siempre va a regresar la verdad sobre esta función que debería continuar aquí, lo que significa que vamos
+
+29
+00:02:03,220 --> 00:02:06,690
+a continuar las iteraciones a través de nuestro ciclo de eventos.
+
+30
+00:02:06,880 --> 00:02:12,190
+Y luego, tan pronto como se completen todas las llamadas subyacentes al sistema operativo Bueno, ahora el ciclo de
+
+31
+00:02:12,250 --> 00:02:15,710
+eventos no tiene nada más que hacer y volvemos a nuestra terminal.
+
+32
+00:02:16,030 --> 00:02:22,480
+Por eso, cuando inicias un servidor y dices app, escucha en el puerto 3000 o lo que sea.
+
+33
+00:02:22,480 --> 00:02:27,790
+Es exactamente por eso que su aplicación continúa ejecutándose en el terminal y no sale de
+
+34
+00:02:28,000 --> 00:02:29,830
+inmediato a la línea de comando.
+
+35
+00:02:29,850 --> 00:02:30,190
+DE ACUERDO.
+
+36
+00:02:30,220 --> 00:02:33,010
+Así que ahora hemos hablado bastante sobre el ciclo de eventos.
+
+37
+00:02:33,040 --> 00:02:35,900
+Resumamos algunas de las cosas principales que debemos saber al respecto.
+
+38
+00:02:35,920 --> 00:02:37,020
+Dentro del siguiente video
+
+39
+00:02:37,060 --> 00:02:39,570
+Así que un descanso rápido y haremos una revisión en solo un momento.

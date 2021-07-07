@@ -1,0 +1,223 @@
+1
+00:00:00,520 --> 00:00:05,340
+Nos últimos vídeos, examinamos o conjunto de encadeamentos que é criado automaticamente pela TV ao
+
+2
+00:00:05,370 --> 00:00:11,710
+vivo sempre que iniciamos um programa de nó que explica a presença dessa matriz de operações pendentes dentro de
+
+3
+00:00:11,710 --> 00:00:13,160
+nosso loop de eventos.
+
+4
+00:00:13,390 --> 00:00:18,400
+Nesta seção, vamos começar a ver as coisas que estão acontecendo nos bastidores para
+
+5
+00:00:18,400 --> 00:00:21,670
+explicar essa matriz de tarefas do SO pendentes aqui.
+
+6
+00:00:21,670 --> 00:00:24,670
+Nós vamos ter uma abordagem muito semelhante ao que fizemos anteriormente.
+
+7
+00:00:24,670 --> 00:00:29,300
+Então, vamos começar primeiro escrevendo um pequeno programa que vai executar algum código
+
+8
+00:00:29,320 --> 00:00:32,810
+que vai avaliar uma função dentro da biblioteca não padrão.
+
+9
+00:00:33,100 --> 00:00:37,660
+Vamos fazer o benchmark e poderemos entender o que realmente está
+
+10
+00:00:37,660 --> 00:00:43,210
+acontecendo nos bastidores, então vamos começar criando um novo arquivo que vai abrigar o
+
+11
+00:00:43,210 --> 00:00:46,450
+código de benchmarking dentro do meu código. editor.
+
+12
+00:00:46,450 --> 00:00:50,100
+Eu vou fazer um novo arquivo chamado async dot J. S. Então, o benchmark que vamos
+
+13
+00:00:50,650 --> 00:00:56,330
+fazer é buscar a página inicial do Google e enviar uma solicitação ao Google.
+
+14
+00:00:56,350 --> 00:00:57,780
+Nós vamos obter a sua
+
+15
+00:00:57,820 --> 00:01:02,330
+home page e, em seguida, vamos calcular exatamente quanto tempo demora, então, fazer esse processo
+
+16
+00:01:02,350 --> 00:01:07,150
+várias vezes e podemos usar isso para descobrir exatamente o que está acontecendo nos bastidores.
+
+17
+00:01:07,150 --> 00:01:08,940
+Então, no topo, vamos exigir
+
+18
+00:01:08,940 --> 00:01:15,790
+no módulo de ensino H para fazer o pedido real, se você nunca usou este módulo antes para fazer uma solicitação.
+
+19
+00:01:15,790 --> 00:01:18,040
+Não se preocupe.
+
+20
+00:01:18,040 --> 00:01:18,660
+Vai ser relativamente simples.
+
+21
+00:01:18,670 --> 00:01:21,540
+Imediatamente após solicitarmos o módulo, nós armazenaremos
+
+22
+00:01:22,270 --> 00:01:29,710
+o horário de início de nosso benchmark com uma data agora e, imediatamente após, faremos nosso pedido real.
+
+23
+00:01:29,710 --> 00:01:34,700
+Então eu posso escrever HEG P. S. Não pedir.
+
+24
+00:01:35,110 --> 00:01:38,940
+O primeiro argumento será o
+
+25
+00:01:39,280 --> 00:01:44,080
+você ou L que queremos fazer um pedido para o qual neste caso é nos ensinar barra de dois pontos.
+
+26
+00:01:44,350 --> 00:01:48,290
+Como o Google dot com como e então o segundo argumento é uma função de retorno de chamada.
+
+27
+00:01:48,430 --> 00:01:54,810
+Agora o argumento para a função de retorno de chamada que marquei como.
+
+28
+00:01:57,520 --> 00:02:00,600
+Mas isso não é como quando você está usando accedes ou consulta Jey.
+
+29
+00:02:00,790 --> 00:02:03,780
+Este não é o objeto de resposta inteiro aqui.
+
+30
+00:02:03,910 --> 00:02:06,970
+Em vez disso, esse é um objeto que emite eventos quando recebemos dados dos servidores do Google.
+
+31
+00:02:06,970 --> 00:02:12,630
+Portanto, é um pouco mais complexo e de baixo nível do que algumas
+
+32
+00:02:12,670 --> 00:02:16,870
+das bibliotecas de rede que você pode ter usado antes.
+
+33
+00:02:16,870 --> 00:02:18,330
+Basicamente o que isso significa é que vamos ter que escrever algum código de aparência extravagante dentro deste retorno de chamada.
+
+34
+00:02:18,340 --> 00:02:22,960
+Eu não vou falar sobre o que este código está fazendo muito porque
+
+35
+00:02:22,960 --> 00:02:26,650
+honestamente não é relevante para o que estamos fazendo agora.
+
+36
+00:02:26,680 --> 00:02:28,920
+Então eu vou dizer "red dot" nos
+
+37
+00:02:28,990 --> 00:02:38,000
+dados e então como um segundo argumento eu vou passar uma função vazia e então eu também vou fazer rez no final e eu vou fazer outra função de seta.
+
+38
+00:02:38,000 --> 00:02:44,080
+Mas dentro deste vamos fazer o nosso benchmarking real.
+
+39
+00:02:44,300 --> 00:02:47,270
+Então, eu direi cancelar a data do registro agora menos.
+
+40
+00:02:47,360 --> 00:02:51,620
+Hora de início e, em seguida, uma última linha de código dentro daqui após o pedido chamar parênteses de fechamento.
+
+41
+00:02:51,620 --> 00:02:59,660
+Então, como aqui para receber esse pedido, temos que ligar para Daut, e assim, quando
+
+42
+00:02:59,720 --> 00:03:06,140
+eu salvar, meu código pula na tela, porque eu tenho um código
+
+43
+00:03:07,140 --> 00:03:12,170
+reformatado, mas basicamente não se esqueça de colocar isso. fim.
+
+44
+00:03:12,260 --> 00:03:14,710
+Tudo bem.
+
+45
+00:03:15,050 --> 00:03:15,310
+Então vamos voltar para o nosso terminal.
+
+46
+00:03:15,310 --> 00:03:17,120
+Nós vamos rodar este arquivo
+
+47
+00:03:17,150 --> 00:03:24,150
+e ver quanto tempo demora para fazer este pedido no terminal nós faremos o node A Cincom J e
+
+48
+00:03:24,210 --> 00:03:32,670
+veremos que ele demora cerca de 270 milissegundos, talvez mais ou menos um casal para fazer o pedido para os servidores do Google.
+
+49
+00:03:33,000 --> 00:03:35,610
+Parece que estou meio que talvez 240 agora.
+
+50
+00:03:35,670 --> 00:03:38,180
+ESTÁ BEM.
+
+51
+00:03:38,630 --> 00:03:38,900
+Então isso parece bom.
+
+52
+00:03:38,920 --> 00:03:39,810
+Vamos pausar aqui
+
+53
+00:03:39,930 --> 00:03:44,160
+e depois vamos usar esse código para fazer mais benchmarking na próxima seção.
+
+54
+00:03:44,160 --> 00:03:44,810
+E isso nos dará uma ideia melhor do que o nó está fazendo internamente para lidar com solicitações de rede.
+
+55
+00:03:44,940 --> 00:03:50,100
+Tão rápido e eu te vejo daqui a pouco.
+
+56
+00:03:50,100 --> 00:03:52,300
+&nbsp;

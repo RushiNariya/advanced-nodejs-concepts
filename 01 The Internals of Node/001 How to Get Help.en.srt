@@ -1,0 +1,75 @@
+1
+00:00:00,690 --> 00:00:02,080
+Hello and welcome.
+
+2
+00:00:02,220 --> 00:00:06,330
+We're going to get started with the course in just a moment but before we do I want to tell you how
+
+3
+00:00:06,330 --> 00:00:09,850
+you can get help if you get stuck at any point during this course.
+
+4
+00:00:09,900 --> 00:00:12,200
+So there's three great ways to reach out to me.
+
+5
+00:00:12,210 --> 00:00:14,870
+The first is to post on the course discussion boards.
+
+6
+00:00:15,090 --> 00:00:20,760
+I usually check the Course discussion about once a day on Monday through Friday so I'll do my best to
+
+7
+00:00:20,760 --> 00:00:23,820
+get back to you as soon as possible if anything comes up.
+
+8
+00:00:24,030 --> 00:00:28,490
+The next best way to reach out to me is to send me a direct message on you to me.
+
+9
+00:00:28,560 --> 00:00:33,090
+I'm usually very good about responding to these requests and usually better about that than with the
+
+10
+00:00:33,090 --> 00:00:34,660
+Course Q&amp;A.
+
+11
+00:00:34,710 --> 00:00:37,290
+Finally you can reach out to me via Twitter.
+
+12
+00:00:37,350 --> 00:00:39,840
+And here's my handle listed right here.
+
+13
+00:00:39,840 --> 00:00:44,910
+Twitter is a great way to reach out to me with short questions but if it's anything technical related
+
+14
+00:00:45,120 --> 00:00:50,970
+I usually recommend either posting on the course discussion or send me a PM because obviously with Twitter
+
+15
+00:00:51,180 --> 00:00:56,100
+we've got that character limit that makes technical discussions a little bit more challenging.
+
+16
+00:00:56,100 --> 00:00:56,420
+All right.
+
+17
+00:00:56,430 --> 00:01:00,120
+So that's the three ways to get help if you ever get stuck during this course.
+
+18
+00:01:00,120 --> 00:01:05,700
+Let's pause right now and we'll start talking about our first technical topic in the next video so I'll
+
+19
+00:01:05,700 --> 00:01:07,340
+see you in just a minute.

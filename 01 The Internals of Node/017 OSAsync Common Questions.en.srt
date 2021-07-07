@@ -1,0 +1,155 @@
+1
+00:00:00,540 --> 00:00:05,820
+In the last section we spoke about an additional avenue used by no G-S to get code executed.
+
+2
+00:00:06,090 --> 00:00:11,400
+So some function calls in the standard library are delegated to the underlying operating system and
+
+3
+00:00:11,400 --> 00:00:14,460
+ran entirely outside the event loop.
+
+4
+00:00:14,460 --> 00:00:19,410
+Now I imagine you have some follow up questions about this process so let's look at two possible questions
+
+5
+00:00:19,410 --> 00:00:23,150
+that you might immediately have all rights.
+
+6
+00:00:23,260 --> 00:00:23,810
+Here we go.
+
+7
+00:00:25,160 --> 00:00:28,300
+So two possible questions that you might be thinking about right now.
+
+8
+00:00:28,530 --> 00:00:33,520
+So the first one you might be curious what functions in the node standard library use the operating
+
+9
+00:00:33,520 --> 00:00:35,620
+systems async features.
+
+10
+00:00:35,620 --> 00:00:39,850
+So this is a very similar answer to the one that we had previously for that thread pool.
+
+11
+00:00:40,060 --> 00:00:44,710
+A lot of this stuff is very specific to the operating system that you're running on and you can't really
+
+12
+00:00:44,710 --> 00:00:50,530
+depend upon one function always being executed through the operating system on one computer or a different
+
+13
+00:00:50,530 --> 00:00:50,710
+way.
+
+14
+00:00:50,710 --> 00:00:51,640
+On the other one.
+
+15
+00:00:51,700 --> 00:00:56,600
+In other words don't try to detect or plan around the stuff at a time.
+
+16
+00:00:56,680 --> 00:01:02,770
+Now almost everything inside the networking library like say making requests or receiving requests or
+
+17
+00:01:02,770 --> 00:01:08,530
+setting up a listener on some port almost all that stuff is handled by the operating system regardless
+
+18
+00:01:08,530 --> 00:01:10,240
+of what operating system you're using.
+
+19
+00:01:10,240 --> 00:01:13,330
+So that's the one solid answer I can give you.
+
+20
+00:01:13,850 --> 00:01:19,090
+The second question might be OK you know hey we now know about this async stuff tied to the operating
+
+21
+00:01:19,090 --> 00:01:23,610
+system but where does that fit into all the event loop stuff that we were talking about earlier.
+
+22
+00:01:23,800 --> 00:01:29,830
+So as you might imagine that stuff is all related to that pending OS tasks array that we had created
+
+23
+00:01:29,830 --> 00:01:32,370
+back inside of our pseudo code file.
+
+24
+00:01:32,380 --> 00:01:38,980
+So here's our loop file over here inside of your we had that pending OS tasks array.
+
+25
+00:01:39,310 --> 00:01:44,680
+So we can kind of imagine that when node runs it creates some type of data structure that represents
+
+26
+00:01:44,860 --> 00:01:50,730
+all the pending requests or networking or whatever else tied to the underlying operating system.
+
+27
+00:01:51,190 --> 00:01:57,040
+As long as there's still some active request or some active operation inside that array node is going
+
+28
+00:01:57,040 --> 00:02:02,950
+to continue running and it's going to always return truthy on this should continue function right here
+
+29
+00:02:03,220 --> 00:02:06,690
+which means we're going to continue iterations through our event loop.
+
+30
+00:02:06,880 --> 00:02:12,190
+And then as soon as all those underlying operating system calls are complete Well now the event loop
+
+31
+00:02:12,250 --> 00:02:15,710
+has nothing else to do and we exit back over to our terminal.
+
+32
+00:02:16,030 --> 00:02:22,480
+So that's why when you start up a server and say app dot listen on port 3000 or whatever.
+
+33
+00:02:22,480 --> 00:02:27,790
+That's exactly why your application continues running in the terminal and does not immediately exit
+
+34
+00:02:28,000 --> 00:02:29,830
+back to the command line.
+
+35
+00:02:29,850 --> 00:02:30,190
+OK.
+
+36
+00:02:30,220 --> 00:02:33,010
+So we've now spoken about the event loop quite a bit.
+
+37
+00:02:33,040 --> 00:02:35,900
+Let's summarize some of the main things to know about it.
+
+38
+00:02:35,920 --> 00:02:37,020
+Inside the next video.
+
+39
+00:02:37,060 --> 00:02:39,570
+So a quick break and we'll do a review in just a moment.

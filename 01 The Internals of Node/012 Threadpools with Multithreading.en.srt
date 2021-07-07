@@ -1,0 +1,371 @@
+1
+00:00:00,600 --> 00:00:06,120
+In the last section we spoke about how live U-V provides a thread pool for offloading work to be done
+
+2
+00:00:06,180 --> 00:00:08,490
+on very expensive function calls.
+
+3
+00:00:08,490 --> 00:00:14,010
+In this section we're going to modify our thread start js file and start to detect the presence of these
+
+4
+00:00:14,010 --> 00:00:16,860
+four threads that are created for us automatically.
+
+5
+00:00:16,910 --> 00:00:22,750
+So I going to go back over to my code editor where we have our two calls to PBK 2.
+
+6
+00:00:23,400 --> 00:00:29,180
+I'm going to copy the bottom column here and then I'm going to duplicate it down a couple of times.
+
+7
+00:00:29,220 --> 00:00:33,450
+So in total I want to have five separate calls to PBK.
+
+8
+00:00:33,450 --> 00:00:34,460
+Do you have two.
+
+9
+00:00:34,950 --> 00:00:36,120
+So here is the log.
+
+10
+00:00:36,120 --> 00:00:39,090
+Number three and I'm going to update the log.
+
+11
+00:00:39,660 --> 00:00:43,610
+Here's number four and I'll update the love to four.
+
+12
+00:00:43,610 --> 00:00:48,770
+And here's number five and I'll update the council 55 as well.
+
+13
+00:00:48,810 --> 00:00:50,100
+Now I'm going to save this file.
+
+14
+00:00:50,130 --> 00:00:54,040
+Now I'll go back over to the terminal and run this file again and I'll see what happens.
+
+15
+00:00:54,900 --> 00:01:00,110
+It's back or at the terminal will run node threads dodgiest again.
+
+16
+00:01:00,180 --> 00:01:00,810
+All right.
+
+17
+00:01:00,810 --> 00:01:02,050
+So take a look at the results here.
+
+18
+00:01:02,060 --> 00:01:03,270
+You see that little pause.
+
+19
+00:01:03,270 --> 00:01:04,640
+Let me run this again.
+
+20
+00:01:04,950 --> 00:01:06,990
+So we get the first four results.
+
+21
+00:01:07,050 --> 00:01:10,270
+A pause and then the fifth result suddenly appears.
+
+22
+00:01:10,470 --> 00:01:15,870
+So this Resul right here is extremely interesting and we can use these results to really divine some
+
+23
+00:01:15,870 --> 00:01:18,930
+information about the thread pool and how it works.
+
+24
+00:01:18,930 --> 00:01:20,160
+Now one quick note.
+
+25
+00:01:20,310 --> 00:01:25,280
+Depending on your machine CPQ you might see some different results here from what I see.
+
+26
+00:01:25,290 --> 00:01:30,340
+So if you have a different machine than I have you might see different results and that's totally OK.
+
+27
+00:01:30,850 --> 00:01:33,240
+Let me explain to you what's going on with my computer.
+
+28
+00:01:33,330 --> 00:01:36,890
+And then you can kind of extrapolate what's happening to your own machine as well.
+
+29
+00:01:37,370 --> 00:01:41,020
+So let's take a look at a diagram that's going to help explain what's going on.
+
+30
+00:01:41,160 --> 00:01:42,370
+All right here we go.
+
+31
+00:01:42,780 --> 00:01:43,140
+OK.
+
+32
+00:01:43,140 --> 00:01:49,290
+So again the first four calls took two seconds to complete and then the fifth call took one additional
+
+33
+00:01:49,290 --> 00:01:50,150
+second.
+
+34
+00:01:50,520 --> 00:01:53,130
+There's really two interesting things to note here.
+
+35
+00:01:53,130 --> 00:01:59,430
+First notice that the first group up here all took the exact same amount of time and it took roughly
+
+36
+00:01:59,460 --> 00:02:01,460
+double what it had taken previously.
+
+37
+00:02:01,710 --> 00:02:08,130
+So previously It took one second to get through the two calls but now it appears to be taking two seconds.
+
+38
+00:02:08,130 --> 00:02:13,880
+The second thing I want you to note is that the fifth Colliver here only took one additional second.
+
+39
+00:02:14,070 --> 00:02:16,230
+So that's very interesting behavior.
+
+40
+00:02:16,230 --> 00:02:21,160
+Let's try to figure out why we saw the change in timing with the first group that ran.
+
+41
+00:02:21,330 --> 00:02:28,700
+And then only one second to complete the fifth call it's going to show you a diagram of my computer.
+
+42
+00:02:28,770 --> 00:02:30,770
+So this is a 2015 math book Pro.
+
+43
+00:02:30,990 --> 00:02:35,760
+And by understanding the hardware that's inside of my computer we'll have a better idea of why we saw
+
+44
+00:02:35,760 --> 00:02:39,600
+that different timings inside of all those function calls.
+
+45
+00:02:39,600 --> 00:02:42,420
+So I'm using a Mac Book Pro that was made in 2015.
+
+46
+00:02:42,750 --> 00:02:47,290
+This computer has a dual core processor So two separate course.
+
+47
+00:02:47,670 --> 00:02:54,480
+Let's first consider the original program that we wrote where we had just two calls to PBK D-Nev. two.
+
+48
+00:02:54,510 --> 00:03:00,180
+So in that case the first call was taken and we can kind of imagine that maybe it got assigned to the
+
+49
+00:03:00,180 --> 00:03:06,870
+first thread and the thread pool that thread we can again imagine that maybe this thread right here
+
+50
+00:03:06,870 --> 00:03:10,930
+got assigned to running encore number one.
+
+51
+00:03:11,100 --> 00:03:16,950
+Then the second call to PBK to maybe got assigned to the second thread and maybe the second thread got
+
+52
+00:03:16,950 --> 00:03:19,140
+assigned to my second core.
+
+53
+00:03:19,560 --> 00:03:26,310
+So we saw that these two calls each got assigned to two different cores and my and my machine and they
+
+54
+00:03:26,310 --> 00:03:33,230
+both took more or less exactly one second for each core to finish the house hashing function call.
+
+55
+00:03:33,640 --> 00:03:38,790
+So let's now take the similar diagram but applied to the case that we just ran this in with the five
+
+56
+00:03:38,790 --> 00:03:40,450
+function calls.
+
+57
+00:03:40,470 --> 00:03:41,190
+All right.
+
+58
+00:03:41,190 --> 00:03:42,400
+So here we go.
+
+59
+00:03:43,110 --> 00:03:49,440
+So in this case the first four calls Eesha got offloaded to one thread that existed inside the thread
+
+60
+00:03:49,440 --> 00:03:49,870
+pool.
+
+61
+00:03:51,260 --> 00:03:53,600
+Now here's where things start to get a little bit different.
+
+62
+00:03:53,600 --> 00:03:58,250
+Remember how we had said when we spoke about thread threads much earlier that we can kind of get some
+
+63
+00:03:58,250 --> 00:04:03,400
+level of concurrency with threads because our CPQ has access to multi-threading.
+
+64
+00:04:03,410 --> 00:04:08,900
+We're hyper threading which allows it to kind of process more than one thread at once when we just very
+
+65
+00:04:08,900 --> 00:04:13,610
+briefly mentioned that but that's actually the behavior that we're seeing right now with these four
+
+66
+00:04:13,610 --> 00:04:14,890
+separate cults.
+
+67
+00:04:15,200 --> 00:04:22,670
+So the first four calls to PBK DFI to each get assigned to their own individual thread then thread number
+
+68
+00:04:22,670 --> 00:04:31,310
+one and thread number to get assigned to CPQ one or a core number one excuse me and thread 3 and 4 get
+
+69
+00:04:31,310 --> 00:04:39,260
+assigned to core number two are two cores are my two cores are only able to process these two threads
+
+70
+00:04:39,320 --> 00:04:40,340
+at the same time.
+
+71
+00:04:40,370 --> 00:04:43,390
+Thanks to multi-threading technology in my CPQ.
+
+72
+00:04:43,550 --> 00:04:49,140
+So because I've got multi-threading enabled I can process more than one thread at the same time.
+
+73
+00:04:49,190 --> 00:04:55,070
+However each core still had to do twice the amount of work it just had to do twice that amount of work
+
+74
+00:04:55,100 --> 00:04:56,270
+at the same time.
+
+75
+00:04:56,420 --> 00:05:02,240
+Which is why we saw that it took roughly twice as long to calculate the harshing value for these first
+
+76
+00:05:02,240 --> 00:05:07,520
+four values because at the end of the day even though I have multi-threading enabled all that enables
+
+77
+00:05:07,520 --> 00:05:10,940
+my Seip you to do is process more threads at once.
+
+78
+00:05:11,000 --> 00:05:16,340
+It doesn't actually speed up the processing it just allows for some amount of concurrency inside of
+
+79
+00:05:16,340 --> 00:05:18,260
+the work that I'm doing.
+
+80
+00:05:18,320 --> 00:05:21,390
+So we saw those first four calls get processed.
+
+81
+00:05:21,500 --> 00:05:27,470
+They took roughly double the amount of time and then once that was all complete and those first four
+
+82
+00:05:27,470 --> 00:05:28,800
+tasks were done.
+
+83
+00:05:29,050 --> 00:05:32,120
+Oops lets do that then.
+
+84
+00:05:32,180 --> 00:05:35,480
+Node was able to finally move on to the fifth function call.
+
+85
+00:05:35,630 --> 00:05:40,220
+So maybe that one got assigned to thread number four and thread number four maybe got assigned a core
+
+86
+00:05:40,220 --> 00:05:41,100
+number two.
+
+87
+00:05:41,380 --> 00:05:45,620
+And because now Kord number 2 was only processing 1 hashing function call.
+
+88
+00:05:45,740 --> 00:05:49,310
+This time around it took only one second.
+
+89
+00:05:49,320 --> 00:05:53,600
+OK so I know that this has been some confusing confusing stuff.
+
+90
+00:05:53,620 --> 00:05:54,860
+Let's take a pause right here.
+
+91
+00:05:54,890 --> 00:05:59,330
+We're going to come back to the next video and we're going to continue exploring this idea of threads
+
+92
+00:05:59,360 --> 00:06:02,900
+in the thread pool by writing out some more experimental code.
+
+93
+00:06:02,900 --> 00:06:05,350
+So a quick break and I'll see you in just a minute.

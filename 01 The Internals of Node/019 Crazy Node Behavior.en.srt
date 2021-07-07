@@ -1,0 +1,499 @@
+1
+00:00:00,470 --> 00:00:04,560
+Now that we've got some more basic knowledge of our event loop put together we're going to start to
+
+2
+00:00:04,560 --> 00:00:08,140
+look at some really really interesting behavior around no.
+
+3
+00:00:08,190 --> 00:00:12,900
+Inside the section in particular we're going to take some of the code that you and I wrote in the last
+
+4
+00:00:12,900 --> 00:00:17,400
+couple of videos and we're going to merge it all into one mega example.
+
+5
+00:00:17,400 --> 00:00:23,250
+And when we put this example together you're going to see some mind boggling behavior that really ties
+
+6
+00:00:23,340 --> 00:00:24,600
+all these topics together.
+
+7
+00:00:24,930 --> 00:00:30,580
+In my opinion this might be the best no genius interview question you will ever come across.
+
+8
+00:00:30,580 --> 00:00:33,110
+All right so we're going to put together a code example here.
+
+9
+00:00:33,150 --> 00:00:35,240
+It will not behave the way you expect.
+
+10
+00:00:35,340 --> 00:00:37,990
+And I think that it would actually be kind of a good interview question.
+
+11
+00:00:38,040 --> 00:00:40,810
+Just in my opinion anyways let's get started.
+
+12
+00:00:40,890 --> 00:00:46,560
+So we're going to take some code out of our async Dom file in our thread Scott G-S file and we're going
+
+13
+00:00:46,560 --> 00:00:49,160
+to kind of merge it together in one example.
+
+14
+00:00:49,230 --> 00:00:58,640
+So I'm going to make a new file inside of my main directory called multitask J.S. like so then inside
+
+15
+00:00:58,650 --> 00:01:04,260
+this file I'm going to grab everything from async G-S and thread start ups and just copy paste it all
+
+16
+00:01:04,260 --> 00:01:08,300
+inside of here and then we will kind of play with the code a little bit.
+
+17
+00:01:08,310 --> 00:01:16,170
+So first go into async I'm going to copy everything inside of here and I'm going to paste it into multitasked
+
+18
+00:01:16,330 --> 00:01:17,920
+us.
+
+19
+00:01:18,320 --> 00:01:21,340
+I'm then going to do a little bit of cleanup on these requests right here.
+
+20
+00:01:21,360 --> 00:01:23,930
+So I'm going to delete all the requests statements.
+
+21
+00:01:23,940 --> 00:01:29,120
+All I want to have right now is where we get our start date the require statement at the top and the
+
+22
+00:01:29,130 --> 00:01:30,920
+do request function like so.
+
+23
+00:01:32,050 --> 00:01:33,540
+Next I'll go into threads.
+
+24
+00:01:33,570 --> 00:01:35,140
+Yes.
+
+25
+00:01:35,320 --> 00:01:41,080
+And then over here I'm going to get just one of those callback functions one of the P.B. KDAF two function
+
+26
+00:01:41,080 --> 00:01:41,800
+calls.
+
+27
+00:01:41,860 --> 00:01:46,330
+I'm not going to copy paste anything out of here because if we start to copy paste multiple things it's
+
+28
+00:01:46,330 --> 00:01:48,410
+just going to get a little bit confusing.
+
+29
+00:01:48,550 --> 00:01:53,570
+So I'm going to copy this one function call or then go back over to multitask.
+
+30
+00:01:53,690 --> 00:01:58,480
+Yes and I'm going to create a new function called Do hash.
+
+31
+00:01:58,510 --> 00:02:01,550
+I'm going to put our hashing function call into that thing.
+
+32
+00:02:02,010 --> 00:02:10,010
+So say function do hash like so then I'll paste in our PBK DFA to function.
+
+33
+00:02:10,570 --> 00:02:16,100
+And I'm also going to update the console log to say cache like so OK.
+
+34
+00:02:16,130 --> 00:02:20,530
+Let's very quickly make sure that we also require in the Criddle module before we forget that.
+
+35
+00:02:20,840 --> 00:02:29,290
+So go back up to the top and I'm going to require in the crypto module like so.
+
+36
+00:02:30,050 --> 00:02:30,290
+All right.
+
+37
+00:02:30,290 --> 00:02:32,270
+Let's now go over to our command line.
+
+38
+00:02:32,270 --> 00:02:35,930
+We're going to run this file and we're just going to make sure that everything works and that we don't
+
+39
+00:02:35,930 --> 00:02:37,110
+have any typos.
+
+40
+00:02:37,130 --> 00:02:40,090
+Right now we are not calling do request or do hash.
+
+41
+00:02:40,160 --> 00:02:42,650
+I just want to make sure that we don't get any errors right now.
+
+42
+00:02:42,680 --> 00:02:43,940
+That's all.
+
+43
+00:02:43,940 --> 00:02:48,150
+So I got to go back over to my terminal and I'll run node multitask.
+
+44
+00:02:48,340 --> 00:02:49,170
+Yes.
+
+45
+00:02:49,240 --> 00:02:50,950
+And when I do so I don't see any errors.
+
+46
+00:02:50,960 --> 00:02:52,950
+So that's exactly what I expect.
+
+47
+00:02:53,410 --> 00:02:53,680
+OK.
+
+48
+00:02:53,690 --> 00:02:59,630
+So as it stands right now this file is pretty boring but we're going to add in one additional module
+
+49
+00:02:59,750 --> 00:03:03,470
+to this thing and then we're going to call a couple of different functions and that's when we're going
+
+50
+00:03:03,470 --> 00:03:06,280
+to start to see some pretty interesting behavior.
+
+51
+00:03:06,290 --> 00:03:14,150
+So here's a third module is going to require in I'm going to say Konst FS is require FS as a reminder.
+
+52
+00:03:14,160 --> 00:03:16,690
+FS right here is the file system module.
+
+53
+00:03:16,820 --> 00:03:24,080
+So we can use this module to read files off of our hard drive underneath our two function calls or two
+
+54
+00:03:24,080 --> 00:03:26,090
+functions do request and do a hash.
+
+55
+00:03:26,090 --> 00:03:32,270
+I'm going to add in a new function call to that FS module and we're going to use the FS module to try
+
+56
+00:03:32,270 --> 00:03:36,800
+to read all the code that we just wrote into this multitask dodgy file.
+
+57
+00:03:37,100 --> 00:03:41,450
+I know this might seem like a weird thing to do but trust me we're getting to a point here very quickly
+
+58
+00:03:41,480 --> 00:03:45,620
+and as soon as we put together this snippet of code you'll then start to see some pretty interesting
+
+59
+00:03:45,620 --> 00:03:46,930
+stuff.
+
+60
+00:03:46,940 --> 00:03:52,750
+All right so we're going to try to read everything inside of multi-tasked J.S. the file we just created.
+
+61
+00:03:52,940 --> 00:03:57,030
+So say FS don't read file.
+
+62
+00:03:57,230 --> 00:03:59,500
+Put in the file name that we just created.
+
+63
+00:03:59,570 --> 00:04:05,660
+Multi-tasked just like so all the put in the file encoding which is UTF 8.
+
+64
+00:04:05,960 --> 00:04:08,190
+And then I'll add in a little callback.
+
+65
+00:04:08,420 --> 00:04:12,560
+And inside this callback we're going to do that same kind of benchmark thing that we've been doing all
+
+66
+00:04:12,560 --> 00:04:14,030
+along.
+
+67
+00:04:14,030 --> 00:04:19,490
+So inside if you're all out of Konst a log I'm going to give it a string of FS So we know that this
+
+68
+00:04:19,490 --> 00:04:22,150
+console log is coming from the file system module.
+
+69
+00:04:22,340 --> 00:04:23,920
+And then we will do our descant.
+
+70
+00:04:23,920 --> 00:04:27,520
+Now Linus start like so.
+
+71
+00:04:28,250 --> 00:04:28,490
+All right.
+
+72
+00:04:28,490 --> 00:04:35,630
+So we've now got a function do request do hash and then this last read file right here is just going
+
+73
+00:04:35,630 --> 00:04:38,780
+to immediately be invoked as soon as we run this file.
+
+74
+00:04:38,780 --> 00:04:42,040
+So now here's where things start to get really really crazy.
+
+75
+00:04:42,130 --> 00:04:45,050
+OK here's where things get really really interesting.
+
+76
+00:04:45,110 --> 00:04:49,280
+I'm going to add in a function called to do request right above.
+
+77
+00:04:49,280 --> 00:04:56,090
+So remember request is going to make an HTP request over to Google and then down below here's where
+
+78
+00:04:56,090 --> 00:04:57,180
+things get crazy.
+
+79
+00:04:57,380 --> 00:04:58,720
+I'm going to say do hash.
+
+80
+00:04:58,760 --> 00:05:01,290
+So it's going to calculate our hash with PBK.
+
+81
+00:05:01,360 --> 00:05:02,240
+To function.
+
+82
+00:05:02,420 --> 00:05:06,920
+And I'm going to call it 4 times like so.
+
+83
+00:05:07,580 --> 00:05:07,930
+OK.
+
+84
+00:05:07,940 --> 00:05:12,270
+So let's now take a glance at this code and really try to figure out what's going on.
+
+85
+00:05:12,290 --> 00:05:17,030
+So when we run this file We're going to first try to make request over to Google.
+
+86
+00:05:17,030 --> 00:05:20,670
+We're then going to attempt to read all the contents of our current file.
+
+87
+00:05:21,260 --> 00:05:22,190
+Yes.
+
+88
+00:05:22,460 --> 00:05:26,600
+And then we're also going to attempt to calculate for hashes.
+
+89
+00:05:26,600 --> 00:05:30,170
+Now my question to you and this is a this is the interview question.
+
+90
+00:05:30,170 --> 00:05:32,210
+This is like a total brain bender.
+
+91
+00:05:32,210 --> 00:05:33,430
+My question to you.
+
+92
+00:05:33,740 --> 00:05:38,790
+What order are we going to see these console logs appear.
+
+93
+00:05:38,810 --> 00:05:42,110
+We've got one console for the request.
+
+94
+00:05:42,200 --> 00:05:48,470
+We've got some console logs for the hash function and then we've now got a console log for the file
+
+95
+00:05:48,470 --> 00:05:50,540
+system module right here as well.
+
+96
+00:05:50,570 --> 00:05:56,380
+So we're very clearly doing the HTP request first and then the read file and then for hashes.
+
+97
+00:05:56,390 --> 00:06:01,330
+So I want to just sit for just a second and I want you to think about what is going to happen.
+
+98
+00:06:02,070 --> 00:06:06,680
+Try to make a guess as to what order we're going to see these console logs appear and as soon as you
+
+99
+00:06:06,680 --> 00:06:12,940
+have some idea let's go back over to our terminal and we're going to run this file and see what happens.
+
+100
+00:06:12,950 --> 00:06:13,280
+All right.
+
+101
+00:06:13,280 --> 00:06:13,880
+Here we go.
+
+102
+00:06:13,910 --> 00:06:16,050
+Some multitask Yes.
+
+103
+00:06:16,250 --> 00:06:20,310
+We're going to run this and here is our result.
+
+104
+00:06:20,710 --> 00:06:21,460
+OK.
+
+105
+00:06:21,730 --> 00:06:24,520
+So I got to ask you is this what you expected.
+
+106
+00:06:24,730 --> 00:06:29,240
+Right here at the very top this is the benchmark from the HTP module.
+
+107
+00:06:29,290 --> 00:06:33,830
+We then see exactly one console log from that hashing function.
+
+108
+00:06:34,150 --> 00:06:40,010
+And then we see the file system module call and then we see the three remaining hashes.
+
+109
+00:06:40,270 --> 00:06:43,450
+Let's try running it again and just see if we get the exact same behavior.
+
+110
+00:06:45,460 --> 00:06:47,580
+And we definitely get the same.
+
+111
+00:06:47,590 --> 00:06:50,480
+So what in the world is going on here.
+
+112
+00:06:50,500 --> 00:06:56,080
+Reading from our harddrive with that FS module call right here there there's no way that operation takes
+
+113
+00:06:56,080 --> 00:06:57,810
+two seconds when it runs.
+
+114
+00:06:57,820 --> 00:07:02,550
+There's no way there's no way that reading a file off a hard drive can possibly take two seconds.
+
+115
+00:07:02,770 --> 00:07:08,440
+Let's try commenting out all these do hash calls right here and just seeing how long it normally takes
+
+116
+00:07:08,610 --> 00:07:10,680
+are refiled function right here to run.
+
+117
+00:07:11,020 --> 00:07:13,030
+So I gonna save that or run again.
+
+118
+00:07:13,060 --> 00:07:18,100
+And now you'll see that reading off my harddrive takes about 26 milliseconds.
+
+119
+00:07:18,430 --> 00:07:20,380
+Extremely extremely fast.
+
+120
+00:07:20,500 --> 00:07:24,570
+And there's no way that normally it would take two seconds like you see right here.
+
+121
+00:07:24,610 --> 00:07:27,820
+So clearly we have some super interesting behavior right here.
+
+122
+00:07:27,820 --> 00:07:28,860
+Let's take a quick break.
+
+123
+00:07:28,900 --> 00:07:32,860
+We're going to come back to the next video and we're going to look at a couple of different diagrams
+
+124
+00:07:32,860 --> 00:07:36,170
+to figure out exactly why we are seeing this behavior right here.
+
+125
+00:07:36,370 --> 00:07:38,950
+So quick break and I'll see you in just a minute.

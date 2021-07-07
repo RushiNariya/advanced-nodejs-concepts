@@ -1,0 +1,187 @@
+1
+00:00:00,640 --> 00:00:05,070
+In the last section we updated the number of threads that are created outside of our thread pool and
+
+2
+00:00:05,070 --> 00:00:09,420
+observed what actually occurred in this section we're going to address a couple of questions you've
+
+3
+00:00:09,420 --> 00:00:14,220
+probably got around the existence of this thread pool so I'm going to pull up a couple of questions
+
+4
+00:00:14,220 --> 00:00:15,930
+that we're going to go through each one.
+
+5
+00:00:15,960 --> 00:00:16,780
+Here we go.
+
+6
+00:00:17,220 --> 00:00:17,450
+OK.
+
+7
+00:00:17,460 --> 00:00:20,940
+So on the left hand side we've got a question on the right hand side a possible answer.
+
+8
+00:00:20,940 --> 00:00:24,780
+So the first question you probably have and this is probably the most obvious one.
+
+9
+00:00:24,870 --> 00:00:31,290
+Can we use a thread pool for our own personal javascript code or can only certain know jazz functions
+
+10
+00:00:31,470 --> 00:00:34,730
+like the PBK do you have to function make access to it.
+
+11
+00:00:34,730 --> 00:00:39,780
+The answer to that is that you and I can write javascript code that makes use of that thread pool and
+
+12
+00:00:39,780 --> 00:00:43,480
+we'll see exactly how to do that later on in a couple of videos.
+
+13
+00:00:43,530 --> 00:00:49,020
+So yes we'll figure out how we can run our own javascript code in separate threats.
+
+14
+00:00:49,020 --> 00:00:55,250
+The second question we might have is what functions inside the node standard library actually make usedn't.
+
+15
+00:00:55,330 --> 00:01:01,150
+So this one is a little bit more complicated and I cannot give you a very distinct answer of exactly
+
+16
+00:01:01,150 --> 00:01:05,350
+which functions are executed inside that thread pool and which are not.
+
+17
+00:01:05,350 --> 00:01:09,990
+And the reason for that is that a lot of it depends on what operating system you are on.
+
+18
+00:01:10,000 --> 00:01:15,520
+So depending on whether or not you were on Windows or a UNIX based system you're going to see different
+
+19
+00:01:15,520 --> 00:01:18,650
+functions getting access to the thread pool.
+
+20
+00:01:18,670 --> 00:01:24,340
+Now the one common thread is that all of the file system module functions like every function inside
+
+21
+00:01:24,340 --> 00:01:27,490
+the file system makes use of what the thread pool.
+
+22
+00:01:27,490 --> 00:01:31,090
+No matter what operating system you're running.
+
+23
+00:01:31,290 --> 00:01:36,920
+Now the final question you might have here is how does the thread pool stuff actually fit into the loop.
+
+24
+00:01:36,920 --> 00:01:41,990
+Remember we wrote out some kind of like test code a little bit ago or pseudo code to simulate how the
+
+25
+00:01:41,990 --> 00:01:43,130
+event loop works.
+
+26
+00:01:43,130 --> 00:01:47,890
+You might be curious what presents Does this thread pool have and all that pseudo code that we wrote.
+
+27
+00:01:48,200 --> 00:01:53,960
+Well you might remember that we had that pending operations array back inside of our pseudo code example.
+
+28
+00:01:54,290 --> 00:01:55,730
+So here's our thread thing.
+
+29
+00:01:55,940 --> 00:02:00,200
+And at the very top we had defined that pending operations array right here.
+
+30
+00:02:00,200 --> 00:02:04,050
+And then any time that we wanted to check to see if our event loops should continue running.
+
+31
+00:02:04,160 --> 00:02:09,490
+We checked to see if there were any pending operations left inside that thread pool.
+
+32
+00:02:09,560 --> 00:02:15,200
+So this pending operations thing right here essentially represents code that is being executed or a
+
+33
+00:02:15,330 --> 00:02:17,590
+that is being executed inside the thread pool.
+
+34
+00:02:17,840 --> 00:02:23,450
+So so long as that thread pool still has some code inside of it or some tasks lined up for it to run
+
+35
+00:02:23,840 --> 00:02:27,190
+our program is going to continue to execute the event loop.
+
+36
+00:02:27,920 --> 00:02:33,560
+And then you might recall that inside the event loop itself at Step number two right here we had said
+
+37
+00:02:33,560 --> 00:02:38,680
+that node looks at the pending operations array and it calls any relevant callbacks.
+
+38
+00:02:38,900 --> 00:02:45,320
+So after we finished calculating one of our hash values inside of one of those threads the callback
+
+39
+00:02:45,500 --> 00:02:51,800
+that we had registered with the PV KDAF to function is then executed when we go through step number
+
+40
+00:02:51,800 --> 00:02:52,880
+two right here.
+
+41
+00:02:53,270 --> 00:02:56,770
+So that's how everything kind of relates back to the to the event loop.
+
+42
+00:02:57,320 --> 00:03:00,730
+Ok so now we've got some of these probably common questions of the way.
+
+43
+00:03:00,860 --> 00:03:05,330
+Let's continue the next section and we're going to start to dig into that other array that we have not
+
+44
+00:03:05,330 --> 00:03:06,040
+spoken about.
+
+45
+00:03:06,050 --> 00:03:09,470
+Remember up here we also had that pending OS tasks thing.
+
+46
+00:03:09,470 --> 00:03:14,130
+So a quick break and we'll start to dive into what this array of peer meant as well.
+
+47
+00:03:14,180 --> 00:03:15,830
+So we'll see you in just a minute.

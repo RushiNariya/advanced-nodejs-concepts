@@ -1,0 +1,167 @@
+1
+00:00:00,510 --> 00:00:06,210
+En la última sección vimos algunas pruebas de que una llamada de función a PBK no es en
+
+2
+00:00:06,510 --> 00:00:08,900
+realidad una sola hebra en esta sección.
+
+3
+00:00:08,910 --> 00:00:13,420
+Vamos a ampliar un poco este ejemplo y descubrir por qué estamos viendo este comportamiento.
+
+4
+00:00:13,830 --> 00:00:18,660
+Primero veamos un diagrama de lo que realmente está sucediendo con él PBK D-Nev. para funcionar detrás de
+
+5
+00:00:18,660 --> 00:00:19,670
+las escenas.
+
+6
+00:00:19,680 --> 00:00:25,370
+Así que recuerde que nos sumergimos en el código fuente de esta función hace un momento y como
+
+7
+00:00:25,440 --> 00:00:32,070
+vimos, la función PBK DFT tiene tanto la implementación de javascript como de hecho delegó todo el trabajo realizado al lado
+
+8
+00:00:32,160 --> 00:00:33,020
+de C ++.
+
+9
+00:00:33,480 --> 00:00:36,900
+Entonces ahí es donde tuvo lugar el proceso de hashing real.
+
+10
+00:00:36,900 --> 00:00:44,400
+También vimos muy brevemente en ese archivo C ++ que parecía haber algunas referencias a una biblioteca lib que,
+
+11
+00:00:44,460 --> 00:00:49,460
+como recordará, le da al nodo algún mejor acceso al sistema operativo subyacente.
+
+12
+00:00:49,830 --> 00:00:57,330
+La lib U. V. el módulo tiene otra responsabilidad que es relevante para algunas funciones
+
+13
+00:00:57,330 --> 00:00:58,610
+muy particulares en la biblioteca estándar.
+
+14
+00:00:58,950 --> 00:01:07,140
+Entonces, para algunos, esa es la palabra clave aquí para algunas llamadas a funciones de biblioteca estándar: el nodo C + +
+
+15
+00:01:07,140 --> 00:01:12,840
+y el U-V en vivo deciden realizar costosos cálculos fuera del ciclo de eventos por completo.
+
+16
+00:01:13,920 --> 00:01:21,000
+En cambio, hacen uso de algo llamado grupo de subprocesos que el grupo de subprocesos es una serie de cuatro
+
+17
+00:01:21,060 --> 00:01:28,500
+subprocesos que se pueden usar para ejecutar tareas intensivas de cómputo como PV KDAF para funcionar de forma predeterminada. U-V en
+
+18
+00:01:28,640 --> 00:01:32,070
+vivo crea cuatro subprocesos en este grupo de subprocesos.
+
+19
+00:01:32,070 --> 00:01:38,130
+Entonces eso significa que además de ese hilo usado para el ciclo de eventos hay otros
+
+20
+00:01:38,130 --> 00:01:44,460
+cuatro hilos que pueden usarse para descargar cálculos costosos que deben ocurrir dentro de nuestra aplicación.
+
+21
+00:01:44,460 --> 00:01:48,990
+Muchas de las funciones incluidas en el nodo biblioteca estándar utilizarán automáticamente este grupo
+
+22
+00:01:48,990 --> 00:01:49,490
+de subprocesos.
+
+23
+00:01:49,680 --> 00:01:53,400
+Y como se puede imaginar, la función PBK DFT es una de ellas.
+
+24
+00:01:53,790 --> 00:01:58,560
+Ahora la presencia de este grupo de hilos es muy significativa, obviamente, desde el punto de vista de la gente que siempre dice: "Oh,
+
+25
+00:01:58,560 --> 00:02:01,250
+sí, me di cuenta del aviso de un solo hilo de rosca simple".
+
+26
+00:02:01,470 --> 00:02:07,020
+Claramente, no es realmente un único hilo porque hay otros hilos que el
+
+27
+00:02:07,020 --> 00:02:10,410
+nodo usa para hacer algunas tareas computacionalmente intensivas.
+
+28
+00:02:10,530 --> 00:02:15,840
+Aquí verá este grupo de subprocesos porque si nuestro bucle de eventos fuera responsable de realizar esta
+
+29
+00:02:15,840 --> 00:02:21,840
+tarea computacionalmente intensiva, eso significa que nuestra aplicación de nodo no podría hacer absolutamente nada más mientras estábamos ejecutando
+
+30
+00:02:21,840 --> 00:02:23,950
+el PBK T. F. funcionar.
+
+31
+00:02:24,090 --> 00:02:28,990
+Recuerde que nuestro CPQ ejecuta todas las instrucciones dentro de un hilo, una por una.
+
+32
+00:02:29,070 --> 00:02:33,840
+Hasta el momento, el hilo tenía alguna línea de instrucción en el costado que decía ejecutar este código.
+
+33
+00:02:33,860 --> 00:02:36,840
+Eso demora un segundo en ejecutarse, eso es más o menos.
+
+34
+00:02:36,840 --> 00:02:39,560
+Tenemos que esperar un segundo para que se ejecute ese código.
+
+35
+00:02:39,870 --> 00:02:45,540
+Entonces, al usar este grupo de subprocesos aquí, no tenemos que esperar ese segundo y podemos hacer otras cosas dentro de
+
+36
+00:02:45,600 --> 00:02:46,820
+nuestro ciclo de eventos.
+
+37
+00:02:46,920 --> 00:02:48,850
+Mientras ese cálculo está ocurriendo.
+
+38
+00:02:49,520 --> 00:02:49,870
+DE ACUERDO.
+
+39
+00:02:49,920 --> 00:02:54,820
+Entonces, ahora que hemos visto este hilo pasar aquí, hagamos una pausa rápida.
+
+40
+00:02:54,840 --> 00:02:59,670
+Volveremos en la siguiente sección y vamos a modificar nuestro archivo un poco
+
+41
+00:02:59,670 --> 00:03:05,080
+y nos permitirá detectar la presencia de estos cuatro hilos dentro del grupo de subprocesos.
+
+42
+00:03:05,130 --> 00:03:07,410
+Así que toma un descanso rápido y te veré en solo un minuto.

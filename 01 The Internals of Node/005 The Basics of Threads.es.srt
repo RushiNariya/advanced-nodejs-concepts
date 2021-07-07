@@ -1,0 +1,323 @@
+1
+00:00:00,550 --> 00:00:05,980
+En las últimas secciones obtuvimos una mejor idea de cómo funciona Noda y ahora entendemos que el Noda usa internamente el motor
+
+2
+00:00:05,980 --> 00:00:12,760
+javascript V8 y la biblioteca C ++ lib U. V. para trabajar correctamente en este video.
+
+3
+00:00:12,760 --> 00:00:18,550
+Y los siguientes vamos a comenzar a bucear en algo llamado el ciclo de eventos. El nodo utiliza
+
+4
+00:00:18,610 --> 00:00:24,550
+el ciclo de eventos para manejar el código asíncrono que usted y yo tenemos dentro de nuestras aplicaciones antes
+
+5
+00:00:24,550 --> 00:00:29,950
+de ir directamente al ciclo de eventos, sin embargo, vamos para hacer un desvío muy breve y
+
+6
+00:00:30,100 --> 00:00:36,120
+analizar algo llamado subprocesos una vez que comprendamos qué es un hilo, volveremos al ciclo de eventos del nodo.
+
+7
+00:00:36,130 --> 00:00:37,850
+Entonces en este video vamos a hacerlo.
+
+8
+00:00:37,870 --> 00:00:41,440
+Vamos a comenzar a discutir los hilos y lo que son.
+
+9
+00:00:41,470 --> 00:00:41,810
+Todo bien.
+
+10
+00:00:41,880 --> 00:00:48,710
+Curium cada vez que tú y yo ejecutamos programas en nuestro en nuestra computadora, iniciamos algo llamado proceso.
+
+11
+00:00:48,940 --> 00:00:55,660
+Un proceso es una instancia de un programa de computadora que se ha ejecutado dentro de un solo proceso.
+
+12
+00:00:55,660 --> 00:00:58,870
+Podemos tener varias cosas llamadas amenazas.
+
+13
+00:00:58,930 --> 00:01:05,050
+Puede imaginar un hilo aquí como una lista de tareas pendientes que tiene algunas instrucciones
+
+14
+00:01:05,230 --> 00:01:08,550
+que debe ejecutar el CPQ de su computadora.
+
+15
+00:01:09,590 --> 00:01:16,190
+Este hilo se le da al CPQ y al CPP, usted intentará ejecutar cada instrucción en él, uno por
+
+16
+00:01:16,400 --> 00:01:23,650
+uno, comenzando en la parte superior y luego al bajar un solo proceso puede tener múltiples hilos dentro de él.
+
+17
+00:01:23,830 --> 00:01:29,480
+Y, de hecho, puedo demostrártelo muy fácilmente abriendo el monitor de actividad en mi
+
+18
+00:01:29,480 --> 00:01:30,890
+computadora portátil personal.
+
+19
+00:01:30,890 --> 00:01:32,670
+Así que aquí está mi monitor de actividad.
+
+20
+00:01:32,710 --> 00:01:36,580
+Enumera todos los diferentes procesos que se ejecutan en mi computadora.
+
+21
+00:01:37,070 --> 00:01:41,540
+Si miras abajo a la derecha y sé que el texto es muy pequeño,
+
+22
+00:01:41,540 --> 00:01:45,230
+puedes ver que tengo aproximadamente 250 procesos diferentes ejecutándose en este momento.
+
+23
+00:01:45,230 --> 00:01:50,030
+Y dentro hay alrededor de 4500 amenazas diferentes.
+
+24
+00:01:50,150 --> 00:01:58,250
+Así que cada uno de estos hilos pertenece a un proceso individual, una de las áreas de estudio
+
+25
+00:01:58,250 --> 00:02:04,220
+más interesantes e importantes es comprender algo llamado programación de programación o primero
+
+26
+00:02:04,220 --> 00:02:10,730
+la capacidad de su sistema operativo para decidir qué hilo procesar en un instante determinado.
+
+27
+00:02:11,330 --> 00:02:16,840
+Así que recuerde que su computadora tiene una cantidad limitada de recursos disponibles mientras duerme.
+
+28
+00:02:16,840 --> 00:02:21,020
+Solo puedes procesar tantas instrucciones por segundo.
+
+29
+00:02:21,020 --> 00:02:27,440
+Esto comienza a ser realmente relevante cuando tenemos muchos procesos activos e hilos en nuestra computadora. Cada uno de estos hilos
+
+30
+00:02:27,440 --> 00:02:32,210
+aquí podría tener alguna responsabilidad urgente asignada a él, como por aquí podríamos tener un
+
+31
+00:02:32,210 --> 00:02:37,430
+hilo que es responsable de asegurarse de que cada vez que el usuario mueve su mouse el
+
+32
+00:02:37,770 --> 00:02:39,950
+cursor en la pantalla se mueve también.
+
+33
+00:02:40,340 --> 00:02:45,680
+O podríamos tener otro hilo cuyo trabajo es asegurarse de que la escritura del teclado o la introducción del
+
+34
+00:02:45,680 --> 00:02:49,240
+teclado aparezca dentro de alguna entrada de texto siempre que el usuario escriba.
+
+35
+00:02:49,670 --> 00:02:55,430
+Así que el programador de su sistema operativo aquí tiene que ver todos estos hilos diferentes que piden ser procesados
+
+36
+00:02:55,430 --> 00:03:00,950
+​​y descubrir cómo hacer una cierta cantidad de trabajo en cada uno de ellos, al mismo tiempo que se asegura
+
+37
+00:03:01,250 --> 00:03:04,400
+de que no tengan que esperar demasiado para ser procesados. procesada.
+
+38
+00:03:04,400 --> 00:03:06,360
+Ahora que la última parte es realmente importante.
+
+39
+00:03:06,500 --> 00:03:12,230
+Queremos asegurarnos de que los hilos urgentes no tengan que esperar demasiado para ejecutarse.
+
+40
+00:03:12,230 --> 00:03:18,470
+Entonces, por ejemplo, si el hilo encargado de mover el mouse por la pantalla tiene que esperar como
+
+41
+00:03:18,470 --> 00:03:24,170
+cinco segundos antes de que se procese, el cursor no se moverá durante ese tiempo y el
+
+42
+00:03:24,170 --> 00:03:29,400
+usuario pensará que su computadora está rota, lo que obviamente no es bueno. en absoluto.
+
+43
+00:03:29,420 --> 00:03:34,610
+Hay un par de estrategias diferentes que se utilizan para mejorar la velocidad a la que
+
+44
+00:03:34,610 --> 00:03:36,200
+se pueden procesar estos hilos.
+
+45
+00:03:36,200 --> 00:03:40,730
+Vamos a centrarnos en dos en particular que van a terminar siendo muy relevantes para nosotros en
+
+46
+00:03:40,730 --> 00:03:42,120
+el mundo conocido de G-S.
+
+47
+00:03:42,500 --> 00:03:50,510
+Entonces, para procesar los hilos más rápidamente o procesar más en un momento dado, primero podemos agregar núcleos de
+
+48
+00:03:50,510 --> 00:03:52,770
+asiento adicionales a nuestra máquina.
+
+49
+00:03:52,850 --> 00:03:58,850
+Entonces, si tenemos más de un núcleo dentro de nuestro CPQ, entonces podemos procesar múltiples
+
+50
+00:03:58,850 --> 00:04:00,590
+hilos al mismo tiempo.
+
+51
+00:04:00,590 --> 00:04:06,470
+Una cosa que quiero mencionar aquí es que, técnicamente, un núcleo puede procesar más de un tiempo de subprocesamiento a
+
+52
+00:04:06,710 --> 00:04:11,390
+través de un proceso llamado multi-threading o también puede haber escuchado que se lo conoce como
+
+53
+00:04:11,390 --> 00:04:12,020
+hyper threading.
+
+54
+00:04:12,350 --> 00:04:19,000
+Pero ahora solo digamos que uno más núcleos significa más hilos procesados ​​a la vez.
+
+55
+00:04:19,010 --> 00:04:24,030
+Lo segundo que podemos hacer es examinar más detenidamente el trabajo que está realizando cada hilo.
+
+56
+00:04:24,320 --> 00:04:28,790
+Así que aquí es donde las cosas comienzan a ser realmente relevantes para nosotros en el mundo javascript.
+
+57
+00:04:28,880 --> 00:04:34,100
+Imaginemos por un momento que tenemos dos hilos aquí que compiten por el procesamiento del hilo
+
+58
+00:04:34,640 --> 00:04:35,140
+de poder.
+
+59
+00:04:35,190 --> 00:04:40,040
+El número uno tiene un conjunto de instrucciones que quieren leer un archivo del
+
+60
+00:04:40,040 --> 00:04:47,450
+disco duro y luego contar el número de caracteres que contiene y luego el segundo número quiere multiplicar 3 por 3.
+
+61
+00:04:47,540 --> 00:04:53,690
+Lo que hay que tener en cuenta es que cada vez que nuestra computadora intenta leer datos de
+
+62
+00:04:53,810 --> 00:05:01,220
+algún tipo de medio como un disco duro, nos referimos a eso como operaciones de entrada o salida y siempre lleva algo
+
+63
+00:05:01,220 --> 00:05:02,660
+de tiempo no nulo.
+
+64
+00:05:02,660 --> 00:05:09,260
+Entonces, durante esta fase IO, aquí está CPQ esperando en el disco duro para leer algún archivo y
+
+65
+00:05:09,260 --> 00:05:10,230
+devolver sus contenidos.
+
+66
+00:05:10,340 --> 00:05:15,750
+Y durante ese tiempo, este hilo número uno no tiene absolutamente nada más que hacer.
+
+67
+00:05:15,950 --> 00:05:20,230
+Simplemente está sentado esperando el disco duro para obtener información.
+
+68
+00:05:20,330 --> 00:05:25,790
+El programador de su sistema operativo tiene la capacidad de detectar este tiempo de inactividad o
+
+69
+00:05:25,820 --> 00:05:32,240
+este tipo de pausa entre instrucciones y puede decidir poner el número uno en pausa y luego ejecutarlo.
+
+70
+00:05:32,240 --> 00:05:37,550
+Enhebre el número dos y luego, tan pronto como el subproceso número dos esté completo, puede volver a la amenaza número
+
+71
+00:05:37,550 --> 00:05:42,290
+uno y continuar esperando que el disco duro se lea desde la persona hasta el archivo que se leerá
+
+72
+00:05:42,290 --> 00:05:43,450
+desde el disco duro.
+
+73
+00:05:44,090 --> 00:05:49,190
+De acuerdo, haga un resumen rápido aquí, en esta sección hablamos sobre algunos de los aspectos básicos de los hilos.
+
+74
+00:05:49,250 --> 00:05:55,640
+Los subprocesos son unidades de instrucción que están esperando ser ejecutadas por el CPQ que decide a
+
+75
+00:05:55,640 --> 00:05:58,900
+qué orden ejecutar estos subprocesos se le llama programación.
+
+76
+00:05:59,330 --> 00:06:05,510
+La programación es controlada por su sistema operativo para mejorar la velocidad a la que procesamos los
+
+77
+00:06:05,510 --> 00:06:12,770
+hilos, ya sea para agregar más cursos CQ a nuestra máquina o para permitir que nuestro programador OS detecte grandes
+
+78
+00:06:12,980 --> 00:06:18,150
+pausas en el tiempo de procesamiento debido a costosas operaciones de entrada y salida.
+
+79
+00:06:18,170 --> 00:06:22,220
+Entonces, ahora que entendemos o comprendemos un poco más acerca de los hilos, continuemos en
+
+80
+00:06:22,220 --> 00:06:26,470
+la próxima sección y comenzaremos a aplicar este conocimiento al ciclo de eventos del nodo.
+
+81
+00:06:26,480 --> 00:06:29,020
+Así que toma un descanso rápido y te veré en solo un minuto.

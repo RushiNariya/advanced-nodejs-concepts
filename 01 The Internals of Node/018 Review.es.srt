@@ -1,0 +1,171 @@
+1
+00:00:00,610 --> 00:00:05,830
+En la última docena de videos más o menos hemos abordado algunos temas bastante complicados en este video, vamos
+
+2
+00:00:05,830 --> 00:00:09,560
+a hacer una pausa rápida y revisar todo lo que hemos cubierto hasta ahora.
+
+3
+00:00:09,580 --> 00:00:14,950
+Tengo un diagrama de resumen que resumirá exactamente lo que sucede cuando inicias un programa de nodo
+
+4
+00:00:15,010 --> 00:00:16,290
+en tu computadora local.
+
+5
+00:00:16,600 --> 00:00:18,430
+Entonces todo comienza aparece en la parte superior.
+
+6
+00:00:18,430 --> 00:00:23,980
+Cuando ejecuta el comando nodo índice punto J. S. o cualquier archivo que esté ejecutando
+
+7
+00:00:23,980 --> 00:00:29,740
+cuando ejecuta ese nodo de comando ejecuta y procesa inmediatamente todo el código dentro de ese archivo.
+
+8
+00:00:29,740 --> 00:00:34,090
+Ahora, una cosa de la que puede estar curioso durante esta fase también es requerir declaraciones que tenga
+
+9
+00:00:34,090 --> 00:00:35,190
+dentro de ese archivo.
+
+10
+00:00:35,410 --> 00:00:42,990
+En el momento en que reinicia el nodo, todo el código dentro de ese archivo y todos los archivos necesarios también se ejecutan.
+
+11
+00:00:43,120 --> 00:00:48,910
+Por lo tanto, si su archivo de inicio de índice JSE les exige que requieran declaraciones que también se
+
+12
+00:00:48,940 --> 00:00:50,280
+requieren y se ejecutan instantáneamente.
+
+13
+00:00:50,630 --> 00:00:56,030
+Nota luego entra en nuestro ciclo de eventos, el ciclo de eventos tiene una gran pregunta general.
+
+14
+00:00:56,080 --> 00:00:58,390
+Dice: "Todavía tenemos trabajo por hacer".
+
+15
+00:00:58,390 --> 00:01:00,100
+¿Tenemos temporizadores?
+
+16
+00:01:00,100 --> 00:01:04,070
+¿Tenemos alguna tarea del sistema operativo para hacer tareas de red o similares?
+
+17
+00:01:04,240 --> 00:01:07,440
+¿O tenemos algo todavía ejecutándose dentro de nuestro grupo de subprocesos?
+
+18
+00:01:07,780 --> 00:01:12,490
+Si no lo hacemos, nuestro programa se cierra de inmediato y no tenemos nada más que hacer.
+
+19
+00:01:12,700 --> 00:01:17,140
+Pero si todavía tenemos algo de trabajo por hacer, seguimos una serie
+
+20
+00:01:17,140 --> 00:01:18,260
+de pasos diferentes.
+
+21
+00:01:18,400 --> 00:01:24,080
+Primero verificamos si hay algún tiempo de espera establecido o intervalos establecidos que deben ejecutarse.
+
+22
+00:01:24,960 --> 00:01:31,110
+A continuación, verificamos si hay devoluciones de llamadas listas para ser llamadas vinculadas a cualquier cosa relacionada con las tareas del sistema
+
+23
+00:01:31,110 --> 00:01:34,690
+operativo, como las redes o cualquier cosa relacionada con nuestro grupo de subprocesos.
+
+24
+00:01:35,010 --> 00:01:39,710
+Y esta es probablemente la gran mayoría del código que usted y yo escribimos dentro de las aplicaciones de nodo.
+
+25
+00:01:41,250 --> 00:01:45,780
+Luego, el ciclo de eventos simplemente se detiene y se queda esperando que ocurra algo.
+
+26
+00:01:46,110 --> 00:01:51,450
+Así que espera que alguna tarea se complete donde espera por algún tiempo o que aparezca o lo que
+
+27
+00:01:51,450 --> 00:01:52,500
+sea que esté esperando.
+
+28
+00:01:53,980 --> 00:01:59,770
+Después de eso, ejecutamos cualquier conjunto de funciones inmediatas que se hayan definido dentro de nuestro código.
+
+29
+00:02:00,010 --> 00:02:05,200
+Y finalmente manejamos cualquier evento cercano que nos permita realizar una cierta limpieza
+
+30
+00:02:05,200 --> 00:02:06,550
+dentro de nuestra aplicación.
+
+31
+00:02:06,700 --> 00:02:12,070
+Y luego, por supuesto, lo último es volver a la parte superior y repetir todo el proceso
+
+32
+00:02:12,070 --> 00:02:13,140
+una vez más.
+
+33
+00:02:13,330 --> 00:02:18,010
+Recuerde que nos referimos a una ejecución del ciclo de evento como un tic.
+
+34
+00:02:18,010 --> 00:02:22,780
+Entonces verás esa terminología con bastante frecuencia y mucha documentación.
+
+35
+00:02:22,780 --> 00:02:23,070
+Todo bien.
+
+36
+00:02:23,080 --> 00:02:24,160
+Entonces esa es una revisión rápida.
+
+37
+00:02:24,340 --> 00:02:29,320
+Pero todavía tenemos muchos temas que quiero relatarle en su mayoría sobre el rendimiento de nuestra aplicación, por lo
+
+38
+00:02:29,320 --> 00:02:32,920
+que ahora tenemos una muy buena idea de los aspectos internos del no.
+
+39
+00:02:32,980 --> 00:02:33,500
+Sí.
+
+40
+00:02:33,640 --> 00:02:37,180
+Y lo que realmente está sucediendo cuando hacemos uso de la biblioteca estándar.
+
+41
+00:02:37,240 --> 00:02:42,040
+Así que ahora aprovechamos todo este conocimiento y descubrimos cómo podemos comenzar a escribir un
+
+42
+00:02:42,040 --> 00:02:44,300
+código realmente eficaz dentro de nuestras aplicaciones.
+
+43
+00:02:44,320 --> 00:02:47,440
+Así que toma un descanso rápido y nos sumergiremos en eso en el siguiente video.

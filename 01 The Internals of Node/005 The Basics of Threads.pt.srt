@@ -1,0 +1,323 @@
+1
+00:00:00,550 --> 00:00:05,980
+Nas últimas seções nós temos uma idéia melhor de como o Noda funciona e agora entendemos o Noda internamente usa o motor V8
+
+2
+00:00:05,980 --> 00:00:12,760
+do javascript e a biblioteca C ++ lib U. V. para funcionar corretamente neste vídeo.
+
+3
+00:00:12,760 --> 00:00:18,550
+E os próximos Vamos começar a mergulhar em algo chamado loop de eventos, o loop de eventos é
+
+4
+00:00:18,610 --> 00:00:24,550
+usado pelo nó para lidar com código assíncrono que você e eu dentro de nossos aplicativos antes de
+
+5
+00:00:24,550 --> 00:00:29,950
+ir direto para o loop de eventos, mas vamos para fazer um desvio muito breve e discutir
+
+6
+00:00:30,100 --> 00:00:36,120
+algo chamado threads, uma vez que entendemos o que é um thread, voltaremos ao loop de eventos do nó.
+
+7
+00:00:36,130 --> 00:00:37,850
+Então, neste vídeo, vamos chegar a ele.
+
+8
+00:00:37,870 --> 00:00:41,440
+Vamos começar a discutir tópicos e o que são.
+
+9
+00:00:41,470 --> 00:00:41,810
+Tudo bem.
+
+10
+00:00:41,880 --> 00:00:48,710
+Cúrio sempre que você e eu executamos programas no nosso computador, iniciamos algo chamado processo.
+
+11
+00:00:48,940 --> 00:00:55,660
+Um processo é uma instância de um programa de computador que foi executado em um único processo.
+
+12
+00:00:55,660 --> 00:00:58,870
+Podemos ter várias coisas chamadas ameaças.
+
+13
+00:00:58,930 --> 00:01:05,050
+Você pode imaginar um tópico aqui como uma pequena lista de tarefas que possui algumas instruções
+
+14
+00:01:05,230 --> 00:01:08,550
+que precisam ser executadas pelo CPQ do seu computador.
+
+15
+00:01:09,590 --> 00:01:16,190
+Este encadeamento é dado ao CPQ e ao CPP que você tentará executar todas as instruções nele, uma
+
+16
+00:01:16,400 --> 00:01:23,650
+a uma, iniciando na parte superior e, em seguida, descendo um único processo, pode ter vários encadeamentos dentro dele.
+
+17
+00:01:23,830 --> 00:01:29,480
+E, de fato, posso provar isso muito facilmente para você abrindo o monitor de atividades
+
+18
+00:01:29,480 --> 00:01:30,890
+no meu laptop pessoal.
+
+19
+00:01:30,890 --> 00:01:32,670
+Então aqui está meu monitor de atividades.
+
+20
+00:01:32,710 --> 00:01:36,580
+Ele lista todos os diferentes processos que estão sendo executados no meu computador.
+
+21
+00:01:37,070 --> 00:01:41,540
+Se você olhar para o canto inferior direito aqui e eu sei que o texto é realmente pequeno,
+
+22
+00:01:41,540 --> 00:01:45,230
+mas você pode ver que eu tenho cerca de 250 processos diferentes em execução agora.
+
+23
+00:01:45,230 --> 00:01:50,030
+E lá dentro existem cerca de 4500 ameaças diferentes.
+
+24
+00:01:50,150 --> 00:01:58,250
+Portanto, cada um desses segmentos pertence a um processo individual. Uma das áreas de estudo mais interessantes e
+
+25
+00:01:58,250 --> 00:02:04,220
+importantes em torno de threads é entender algo chamado programação de agendamento ou primeiro
+
+26
+00:02:04,220 --> 00:02:10,730
+a capacidade de seus sistemas operacionais decidirem qual segmento processar em determinado instante no tempo.
+
+27
+00:02:11,330 --> 00:02:16,840
+Portanto, lembre-se de que seu computador tem uma quantidade limitada de recursos disponíveis durante o sono.
+
+28
+00:02:16,840 --> 00:02:21,020
+Você só pode processar tantas instruções por segundo.
+
+29
+00:02:21,020 --> 00:02:27,440
+Isso começa a ficar realmente relevante quando temos muitos processos ativos e threads em nosso computador, cada um desses
+
+30
+00:02:27,440 --> 00:02:32,210
+tópicos aqui pode ter alguma responsabilidade urgente atribuída a ele, como aqui, podemos ter
+
+31
+00:02:32,210 --> 00:02:37,430
+um thread que é responsável por garantir que sempre que o usuário move seu mouse
+
+32
+00:02:37,770 --> 00:02:39,950
+o cursor na tela se move também.
+
+33
+00:02:40,340 --> 00:02:45,680
+Ou podemos ter outro thread cujo trabalho é garantir que a digitação do teclado ou do teclado
+
+34
+00:02:45,680 --> 00:02:49,240
+apareça dentro de alguma entrada de texto sempre que o usuário digitar.
+
+35
+00:02:49,670 --> 00:02:55,430
+Portanto, o agendador de sistemas operacionais aqui tem que olhar para todos esses segmentos diferentes que estão pedindo para
+
+36
+00:02:55,430 --> 00:03:00,950
+serem processados ​​e descobrir como fazer uma certa quantidade de trabalho em cada um deles, certificando-se de que
+
+37
+00:03:01,250 --> 00:03:04,400
+eles não tenham que esperar muito tempo para serem processados. processado.
+
+38
+00:03:04,400 --> 00:03:06,360
+Agora essa última parte é realmente importante.
+
+39
+00:03:06,500 --> 00:03:12,230
+Queremos ter certeza de que os segmentos urgentes não precisem esperar muito para serem executados.
+
+40
+00:03:12,230 --> 00:03:18,470
+Assim, por exemplo, se o thread encarregado de mover o mouse pela tela tiver que esperar cinco
+
+41
+00:03:18,470 --> 00:03:24,170
+segundos antes de ser processado, o cursor não se moverá durante esse tempo e o usuário
+
+42
+00:03:24,170 --> 00:03:29,400
+vai pensar que o computador está quebrado, o que obviamente não é bom em absoluto.
+
+43
+00:03:29,420 --> 00:03:34,610
+Existem algumas estratégias diferentes usadas para melhorar a taxa na qual esses
+
+44
+00:03:34,610 --> 00:03:36,200
+encadeamentos podem ser processados.
+
+45
+00:03:36,200 --> 00:03:40,730
+Vamos nos concentrar em dois em particular que acabarão sendo muito relevantes para
+
+46
+00:03:40,730 --> 00:03:42,120
+nós no mundo G-S.
+
+47
+00:03:42,500 --> 00:03:50,510
+Portanto, para processar segmentos com mais rapidez ou processar mais em um determinado momento, podemos adicionar novos núcleos
+
+48
+00:03:50,510 --> 00:03:52,770
+de assento à nossa máquina.
+
+49
+00:03:52,850 --> 00:03:58,850
+Portanto, se tivermos mais de um núcleo dentro de nosso CPQ, poderemos processar facilmente vários
+
+50
+00:03:58,850 --> 00:04:00,590
+encadeamentos ao mesmo tempo.
+
+51
+00:04:00,590 --> 00:04:06,470
+Uma coisa que quero mencionar aqui é que, tecnicamente, um núcleo pode processar mais de um tempo encadeado por meio
+
+52
+00:04:06,710 --> 00:04:11,390
+de um processo chamado multiencadeamento, ou você também pode ter ouvido que ele é chamado de
+
+53
+00:04:11,390 --> 00:04:12,020
+encadeamento hiper também.
+
+54
+00:04:12,350 --> 00:04:19,000
+Mas agora vamos apenas dizer que mais um núcleo significa mais threads processados ​​de uma só vez.
+
+55
+00:04:19,010 --> 00:04:24,030
+A segunda coisa que podemos fazer é examinar mais de perto o trabalho que está sendo feito por cada thread.
+
+56
+00:04:24,320 --> 00:04:28,790
+Então é aí que as coisas começam a se tornar realmente relevantes para nós no mundo do javascript.
+
+57
+00:04:28,880 --> 00:04:34,100
+Vamos imaginar por um segundo que temos dois segmentos aqui que estão competindo para processar o poder
+
+58
+00:04:34,640 --> 00:04:35,140
+do segmento.
+
+59
+00:04:35,190 --> 00:04:40,040
+Número um tem um conjunto de instruções que querem ler um arquivo fora do disco
+
+60
+00:04:40,040 --> 00:04:47,450
+rígido e, em seguida, talvez contar o número de caracteres dentro dele e, em seguida, thread número dois aqui quer multiplicar 3 por 3.
+
+61
+00:04:47,540 --> 00:04:53,690
+O que devemos ter em mente é que toda vez que nosso computador tenta ler dados de algum
+
+62
+00:04:53,810 --> 00:05:01,220
+tipo de mídia, como um disco rígido, nos referimos a isso como operações de entrada ou saída e sempre leva algum
+
+63
+00:05:01,220 --> 00:05:02,660
+tempo diferente de zero.
+
+64
+00:05:02,660 --> 00:05:09,260
+Então, durante esta fase de IO, aqui você está CPQ está esperando no disco rígido para ler algum arquivo e
+
+65
+00:05:09,260 --> 00:05:10,230
+retornar seu conteúdo.
+
+66
+00:05:10,340 --> 00:05:15,750
+E durante esse tempo, este número de discussão número um não tem absolutamente nada a fazer.
+
+67
+00:05:15,950 --> 00:05:20,230
+É só ficar esperando o disco rígido para obter alguma informação.
+
+68
+00:05:20,330 --> 00:05:25,790
+O agendador do sistema operacional tem a capacidade de detectar esse tempo de inatividade ou esse tipo
+
+69
+00:05:25,820 --> 00:05:32,240
+de pausa entre as instruções e pode decidir colocar o número de linha um em pausa e depois executá-lo.
+
+70
+00:05:32,240 --> 00:05:37,550
+O número dois e, em seguida, assim que o número dois do segmento for concluído, ele poderá voltar para a
+
+71
+00:05:37,550 --> 00:05:42,290
+ameaça número um e continuar esperando que o disco rígido seja lido da pessoa para o arquivo a
+
+72
+00:05:42,290 --> 00:05:43,450
+ser lido no disco rígido.
+
+73
+00:05:44,090 --> 00:05:49,190
+OK, então uma rápida recapitulação aqui nesta seção falamos sobre alguns dos princípios básicos de tópicos.
+
+74
+00:05:49,250 --> 00:05:55,640
+Threads são unidades de instrução que estão aguardando para serem executadas pelo CPQ, decidindo qual ordem
+
+75
+00:05:55,640 --> 00:05:58,900
+para executar esses encadeamentos é chamada de programação.
+
+76
+00:05:59,330 --> 00:06:05,510
+O agendamento é controlado pelo seu sistema operacional para melhorar a taxa na qual nós processamos threads,
+
+77
+00:06:05,510 --> 00:06:12,770
+ou para adicionar mais cursos de CQ à nossa máquina ou para permitir que o nosso agendador de sistema detecte
+
+78
+00:06:12,980 --> 00:06:18,150
+grandes pausas no tempo de processamento devido às dispendiosas operações de entrada e saída.
+
+79
+00:06:18,170 --> 00:06:22,220
+Então, agora que entendemos ou entendemos um pouco mais sobre os threads Vamos continuar
+
+80
+00:06:22,220 --> 00:06:26,470
+na próxima seção e começaremos a aplicar esse conhecimento ao loop de eventos do nó.
+
+81
+00:06:26,480 --> 00:06:29,020
+Tão rápido e eu te vejo daqui a pouco.

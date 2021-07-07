@@ -1,0 +1,371 @@
+1
+00:00:00,600 --> 00:00:06,120
+En la última sección hablamos sobre cómo U-V en vivo proporciona un grupo de subprocesos para descargar el trabajo que
+
+2
+00:00:06,180 --> 00:00:08,490
+se debe realizar en llamadas a funciones muy costosas.
+
+3
+00:00:08,490 --> 00:00:14,010
+En esta sección vamos a modificar nuestro archivo js de inicio de hilo y comenzar a detectar la presencia
+
+4
+00:00:14,010 --> 00:00:16,860
+de estos cuatro hilos que se crean automáticamente para nosotros.
+
+5
+00:00:16,910 --> 00:00:22,750
+Así que voy a volver a mi editor de código donde tenemos nuestras dos llamadas a PBK 2.
+
+6
+00:00:23,400 --> 00:00:29,180
+Voy a copiar la columna inferior aquí y luego voy a duplicarla un par de veces.
+
+7
+00:00:29,220 --> 00:00:33,450
+Entonces, en total quiero tener cinco llamadas separadas a PBK.
+
+8
+00:00:33,450 --> 00:00:34,460
+Tienes dos?
+
+9
+00:00:34,950 --> 00:00:36,120
+Así que aquí está el registro.
+
+10
+00:00:36,120 --> 00:00:39,090
+Número tres y voy a actualizar el registro.
+
+11
+00:00:39,660 --> 00:00:43,610
+Aquí está el número cuatro y actualizaré el amor a cuatro.
+
+12
+00:00:43,610 --> 00:00:48,770
+Y aquí está el número cinco y también actualizaré el consejo 55.
+
+13
+00:00:48,810 --> 00:00:50,100
+Ahora voy a guardar este archivo.
+
+14
+00:00:50,130 --> 00:00:54,040
+Ahora volveré a la terminal y ejecutaré este archivo nuevamente y veré qué sucede.
+
+15
+00:00:54,900 --> 00:01:00,110
+Está de vuelta o en la terminal ejecutará los hilos del nodo más dudosos de nuevo.
+
+16
+00:01:00,180 --> 00:01:00,810
+Todo bien.
+
+17
+00:01:00,810 --> 00:01:02,050
+Así que mira los resultados aquí.
+
+18
+00:01:02,060 --> 00:01:03,270
+Ves esa pequeña pausa.
+
+19
+00:01:03,270 --> 00:01:04,640
+Déjame ejecutar esto de nuevo.
+
+20
+00:01:04,950 --> 00:01:06,990
+Entonces obtenemos los primeros cuatro resultados.
+
+21
+00:01:07,050 --> 00:01:10,270
+Una pausa y luego aparece el quinto resultado de repente.
+
+22
+00:01:10,470 --> 00:01:15,870
+Entonces, este Resul aquí es extremadamente interesante y podemos usar estos resultados para realmente descifrar algo de
+
+23
+00:01:15,870 --> 00:01:18,930
+información sobre el grupo de subprocesos y cómo funciona.
+
+24
+00:01:18,930 --> 00:01:20,160
+Ahora una nota rápida.
+
+25
+00:01:20,310 --> 00:01:25,280
+Según el CPQ de su máquina, es posible que vea algunos resultados diferentes aquí de lo que veo.
+
+26
+00:01:25,290 --> 00:01:30,340
+Entonces, si tiene una máquina diferente a la que yo tengo, es posible que vea resultados diferentes y eso está totalmente bien.
+
+27
+00:01:30,850 --> 00:01:33,240
+Déjame explicarte lo que está pasando con mi computadora.
+
+28
+00:01:33,330 --> 00:01:36,890
+Y luego puedes extrapolar lo que le está pasando a tu propia máquina también.
+
+29
+00:01:37,370 --> 00:01:41,020
+Echemos un vistazo a un diagrama que ayudará a explicar qué está pasando.
+
+30
+00:01:41,160 --> 00:01:42,370
+Todo aquí vamos.
+
+31
+00:01:42,780 --> 00:01:43,140
+DE ACUERDO.
+
+32
+00:01:43,140 --> 00:01:49,290
+Así que de nuevo las primeras cuatro llamadas tomaron dos segundos para completarse y luego la quinta llamada tomó
+
+33
+00:01:49,290 --> 00:01:50,150
+un segundo adicional.
+
+34
+00:01:50,520 --> 00:01:53,130
+Hay realmente dos cosas interesantes para notar aquí.
+
+35
+00:01:53,130 --> 00:01:59,430
+Primero note que el primer grupo aquí tomó exactamente la misma cantidad de tiempo y tomó aproximadamente el doble
+
+36
+00:01:59,460 --> 00:02:01,460
+de lo que había tomado previamente.
+
+37
+00:02:01,710 --> 00:02:08,130
+Entonces, anteriormente, llevó un segundo completar las dos llamadas, pero ahora parece que lleva dos segundos.
+
+38
+00:02:08,130 --> 00:02:13,880
+Lo segundo que quiero que noten es que el quinto colisionador aquí solo tomó un segundo adicional.
+
+39
+00:02:14,070 --> 00:02:16,230
+Entonces ese es un comportamiento muy interesante.
+
+40
+00:02:16,230 --> 00:02:21,160
+Tratemos de averiguar por qué vimos el cambio en el tiempo con el primer grupo que se ejecutó.
+
+41
+00:02:21,330 --> 00:02:28,700
+Y luego, solo un segundo para completar la quinta llamada, te mostrará un diagrama de mi computadora.
+
+42
+00:02:28,770 --> 00:02:30,770
+Así que este es un libro de matemáticas de 2015 Pro.
+
+43
+00:02:30,990 --> 00:02:35,760
+Y al comprender el hardware que está dentro de mi computadora tendremos una mejor idea de
+
+44
+00:02:35,760 --> 00:02:39,600
+por qué vimos esos diferentes tiempos dentro de todas esas llamadas a funciones.
+
+45
+00:02:39,600 --> 00:02:42,420
+Así que estoy usando un Mac Book Pro que fue hecho en 2015.
+
+46
+00:02:42,750 --> 00:02:47,290
+Esta computadora tiene un procesador de doble núcleo. Por lo tanto, dos cursos separados.
+
+47
+00:02:47,670 --> 00:02:54,480
+Primero consideremos el programa original que escribimos donde tuvimos solo dos llamadas a PBK D-Nev. dos.
+
+48
+00:02:54,510 --> 00:03:00,180
+Entonces, en ese caso, se realizó la primera llamada y podemos imaginar que tal vez
+
+49
+00:03:00,180 --> 00:03:06,870
+se asignó al primer subproceso y al grupo de subprocesos ese subproceso, podemos volver a imaginar que tal
+
+50
+00:03:06,870 --> 00:03:10,930
+vez este subproceso se haya asignado a ejecutar encore número uno.
+
+51
+00:03:11,100 --> 00:03:16,950
+Entonces la segunda llamada a PBK tal vez fue asignada al segundo hilo y tal vez el segundo
+
+52
+00:03:16,950 --> 00:03:19,140
+hilo fue asignado a mi segundo núcleo.
+
+53
+00:03:19,560 --> 00:03:26,310
+Así que vimos que estas dos llamadas fueron asignadas a dos núcleos diferentes, mi máquina y yo, y ambas tomaron
+
+54
+00:03:26,310 --> 00:03:33,230
+más o menos exactamente un segundo por cada núcleo para finalizar la llamada a la función de hash de la casa.
+
+55
+00:03:33,640 --> 00:03:38,790
+Tomemos ahora el diagrama similar pero aplicado al caso en el que acabamos de ejecutar esto con
+
+56
+00:03:38,790 --> 00:03:40,450
+las cinco llamadas a función.
+
+57
+00:03:40,470 --> 00:03:41,190
+Todo bien.
+
+58
+00:03:41,190 --> 00:03:42,400
+Así que, aquí vamos.
+
+59
+00:03:43,110 --> 00:03:49,440
+Entonces, en este caso, las primeras cuatro llamadas Eesha se descargaron a un hilo que existía dentro del grupo de
+
+60
+00:03:49,440 --> 00:03:49,870
+subprocesos.
+
+61
+00:03:51,260 --> 00:03:53,600
+Ahora aquí es donde las cosas empiezan a ser un poco diferentes.
+
+62
+00:03:53,600 --> 00:03:58,250
+Recuerda cómo dijimos cuando hablamos mucho antes sobre subprocesos de subprocesos que podemos
+
+63
+00:03:58,250 --> 00:04:03,400
+obtener cierto nivel de concurrencia con subprocesos porque nuestro CPQ tiene acceso a multithreading.
+
+64
+00:04:03,410 --> 00:04:08,900
+Estamos hyper threading que le permite procesar más de un hilo a la vez cuando
+
+65
+00:04:08,900 --> 00:04:13,610
+lo mencionamos brevemente, pero ese es el comportamiento que estamos viendo ahora con
+
+66
+00:04:13,610 --> 00:04:14,890
+estos cuatro cultos separados.
+
+67
+00:04:15,200 --> 00:04:22,670
+Entonces las primeras cuatro llamadas a PBK DFI a cada una se asignan a su propio hilo individual, luego el
+
+68
+00:04:22,670 --> 00:04:31,310
+número uno y el número de hilo se asignan al CPQ uno o al núcleo número uno discúlpeme y el hilo 3 y
+
+69
+00:04:31,310 --> 00:04:39,260
+4 se asignan al núcleo número dos son dos los núcleos son mis dos núcleos que solo pueden procesar estos dos hilos
+
+70
+00:04:39,320 --> 00:04:40,340
+al mismo tiempo.
+
+71
+00:04:40,370 --> 00:04:43,390
+Gracias a la tecnología multi-threading en mi CPQ.
+
+72
+00:04:43,550 --> 00:04:49,140
+Entonces, como tengo habilitado el multi-threading, puedo procesar más de un hilo al mismo tiempo.
+
+73
+00:04:49,190 --> 00:04:55,070
+Sin embargo, cada núcleo aún tenía que hacer el doble de la cantidad de trabajo que tenía que hacer el doble de esa cantidad
+
+74
+00:04:55,100 --> 00:04:56,270
+de trabajo al mismo tiempo.
+
+75
+00:04:56,420 --> 00:05:02,240
+Por eso vimos que tardó más o menos el doble en calcular el valor de hibridación para estos primeros
+
+76
+00:05:02,240 --> 00:05:07,520
+cuatro valores, porque al final del día, aunque tengo habilitado el multi-threading, todo lo que permite que
+
+77
+00:05:07,520 --> 00:05:10,940
+mi Seip lo haga es procesar más hilos en una vez.
+
+78
+00:05:11,000 --> 00:05:16,340
+En realidad, no acelera el procesamiento, solo permite cierta cantidad de concurrencia dentro
+
+79
+00:05:16,340 --> 00:05:18,260
+del trabajo que estoy haciendo.
+
+80
+00:05:18,320 --> 00:05:21,390
+Entonces vimos que esas primeras cuatro llamadas se procesaron.
+
+81
+00:05:21,500 --> 00:05:27,470
+Tardaron aproximadamente el doble de tiempo y luego una vez que todo estuvo completo y esas primeras
+
+82
+00:05:27,470 --> 00:05:28,800
+cuatro tareas se realizaron.
+
+83
+00:05:29,050 --> 00:05:32,120
+Vaya, vamos a hacer eso entonces.
+
+84
+00:05:32,180 --> 00:05:35,480
+Nodo finalmente pudo pasar a la quinta llamada de función.
+
+85
+00:05:35,630 --> 00:05:40,220
+Así que tal vez ese fue asignado al hilo número cuatro y el hilo número cuatro tal vez recibió
+
+86
+00:05:40,220 --> 00:05:41,100
+un núcleo número dos.
+
+87
+00:05:41,380 --> 00:05:45,620
+Y porque ahora Kord número 2 solo estaba procesando 1 llamada de función hash.
+
+88
+00:05:45,740 --> 00:05:49,310
+Esta vez solo tomó un segundo.
+
+89
+00:05:49,320 --> 00:05:53,600
+De acuerdo, entonces sé que esto ha sido confuso y confuso.
+
+90
+00:05:53,620 --> 00:05:54,860
+Hagamos una pausa aquí.
+
+91
+00:05:54,890 --> 00:05:59,330
+Volveremos al siguiente video y vamos a continuar explorando esta idea de hilos
+
+92
+00:05:59,360 --> 00:06:02,900
+en el grupo de subprocesos escribiendo un código más experimental.
+
+93
+00:06:02,900 --> 00:06:05,350
+Así que un descanso rápido y te veré en solo un minuto.

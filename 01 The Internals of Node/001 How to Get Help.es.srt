@@ -1,0 +1,75 @@
+1
+00:00:00,690 --> 00:00:02,080
+Hola y bienvenido.
+
+2
+00:00:02,220 --> 00:00:06,330
+Empezaremos con el curso en un momento, pero antes de hacerlo queremos decirle cómo puede
+
+3
+00:00:06,330 --> 00:00:09,850
+obtener ayuda si se queda atrapado en algún momento de este curso.
+
+4
+00:00:09,900 --> 00:00:12,200
+Entonces, hay tres maneras geniales de comunicarse conmigo.
+
+5
+00:00:12,210 --> 00:00:14,870
+El primero es publicar en los foros de discusión del curso.
+
+6
+00:00:15,090 --> 00:00:20,760
+Por lo general, reviso la discusión del Curso una vez al día, de lunes a viernes, así que haré
+
+7
+00:00:20,760 --> 00:00:23,820
+todo lo posible para contactarte lo antes posible si surge algo.
+
+8
+00:00:24,030 --> 00:00:28,490
+La siguiente mejor forma de comunicarse conmigo es enviarme un mensaje directo sobre usted.
+
+9
+00:00:28,560 --> 00:00:33,090
+Por lo general, soy muy bueno respondiendo a estas solicitudes y, por lo general, es mejor sobre eso que
+
+10
+00:00:33,090 --> 00:00:34,660
+con las Preguntas y Respuestas del Curso.
+
+11
+00:00:34,710 --> 00:00:37,290
+Finalmente puedes contactarme a través de Twitter.
+
+12
+00:00:37,350 --> 00:00:39,840
+Y aquí está mi mango que figura aquí.
+
+13
+00:00:39,840 --> 00:00:44,910
+Twitter es una excelente forma de contactarme con preguntas breves, pero si es algo técnico, generalmente
+
+14
+00:00:45,120 --> 00:00:50,970
+recomiendo publicar en la discusión del curso o enviarme un PM porque obviamente con Twitter tenemos ese límite
+
+15
+00:00:51,180 --> 00:00:56,100
+de caracteres que hace que las discusiones técnicas sean un poco un poco más desafiante
+
+16
+00:00:56,100 --> 00:00:56,420
+Todo bien.
+
+17
+00:00:56,430 --> 00:01:00,120
+Estas son las tres formas de obtener ayuda si alguna vez se queda atascado durante este curso.
+
+18
+00:01:00,120 --> 00:01:05,700
+Hagamos una pausa ahora mismo y comenzaremos a hablar sobre nuestro primer tema técnico en el siguiente video, así que
+
+19
+00:01:05,700 --> 00:01:07,340
+nos vemos en solo un minuto.

@@ -1,0 +1,187 @@
+1
+00:00:00,640 --> 00:00:05,070
+Na última seção, atualizamos o número de encadeamentos que foram criados fora de nosso conjunto de
+
+2
+00:00:05,070 --> 00:00:09,420
+encadeamentos e observamos o que realmente ocorreu nesta seção. Vamos abordar algumas questões que você
+
+3
+00:00:09,420 --> 00:00:14,220
+provavelmente tem em torno da existência desse conjunto de encadeamentos, de modo que vou levantar algumas perguntas
+
+4
+00:00:14,220 --> 00:00:15,930
+que vamos passar por cada uma.
+
+5
+00:00:15,960 --> 00:00:16,780
+Aqui vamos nós.
+
+6
+00:00:17,220 --> 00:00:17,450
+ESTÁ BEM.
+
+7
+00:00:17,460 --> 00:00:20,940
+Então, do lado esquerdo, temos uma pergunta do lado direito, uma possível resposta.
+
+8
+00:00:20,940 --> 00:00:24,780
+Então a primeira pergunta que você provavelmente tem e esta é provavelmente a mais óbvia.
+
+9
+00:00:24,870 --> 00:00:31,290
+Podemos usar um pool de threads para o nosso próprio código javascript pessoal ou só podemos conhecer certas funções do jazz como o
+
+10
+00:00:31,470 --> 00:00:34,730
+PBK que você tem que funcionar para fazer o acesso a ele.
+
+11
+00:00:34,730 --> 00:00:39,780
+A resposta para isso é que você e eu podemos escrever código javascript que faz uso desse pool
+
+12
+00:00:39,780 --> 00:00:43,480
+de threads e veremos exatamente como fazer isso mais tarde em alguns vídeos.
+
+13
+00:00:43,530 --> 00:00:49,020
+Então, sim, vamos descobrir como podemos executar o nosso próprio código javascript em ameaças separadas.
+
+14
+00:00:49,020 --> 00:00:55,250
+A segunda questão que podemos ter é que funções dentro da biblioteca padrão do nó realmente não são usadas.
+
+15
+00:00:55,330 --> 00:01:01,150
+Então este é um pouco mais complicado e eu não posso dar a você uma resposta bem clara de
+
+16
+00:01:01,150 --> 00:01:05,350
+quais funções são executadas dentro daquele pool de threads e quais não são.
+
+17
+00:01:05,350 --> 00:01:09,990
+E a razão para isso é que muito disso depende de qual sistema operacional você está.
+
+18
+00:01:10,000 --> 00:01:15,520
+Portanto, dependendo se você estava ou não no Windows ou em um sistema baseado em UNIX,
+
+19
+00:01:15,520 --> 00:01:18,650
+verá funções diferentes obtendo acesso ao conjunto de encadeamentos.
+
+20
+00:01:18,670 --> 00:01:24,340
+Agora, a única linha comum é que todas as funções do módulo do sistema de arquivos, como todas as
+
+21
+00:01:24,340 --> 00:01:27,490
+funções dentro do sistema de arquivos, usam o conjunto de encadeamentos.
+
+22
+00:01:27,490 --> 00:01:31,090
+Não importa qual sistema operacional você está executando.
+
+23
+00:01:31,290 --> 00:01:36,920
+Agora, a última pergunta que você pode ter aqui é como as coisas do pool de threads se encaixam no loop.
+
+24
+00:01:36,920 --> 00:01:41,990
+Lembre-se de que escrevemos algum tipo de código de teste como um pouco atrás ou um pseudocódigo para simular como
+
+25
+00:01:41,990 --> 00:01:43,130
+o loop de eventos funciona.
+
+26
+00:01:43,130 --> 00:01:47,890
+Você pode estar curioso sobre o que apresenta esse pool de threads e todo o pseudo código que escrevemos.
+
+27
+00:01:48,200 --> 00:01:53,960
+Bem, você deve se lembrar de que nós tínhamos aquele array de operações pendentes de volta dentro do nosso exemplo de pseudocódigo.
+
+28
+00:01:54,290 --> 00:01:55,730
+Então aqui está nossa coisa de discussão.
+
+29
+00:01:55,940 --> 00:02:00,200
+E no topo nós definimos essa matriz de operações pendentes aqui.
+
+30
+00:02:00,200 --> 00:02:04,050
+E sempre que quisermos verificar se nossos loops de evento devem continuar em execução.
+
+31
+00:02:04,160 --> 00:02:09,490
+Verificamos se havia alguma operação pendente dentro desse pool de threads.
+
+32
+00:02:09,560 --> 00:02:15,200
+Portanto, essa coisa de operações pendentes aqui representa essencialmente o código que está sendo executado ou um que está
+
+33
+00:02:15,330 --> 00:02:17,590
+sendo executado dentro do conjunto de encadeamentos.
+
+34
+00:02:17,840 --> 00:02:23,450
+Assim, desde que o pool de threads ainda tenha algum código dentro dele ou que algumas tarefas estejam alinhadas
+
+35
+00:02:23,840 --> 00:02:27,190
+para ele rodar, nosso programa continuará a executar o loop de eventos.
+
+36
+00:02:27,920 --> 00:02:33,560
+E então você pode se lembrar que dentro do próprio loop de evento no Passo número dois, aqui
+
+37
+00:02:33,560 --> 00:02:38,680
+nós dissemos que o nó olha para o array de operações pendentes e chama qualquer callback relevante.
+
+38
+00:02:38,900 --> 00:02:45,320
+Então, depois que terminamos de calcular um dos nossos valores de hash dentro de um desses threads, o
+
+39
+00:02:45,500 --> 00:02:51,800
+retorno de chamada que registramos com o PV KDAF para a função é executado quando passamos pelo passo
+
+40
+00:02:51,800 --> 00:02:52,880
+número dois aqui.
+
+41
+00:02:53,270 --> 00:02:56,770
+Então é assim que tudo se relaciona de volta ao loop de eventos.
+
+42
+00:02:57,320 --> 00:03:00,730
+Ok, então agora temos algumas dessas perguntas provavelmente comuns do caminho.
+
+43
+00:03:00,860 --> 00:03:05,330
+Vamos continuar a próxima seção e começaremos a nos aprofundar nessa outra matriz sobre a qual
+
+44
+00:03:05,330 --> 00:03:06,040
+não falamos.
+
+45
+00:03:06,050 --> 00:03:09,470
+Lembre-se aqui também tivemos essa tarefa pendente de tarefas do sistema operacional.
+
+46
+00:03:09,470 --> 00:03:14,130
+Então, uma pausa rápida e vamos começar a mergulhar no que esse conjunto de pares significava também.
+
+47
+00:03:14,180 --> 00:03:15,830
+Então, vamos vê-lo em apenas um minuto.

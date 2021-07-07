@@ -1,0 +1,155 @@
+1
+00:00:00,540 --> 00:00:05,820
+Na última seção, falamos sobre uma avenida adicional usada por nenhum G-S para executar o código.
+
+2
+00:00:06,090 --> 00:00:11,400
+Portanto, algumas chamadas de função na biblioteca padrão são delegadas ao sistema operacional subjacente
+
+3
+00:00:11,400 --> 00:00:14,460
+e executadas inteiramente fora do loop de eventos.
+
+4
+00:00:14,460 --> 00:00:19,410
+Agora eu imagino que você tenha algumas perguntas de acompanhamento sobre esse processo, então vamos dar uma
+
+5
+00:00:19,410 --> 00:00:23,150
+olhada em duas possíveis perguntas que você pode ter imediatamente todos os direitos.
+
+6
+00:00:23,260 --> 00:00:23,810
+Aqui vamos nós.
+
+7
+00:00:25,160 --> 00:00:28,300
+Então, duas possíveis perguntas que você pode estar pensando agora.
+
+8
+00:00:28,530 --> 00:00:33,520
+Portanto, o primeiro que você pode estar curioso sobre quais funções na biblioteca padrão do nó
+
+9
+00:00:33,520 --> 00:00:35,620
+usam os recursos assíncronos dos sistemas operacionais.
+
+10
+00:00:35,620 --> 00:00:39,850
+Portanto, esta é uma resposta muito semelhante à que tivemos anteriormente para esse pool de threads.
+
+11
+00:00:40,060 --> 00:00:44,710
+Muitas dessas coisas são muito específicas para o sistema operacional em que você está rodando e
+
+12
+00:00:44,710 --> 00:00:50,530
+você não pode realmente depender de uma função sempre executada pelo sistema operacional em um computador ou de uma maneira
+
+13
+00:00:50,530 --> 00:00:50,710
+diferente.
+
+14
+00:00:50,710 --> 00:00:51,640
+Por outro.
+
+15
+00:00:51,700 --> 00:00:56,600
+Em outras palavras, não tente detectar ou planejar o material de cada vez.
+
+16
+00:00:56,680 --> 00:01:02,770
+Agora, quase tudo dentro da biblioteca de rede, como fazer solicitações ou receber solicitações ou configurar um
+
+17
+00:01:02,770 --> 00:01:08,530
+ouvinte em alguma porta, quase todo esse material é manipulado pelo sistema operacional, independentemente do sistema
+
+18
+00:01:08,530 --> 00:01:10,240
+operacional que você está usando.
+
+19
+00:01:10,240 --> 00:01:13,330
+Então essa é a única resposta sólida que posso lhe dar.
+
+20
+00:01:13,850 --> 00:01:19,090
+A segunda questão pode ser OK, você sabe, ei, agora sabemos sobre este material assíncrono ligado ao sistema operacional,
+
+21
+00:01:19,090 --> 00:01:23,610
+mas onde isso se encaixa em todas as coisas do loop de evento que estávamos falando anteriormente.
+
+22
+00:01:23,800 --> 00:01:29,830
+Então, como você pode imaginar, tudo está relacionado àquela matriz pendente de tarefas do SO que criamos de
+
+23
+00:01:29,830 --> 00:01:32,370
+volta dentro do nosso arquivo de pseudocódigo.
+
+24
+00:01:32,380 --> 00:01:38,980
+Então aqui está nosso arquivo de loop aqui dentro do seu, nós temos aquela matriz pendente de tarefas do SO.
+
+25
+00:01:39,310 --> 00:01:44,680
+Assim, podemos imaginar que, quando o nó é executado, ele cria algum tipo de estrutura de
+
+26
+00:01:44,860 --> 00:01:50,730
+dados que representa todas as solicitações ou redes pendentes ou qualquer outra coisa vinculada ao sistema operacional subjacente.
+
+27
+00:01:51,190 --> 00:01:57,040
+Contanto que ainda haja alguma solicitação ativa ou alguma operação ativa dentro desse nó da matriz continue
+
+28
+00:01:57,040 --> 00:02:02,950
+a ser executada e sempre retorne a verdade sobre isso, continue a função aqui, o que significa
+
+29
+00:02:03,220 --> 00:02:06,690
+que continuaremos as iterações através do nosso loop de eventos.
+
+30
+00:02:06,880 --> 00:02:12,190
+E então, assim que todas as chamadas subjacentes do sistema operacional estiverem completas, bem, agora o ciclo de eventos
+
+31
+00:02:12,250 --> 00:02:15,710
+não tem mais nada a fazer e nós retornamos ao nosso terminal.
+
+32
+00:02:16,030 --> 00:02:22,480
+Então é por isso que quando você inicia um servidor e diz app dot listen na porta 3000 ou qualquer outra coisa.
+
+33
+00:02:22,480 --> 00:02:27,790
+É exatamente por isso que seu aplicativo continua em execução no terminal e não retorna
+
+34
+00:02:28,000 --> 00:02:29,830
+imediatamente à linha de comando.
+
+35
+00:02:29,850 --> 00:02:30,190
+ESTÁ BEM.
+
+36
+00:02:30,220 --> 00:02:33,010
+Então agora falamos sobre o loop de eventos um pouco.
+
+37
+00:02:33,040 --> 00:02:35,900
+Vamos resumir algumas das principais coisas para saber sobre isso.
+
+38
+00:02:35,920 --> 00:02:37,020
+Dentro do próximo vídeo.
+
+39
+00:02:37,060 --> 00:02:39,570
+Então, uma pausa rápida e vamos fazer uma revisão em apenas um momento.

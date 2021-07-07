@@ -1,0 +1,371 @@
+1
+00:00:00,600 --> 00:00:06,120
+Na última seção, falamos sobre como o U-V ao vivo fornece um conjunto de encadeamentos para descarregar o trabalho a
+
+2
+00:00:06,180 --> 00:00:08,490
+ser feito em chamadas de função muito caras.
+
+3
+00:00:08,490 --> 00:00:14,010
+Nesta seção, vamos modificar nosso arquivo de inicialização do thread js e começar a detectar a presença
+
+4
+00:00:14,010 --> 00:00:16,860
+desses quatro threads que são criados automaticamente para nós.
+
+5
+00:00:16,910 --> 00:00:22,750
+Então eu vou voltar para o meu editor de código, onde temos nossas duas chamadas para o PBK 2.
+
+6
+00:00:23,400 --> 00:00:29,180
+Vou copiar a coluna de baixo aqui e depois vou duplicá-la algumas vezes.
+
+7
+00:00:29,220 --> 00:00:33,450
+Então no total eu quero ter cinco chamadas separadas para o PBK.
+
+8
+00:00:33,450 --> 00:00:34,460
+Você tem dois.
+
+9
+00:00:34,950 --> 00:00:36,120
+Então aqui está o log.
+
+10
+00:00:36,120 --> 00:00:39,090
+Número três e vou atualizar o log.
+
+11
+00:00:39,660 --> 00:00:43,610
+Aqui está o número quatro e eu atualizarei o amor para quatro.
+
+12
+00:00:43,610 --> 00:00:48,770
+E aqui está o número cinco e eu atualizarei o conselho 55 também.
+
+13
+00:00:48,810 --> 00:00:50,100
+Agora vou salvar este arquivo.
+
+14
+00:00:50,130 --> 00:00:54,040
+Agora vou voltar para o terminal e executar esse arquivo novamente e vou ver o que acontece.
+
+15
+00:00:54,900 --> 00:01:00,110
+Ele está de volta ou no terminal executará os threads do nó novamente.
+
+16
+00:01:00,180 --> 00:01:00,810
+Tudo bem.
+
+17
+00:01:00,810 --> 00:01:02,050
+Então, dê uma olhada nos resultados aqui.
+
+18
+00:01:02,060 --> 00:01:03,270
+Você vê aquela pequena pausa.
+
+19
+00:01:03,270 --> 00:01:04,640
+Deixe-me correr isso de novo.
+
+20
+00:01:04,950 --> 00:01:06,990
+Então, obtemos os primeiros quatro resultados.
+
+21
+00:01:07,050 --> 00:01:10,270
+Uma pausa e, em seguida, o quinto resultado aparece de repente.
+
+22
+00:01:10,470 --> 00:01:15,870
+Portanto, este Resul aqui é extremamente interessante e podemos usar esses resultados para realmente adivinhar algumas informações
+
+23
+00:01:15,870 --> 00:01:18,930
+sobre o pool de threads e como ele funciona.
+
+24
+00:01:18,930 --> 00:01:20,160
+Agora uma nota rápida.
+
+25
+00:01:20,310 --> 00:01:25,280
+Dependendo do CPQ da sua máquina, você pode ver alguns resultados diferentes do que eu vejo.
+
+26
+00:01:25,290 --> 00:01:30,340
+Então, se você tem uma máquina diferente da que tem, você pode ver resultados diferentes e isso é totalmente aceitável.
+
+27
+00:01:30,850 --> 00:01:33,240
+Deixe-me explicar-lhe o que está acontecendo com o meu computador.
+
+28
+00:01:33,330 --> 00:01:36,890
+E então você pode extrapolar o que está acontecendo com sua própria máquina também.
+
+29
+00:01:37,370 --> 00:01:41,020
+Então, vamos dar uma olhada em um diagrama que ajudará a explicar o que está acontecendo.
+
+30
+00:01:41,160 --> 00:01:42,370
+Tudo bem, aqui vamos nós.
+
+31
+00:01:42,780 --> 00:01:43,140
+ESTÁ BEM.
+
+32
+00:01:43,140 --> 00:01:49,290
+Então, novamente, as primeiras quatro chamadas levaram dois segundos para serem concluídas e, em seguida, a quinta chamada levou
+
+33
+00:01:49,290 --> 00:01:50,150
+mais um segundo.
+
+34
+00:01:50,520 --> 00:01:53,130
+Há realmente duas coisas interessantes para notar aqui.
+
+35
+00:01:53,130 --> 00:01:59,430
+Primeiro, observe que o primeiro grupo aqui em cima levou exatamente a mesma quantidade de tempo e demorou aproximadamente o
+
+36
+00:01:59,460 --> 00:02:01,460
+dobro do que havia recebido anteriormente.
+
+37
+00:02:01,710 --> 00:02:08,130
+Então, anteriormente Demorou um segundo para passar as duas chamadas, mas agora parece estar levando dois segundos.
+
+38
+00:02:08,130 --> 00:02:13,880
+A segunda coisa que quero que você note é que o quinto Colliver aqui levou apenas um segundo a mais.
+
+39
+00:02:14,070 --> 00:02:16,230
+Então esse é um comportamento muito interessante.
+
+40
+00:02:16,230 --> 00:02:21,160
+Vamos tentar descobrir por que vimos a mudança no tempo com o primeiro grupo que correu.
+
+41
+00:02:21,330 --> 00:02:28,700
+E então apenas um segundo para completar a quinta chamada mostrará um diagrama do meu computador.
+
+42
+00:02:28,770 --> 00:02:30,770
+Então, este é um livro de matemática de 2015 Pro.
+
+43
+00:02:30,990 --> 00:02:35,760
+E, ao entender o hardware que está dentro do meu computador, teremos uma ideia melhor de
+
+44
+00:02:35,760 --> 00:02:39,600
+por que vimos diferentes intervalos dentro de todas as chamadas de função.
+
+45
+00:02:39,600 --> 00:02:42,420
+Então, eu estou usando um Mac Book Pro que foi feito em 2015.
+
+46
+00:02:42,750 --> 00:02:47,290
+Este computador tem um processador dual core Então, dois cursos separados.
+
+47
+00:02:47,670 --> 00:02:54,480
+Vamos primeiro considerar o programa original que escrevemos onde tivemos apenas duas chamadas para o PBK D-Nev. dois.
+
+48
+00:02:54,510 --> 00:03:00,180
+Então, nesse caso, a primeira chamada foi feita e podemos imaginar que talvez tenha
+
+49
+00:03:00,180 --> 00:03:06,870
+sido atribuído ao primeiro thread e ao thread pool desse thread, podemos imaginar que talvez esse thread
+
+50
+00:03:06,870 --> 00:03:10,930
+aqui tenha sido designado para executar o encore número um.
+
+51
+00:03:11,100 --> 00:03:16,950
+Em seguida, a segunda chamada para o PBK talvez tenha sido atribuída ao segundo thread e talvez o segundo
+
+52
+00:03:16,950 --> 00:03:19,140
+thread foi atribuído ao meu segundo núcleo.
+
+53
+00:03:19,560 --> 00:03:26,310
+Então vimos que cada uma dessas duas chamadas foi designada para dois núcleos diferentes e minha e minha máquina, e
+
+54
+00:03:26,310 --> 00:03:33,230
+ambas demoraram mais ou menos exatamente um segundo para cada núcleo para concluir a chamada de função de hash da casa.
+
+55
+00:03:33,640 --> 00:03:38,790
+Então, vamos agora pegar o diagrama semelhante, mas aplicamos ao caso que acabamos de executar isso com
+
+56
+00:03:38,790 --> 00:03:40,450
+as cinco chamadas de função.
+
+57
+00:03:40,470 --> 00:03:41,190
+Tudo bem.
+
+58
+00:03:41,190 --> 00:03:42,400
+Aqui vamos nos.
+
+59
+00:03:43,110 --> 00:03:49,440
+Portanto, nesse caso, as primeiras quatro chamadas Eesha foram transferidas para um thread que existia dentro do pool de
+
+60
+00:03:49,440 --> 00:03:49,870
+threads.
+
+61
+00:03:51,260 --> 00:03:53,600
+Agora é aqui que as coisas começam a ficar um pouco diferentes.
+
+62
+00:03:53,600 --> 00:03:58,250
+Lembre-se de como havíamos falado sobre tópicos de encadeamento muito antes que pudéssemos
+
+63
+00:03:58,250 --> 00:04:03,400
+obter algum nível de simultaneidade com encadeamentos porque nosso CPQ tem acesso a multi-threading.
+
+64
+00:04:03,410 --> 00:04:08,900
+Nós somos hyper-threading, o que permite que ele processe mais de uma thread de uma só vez
+
+65
+00:04:08,900 --> 00:04:13,610
+quando mencionamos brevemente isso, mas esse é realmente o comportamento que estamos vendo agora com
+
+66
+00:04:13,610 --> 00:04:14,890
+estes quatro cultos separados.
+
+67
+00:04:15,200 --> 00:04:22,670
+Assim, as quatro primeiras chamadas para o DFI do PBK para cada atribuído ao seu próprio segmento individual, em seguida, enfiar
+
+68
+00:04:22,670 --> 00:04:31,310
+o número um eo número do encadeamento para ser atribuído ao CPQ um ou um núcleo número um desculpe-me e encadear 3 e 4
+
+69
+00:04:31,310 --> 00:04:39,260
+ser atribuído ao núcleo número dois são dois Os núcleos são meus dois núcleos só são capazes de processar esses dois segmentos
+
+70
+00:04:39,320 --> 00:04:40,340
+ao mesmo tempo.
+
+71
+00:04:40,370 --> 00:04:43,390
+Graças à tecnologia multi-threading no meu CPQ.
+
+72
+00:04:43,550 --> 00:04:49,140
+Então, porque eu tenho o multi-threading ativado, eu posso processar mais de um thread ao mesmo tempo.
+
+73
+00:04:49,190 --> 00:04:55,070
+No entanto, cada núcleo ainda tinha que fazer o dobro da quantidade de trabalho que tinha que fazer o dobro da quantidade de
+
+74
+00:04:55,100 --> 00:04:56,270
+trabalho ao mesmo tempo.
+
+75
+00:04:56,420 --> 00:05:02,240
+É por isso que vimos que demorou duas vezes mais tempo para calcular o valor de harshing para esses
+
+76
+00:05:02,240 --> 00:05:07,520
+quatro primeiros valores porque no final do dia, embora eu tenha multi-threading ativado tudo o que permite
+
+77
+00:05:07,520 --> 00:05:10,940
+que o meu Seip você faça é processar mais threads uma vez.
+
+78
+00:05:11,000 --> 00:05:16,340
+Na verdade, isso não acelera o processamento, apenas permite uma certa quantidade de simultaneidade dentro
+
+79
+00:05:16,340 --> 00:05:18,260
+do trabalho que estou fazendo.
+
+80
+00:05:18,320 --> 00:05:21,390
+Então, vimos as primeiras quatro chamadas serem processadas.
+
+81
+00:05:21,500 --> 00:05:27,470
+Eles demoraram aproximadamente o dobro do tempo e, em seguida, uma vez que tudo estava completo e as primeiras
+
+82
+00:05:27,470 --> 00:05:28,800
+quatro tarefas foram feitas.
+
+83
+00:05:29,050 --> 00:05:32,120
+Opa deixa fazer isso então.
+
+84
+00:05:32,180 --> 00:05:35,480
+O nó foi capaz de finalmente passar para a quinta chamada de função.
+
+85
+00:05:35,630 --> 00:05:40,220
+Então, talvez esse tenha sido atribuído ao número quatro e ao número quatro do tópico, talvez tenha sido atribuído
+
+86
+00:05:40,220 --> 00:05:41,100
+um segundo número dois.
+
+87
+00:05:41,380 --> 00:05:45,620
+E porque agora o número 2 do Kord estava apenas processando uma chamada de função de hash.
+
+88
+00:05:45,740 --> 00:05:49,310
+Desta vez, levou apenas um segundo.
+
+89
+00:05:49,320 --> 00:05:53,600
+OK, então eu sei que isso tem sido algo confuso e confuso.
+
+90
+00:05:53,620 --> 00:05:54,860
+Vamos fazer uma pausa bem aqui.
+
+91
+00:05:54,890 --> 00:05:59,330
+Voltaremos para o próximo vídeo e continuaremos explorando essa ideia de threads
+
+92
+00:05:59,360 --> 00:06:02,900
+no pool de threads, escrevendo um código mais experimental.
+
+93
+00:06:02,900 --> 00:06:05,350
+Então, uma pausa rápida e eu vou te ver em apenas um minuto.

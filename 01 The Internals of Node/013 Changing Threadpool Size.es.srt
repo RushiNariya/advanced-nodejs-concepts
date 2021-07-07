@@ -1,0 +1,327 @@
+1
+00:00:00,600 --> 00:00:06,540
+Ya sabes, la última sección hablamos sobre lo que sucedió cuando alineamos cinco llamadas a PBK. Las primeras
+
+2
+00:00:06,540 --> 00:00:12,000
+cuatro llamadas fueron asignadas a su propio individuo para leer en el grupo de subprocesos y luego
+
+3
+00:00:12,000 --> 00:00:15,710
+grupos de dos subprocesos asignados a cada uno de nuestro curso. .
+
+4
+00:00:15,780 --> 00:00:21,300
+Ahora recuerde que estas amenazas pueden ejecutarse técnicamente al mismo tiempo, pero todavía tienen que hacer tanto trabajo
+
+5
+00:00:21,300 --> 00:00:26,880
+como lo hacían anteriormente y es por eso que vimos que tomó el doble de tiempo para completar
+
+6
+00:00:27,360 --> 00:00:31,340
+todos los hashes, ya que siempre lleva un segundo calcular uno picadillo.
+
+7
+00:00:31,350 --> 00:00:38,040
+Entonces, si tenemos cuatro casas pero cada núcleo está tardando el doble en hacer ese trabajo, va a
+
+8
+00:00:38,040 --> 00:00:40,110
+tomar dos segundos en total.
+
+9
+00:00:40,110 --> 00:00:44,310
+Ahora vamos a avanzar un poco y descubrir cómo podemos trabajar y personalizar el
+
+10
+00:00:44,310 --> 00:00:45,930
+grupo de subprocesos que vemos aquí.
+
+11
+00:00:45,960 --> 00:00:50,880
+Así que voy a volver a mi editor de código y vamos a agregar un poco de código
+
+12
+00:00:50,880 --> 00:00:55,630
+para jugar con una cantidad de hilos que se crean y cada vez que iniciamos nuestro programa.
+
+13
+00:00:55,660 --> 00:01:01,780
+Así que de nuevo dentro de mi editor de código voy a ir a la línea superior y por encima de la declaración
+
+14
+00:01:02,020 --> 00:01:04,600
+de que voy a actualizar una variable de entorno.
+
+15
+00:01:04,960 --> 00:01:06,790
+Así que voy a decir proceso.
+
+16
+00:01:06,840 --> 00:01:16,730
+Ian envidó los sitios de agrupamiento de subprocesos U-V y voy a establecer el valor de que sea igual a 2.
+
+17
+00:01:16,780 --> 00:01:22,510
+Así que esto le dirá a Liv U-V que cada vez que crea un grupo de subprocesos solo debe crear dos subprocesos dentro
+
+18
+00:01:22,570 --> 00:01:27,000
+de los cuales no van a guardar este archivo y lo volveré a ejecutar en la terminal.
+
+19
+00:01:27,160 --> 00:01:30,660
+Pero antes de hacerlo quiero pedirte que pauses un video por un segundo.
+
+20
+00:01:30,660 --> 00:01:34,650
+Quiero que adivine qué efecto tendrá esto en nuestro punto de referencia.
+
+21
+00:01:34,780 --> 00:01:36,300
+Así que solo piénsalo por un segundo.
+
+22
+00:01:37,460 --> 00:01:37,750
+DE ACUERDO.
+
+23
+00:01:37,760 --> 00:01:39,090
+Espero que tengas una idea.
+
+24
+00:01:39,550 --> 00:01:41,600
+Entonces, ejecutemos este código y veamos qué sucede.
+
+25
+00:01:42,600 --> 00:01:45,490
+Entonces ahora lo vemos completándose en grupos de dos.
+
+26
+00:01:45,780 --> 00:01:46,700
+Bueno, eso es interesante.
+
+27
+00:01:46,740 --> 00:01:49,280
+Eche un vistazo a un diagrama que resume lo que está sucediendo.
+
+28
+00:01:49,530 --> 00:01:50,970
+Así que aquí está nuestro diagrama.
+
+29
+00:01:51,270 --> 00:01:58,350
+Entonces ahora tenemos dos de estas funciones o dos llamadas hash ejecutándose a la vez porque solo tenemos dos
+
+30
+00:01:58,350 --> 00:02:00,010
+grupos de hilos separados.
+
+31
+00:02:00,330 --> 00:02:02,920
+Entonces, la primera llamada se asigna al Tema 1.
+
+32
+00:02:02,970 --> 00:02:08,460
+La segunda llamada se asigna al número correcto para el número de cadena que probablemente se asigna a
+
+33
+00:02:08,460 --> 00:02:09,880
+la cadena principal número 1.
+
+34
+00:02:09,930 --> 00:02:12,530
+El número dos probablemente obtenga el núcleo número dos de Al Qaeda.
+
+35
+00:02:12,630 --> 00:02:18,350
+Y ahora volvemos a la situación en la que cada núcleo solo tiene que hacer un hash a la vez.
+
+36
+00:02:18,360 --> 00:02:24,890
+Así que volvemos al hashing solo tomando un segundo después de que los primeros dos hashes estén completos.
+
+37
+00:02:25,560 --> 00:02:30,260
+Las siguientes dos llamadas se cargan en el hilo número uno y el hilo número dos.
+
+38
+00:02:30,270 --> 00:02:35,640
+De nuevo, eso demora un segundo y luego, finalmente, después de que se hace, finalmente, se puede cargar
+
+39
+00:02:35,670 --> 00:02:37,040
+la quinta llamada también.
+
+40
+00:02:37,920 --> 00:02:42,840
+Así que eso te da una mejor idea de cómo podemos personalizar un grupo de subprocesos y ver qué pasa cuando disminuimos
+
+41
+00:02:42,900 --> 00:02:44,510
+el número de subprocesos que están disponibles.
+
+42
+00:02:44,790 --> 00:02:46,680
+Ahora hagamos lo contrario solo por diversión.
+
+43
+00:02:46,710 --> 00:02:47,930
+Vamos a revertir
+
+44
+00:02:48,030 --> 00:02:50,840
+Probemos aumentar la cantidad de hilos que tenemos disponibles.
+
+45
+00:02:50,850 --> 00:02:54,250
+Probemos subir a me gusta 5 como tal.
+
+46
+00:02:54,270 --> 00:02:56,120
+Así que de nuevo voy a guardar este archivo.
+
+47
+00:02:56,150 --> 00:03:01,380
+Volveremos sobre la terminal y guardaremos esto y lo ejecutaremos una y otra vez. Quiero que adivine
+
+48
+00:03:01,380 --> 00:03:02,710
+qué va a pasar.
+
+49
+00:03:03,730 --> 00:03:06,770
+OK, ejecutemos esto de nuevo y veamos.
+
+50
+00:03:06,840 --> 00:03:12,290
+Así que ahora esta vez parece que tomó bastante tiempo, pero cuando finalmente se resolvió
+
+51
+00:03:12,290 --> 00:03:17,230
+tomó un total de unos tres segundos y todo se completó al mismo tiempo.
+
+52
+00:03:17,240 --> 00:03:19,880
+Así que volvamos a ver un diagrama.
+
+53
+00:03:19,880 --> 00:03:22,190
+Está bien, ahora esta es la situación en la que estamos ahora.
+
+54
+00:03:22,490 --> 00:03:24,850
+Así que tenemos el hilo 1 al 5.
+
+55
+00:03:24,950 --> 00:03:29,640
+Tenemos el mismo número de subprocesos que la cantidad de llamadas a la función hash.
+
+56
+00:03:29,720 --> 00:03:33,850
+Por lo tanto, cada llamada de función hashing obtiene instantáneamente su propio subproceso asignado.
+
+57
+00:03:33,950 --> 00:03:43,260
+Y ahora, esta vez, vemos que la amenaza número uno y quizás 4 y 5 van al núcleo número 2.
+
+58
+00:03:43,360 --> 00:03:47,290
+Así que sé que apenas puedes ver estas flechas, pero creo que entiendes la idea y luego podrías
+
+59
+00:03:47,290 --> 00:03:52,300
+haber pensado que tal vez un núcleo iba a tomar un poco más de tiempo porque tenía que tener la tercera amenaza, así
+
+60
+00:03:52,310 --> 00:03:55,700
+que tal vez una esquina o dos también tenían para hacer el hilo número tres aquí.
+
+61
+00:03:55,690 --> 00:04:02,800
+Por lo tanto, es posible que haya esperado que el núcleo número dos tome un poco más de tiempo, pero en realidad RCP
+
+62
+00:04:02,830 --> 00:04:06,960
+puede usar todos los núcleos dentro de él para hacer malabarismos entre múltiples amenazas.
+
+63
+00:04:07,030 --> 00:04:11,280
+Así que cuando digo que oh sí, el núcleo número Dourdan se asigna al núcleo número uno.
+
+64
+00:04:11,470 --> 00:04:13,290
+Eso no es del todo exacto.
+
+65
+00:04:13,390 --> 00:04:18,790
+Este cronograma de arrestos aquí decide cómo hacer malabares con todo el trabajo en total detrás de todos los autos
+
+66
+00:04:18,790 --> 00:04:19,500
+que están disponibles.
+
+67
+00:04:19,630 --> 00:04:25,210
+Así que al final del día, los cinco hilos obtienen aproximadamente la misma cantidad de horas de sueño a la vez
+
+68
+00:04:25,240 --> 00:04:28,040
+y es por eso que vimos todo completo al mismo tiempo.
+
+69
+00:04:28,270 --> 00:04:34,300
+Pero esta vez tomó alrededor de 2. 5 segundos o Rindy justo encima un poco más que 2. 5.
+
+70
+00:04:34,300 --> 00:04:39,940
+De nuevo, si no estuviera ejecutando mi software de grabación de video, esto debería haber tomado alrededor de 2. 5 segundos porque al igual que antes
+
+71
+00:04:39,940 --> 00:04:47,620
+solo tenemos dos núcleos disponibles de manera predeterminada, se necesita un núcleo de un segundo para procesar un
+
+72
+00:04:47,620 --> 00:04:48,340
+hash.
+
+73
+00:04:48,520 --> 00:04:55,120
+Entonces, cuando tenemos cinco hashes al mismo tiempo, va a tomar dos núcleos, cinco divididos por dos 2. 5 segundos para
+
+74
+00:04:55,120 --> 00:04:56,200
+calcular.
+
+75
+00:04:56,200 --> 00:05:01,660
+Así que de nuevo mis tiempos no se alinearon con eso, pero si no estuviera grabando mi pantalla en este
+
+76
+00:05:01,660 --> 00:05:04,700
+momento, habría tomado casi exactamente 2. 5 segundos.
+
+77
+00:05:05,140 --> 00:05:05,590
+DE ACUERDO.
+
+78
+00:05:05,620 --> 00:05:10,810
+En esta sección hablamos sobre la existencia del grupo de subprocesos de U-V activo que se utiliza
+
+79
+00:05:10,810 --> 00:05:11,910
+para cálculos costosos.
+
+80
+00:05:12,130 --> 00:05:17,140
+Por lo tanto, es probable que realmente tenga curiosidad acerca de qué funciones de la biblioteca NO CORRER realmente hacen uso
+
+81
+00:05:17,140 --> 00:05:21,660
+de este grupo de subprocesos y sobre cómo puede usar el grupo de subprocesos para su propio código personal.
+
+82
+00:05:21,670 --> 00:05:24,040
+Comencemos por responder esas preguntas en la siguiente sección.

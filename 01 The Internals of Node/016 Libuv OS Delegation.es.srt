@@ -1,0 +1,179 @@
+1
+00:00:00,620 --> 00:00:06,120
+En la última sección, escribimos un pequeño archivo para hacernos una solicitud de H TGP, luego la
+
+2
+00:00:06,120 --> 00:00:10,770
+procesamos y vimos que nos tomó 240 milisegundos hacer una sola solicitud a Google.
+
+3
+00:00:10,770 --> 00:00:13,250
+Ahora agregaremos más solicitudes a este archivo.
+
+4
+00:00:13,410 --> 00:00:18,120
+Y cuando lo hagamos, veremos alguna evidencia de que algunas de las funciones en las
+
+5
+00:00:18,390 --> 00:00:24,140
+notas de una biblioteca no parecen usar el mismo tipo de conjunto de subprocesos que la función de hash.
+
+6
+00:00:24,150 --> 00:00:29,950
+Así que dentro de mi función asíncrona aquí no quiero copiar pegar todo este
+
+7
+00:00:30,030 --> 00:00:31,830
+código como seis veces.
+
+8
+00:00:31,830 --> 00:00:38,910
+Así que voy a envolver esta solicitud dentro de una pequeña función de ayuda que voy
+
+9
+00:00:39,150 --> 00:00:41,580
+a llamar simplemente solicite como tal.
+
+10
+00:00:41,730 --> 00:00:46,830
+Así que ahora, en lugar de hacer una gran cantidad de copias pegando en la parte
+
+11
+00:00:46,950 --> 00:00:53,180
+inferior del archivo, en lugar de eso, llamaré "pedir" un par de veces seguidas y tal vez eso sea bueno.
+
+12
+00:00:53,760 --> 00:00:55,050
+OK, entonces guardemos el archivo.
+
+13
+00:00:55,080 --> 00:00:59,080
+Y ahora vamos a ejecutar este archivo nuevamente en nuestra terminal.
+
+14
+00:00:59,130 --> 00:01:06,750
+Entonces, de vuelta en la terminal, vuelva a hacer el nodo A Cincom Sí y ahora vemos un comportamiento muy interesante.
+
+15
+00:01:06,750 --> 00:01:12,580
+Observe cómo parece que las seis llamadas parecen estar completadas a la misma hora.
+
+16
+00:01:12,660 --> 00:01:17,150
+Este es un comportamiento claramente diferente de lo que vimos anteriormente con nuestro grupo de subprocesos.
+
+17
+00:01:17,400 --> 00:01:23,280
+Así que recuerde de manera predeterminada que el grupo de subprocesos tiene cuatro subprocesos, lo que significa que solo se pueden procesar
+
+18
+00:01:23,310 --> 00:01:24,580
+cuatro tareas a la vez.
+
+19
+00:01:24,660 --> 00:01:29,440
+Pero en este caso tuvimos seis tareas completadas simultáneamente.
+
+20
+00:01:29,460 --> 00:01:32,860
+Entonces, ¿qué pasa? ¿Qué está pasando aquí?
+
+21
+00:01:32,920 --> 00:01:35,960
+Echemos un vistazo a un diagrama rápido.
+
+22
+00:01:36,180 --> 00:01:38,100
+Déjame mover esto.
+
+23
+00:01:38,100 --> 00:01:39,410
+Aquí vamos.
+
+24
+00:01:40,000 --> 00:01:41,650
+Está bien mucho mejor.
+
+25
+00:01:41,670 --> 00:01:46,070
+Entonces, lo que estamos viendo aquí es más evidencia de lib U. V. en juego.
+
+26
+00:01:46,200 --> 00:01:48,790
+Pero no está relacionado con nuestro grupo de subprocesos.
+
+27
+00:01:48,870 --> 00:01:54,660
+Así como la biblioteca estándar de nodos tiene algunas funciones que hacen uso del grupo de subprocesos de Uvas
+
+28
+00:01:54,660 --> 00:02:00,690
+en vivo, también tiene algunas funciones que hacen uso del código que está integrado en el sistema operativo subyacente a
+
+29
+00:02:00,990 --> 00:02:02,540
+través de U-V en vivo.
+
+30
+00:02:02,580 --> 00:02:07,950
+Entonces, en este caso, U-V en vivo ve que estamos intentando hacer una solicitud HTP.
+
+31
+00:02:08,400 --> 00:02:17,340
+Ni lib U. V. ni el código ni C ni el nodo tienen ningún código para manejar todas estas operaciones
+
+32
+00:02:17,550 --> 00:02:19,870
+de nivel super bajo que están involucradas con una solicitud de red.
+
+33
+00:02:20,070 --> 00:02:25,910
+En cambio, U-V en vivo delega la solicitud en el sistema operativo subyacente.
+
+34
+00:02:26,250 --> 00:02:34,260
+Entonces, en realidad es nuestro sistema operativo el que hace la solicitud real de HTP. Libby se usa para emitir la solicitud y
+
+35
+00:02:34,620 --> 00:02:39,840
+luego solo espera que el sistema operativo emita una señal de que alguna respuesta ha
+
+36
+00:02:39,840 --> 00:02:40,980
+regresado a la solicitud.
+
+37
+00:02:41,430 --> 00:02:47,490
+Entonces, como Libby está delegando el trabajo realizado en el sistema operativo, el propio sistema operativo decide si hace
+
+38
+00:02:47,490 --> 00:02:49,150
+una nueva amenaza o no.
+
+39
+00:02:49,290 --> 00:02:53,220
+O simplemente, en general, cómo manejar todo el proceso de solicitud.
+
+40
+00:02:53,580 --> 00:02:59,190
+Entonces, debido a que el sistema operativo está realizando la solicitud, no hay ningún bloqueo de nuestro código de JavaScript
+
+41
+00:02:59,190 --> 00:03:03,360
+dentro de nuestro bucle de eventos o cualquier otra cosa dentro de nuestra aplicación.
+
+42
+00:03:03,360 --> 00:03:08,520
+Todo o todo el trabajo está siendo realizado por el sistema operativo en sí mismo y no estamos tocando
+
+43
+00:03:08,520 --> 00:03:10,520
+ningún grupo de subprocesos en este caso.
+
+44
+00:03:11,000 --> 00:03:15,870
+De acuerdo, hagamos una pausa aquí y continuemos la siguiente sección y hablemos sobre cómo se relaciona esto con
+
+45
+00:03:16,080 --> 00:03:18,120
+nuestro ciclo de eventos en el siguiente video.
